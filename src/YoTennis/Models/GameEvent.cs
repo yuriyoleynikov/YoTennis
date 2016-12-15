@@ -11,9 +11,9 @@ namespace YoTennis.Models
     }
     public class CancelGame : GameEvent
     {
-        //
+        //dont know
     }
-
+    
     public class StartGameEvent : GameEvent
     {
         //empty
@@ -29,21 +29,15 @@ namespace YoTennis.Models
         //empty
     }
 
-    public class ServeNetTouchEvent : GameEvent
+    public class ChangeSidesGame : GameEvent
     {
-
+        //empty
     }
 
     public class ChangeServeGame : GameEvent
     {
-
+        //empty
     }
-
-    public class ChangeSidesGame : GameEvent
-    {
-
-    }
-
     public class StartEvent : GameEvent
     {
         public MatchSettings Settings { get; set; }
@@ -60,5 +54,6 @@ namespace YoTennis.Models
     {
         public Player PlayerPoint { get; set; }
         public PointKind Kind { get; set; }
+        public ServeSpeed ServeSpeed { get; set; }
     }
 }

@@ -10,11 +10,12 @@ namespace YoTennis.Models
         public List<Set> ScoreInSets { get; set; }        
         public Game ScoreInGame { get; set; }
 
-        public DateTime TheGameTime { get; set; }
+        public DateTime GameTime { get; set; }
         public Player PlayerOnLeft { get; set; }
         public Player PlayerServes { get; set; }
         public ServePositionOnTheCenter ServePositionOnTheCenter { get; set; }
         public bool SecondServe { get; set; }
+        public bool ChangeSides { get; set;}
 
         public DateTime MatchDate { get; set; }
         public MatchSettings MatchSettings { get; set; }
@@ -22,8 +23,10 @@ namespace YoTennis.Models
         public string SecondPlayer { get; set; }
 
         public MatchState MatchState { get; set; }
-    }
 
+        public ServeSpeed ServeSpeed { get; set; }
+    }
+        
     public struct PlayerScore
     {
         public int FirstPlayer { get; set; }
@@ -49,6 +52,7 @@ namespace YoTennis.Models
     public class ServeFailEvent
     {
         public ServeFailKind Serve { get; set; }
+        public ServeSpeed ServeSpeed { get; set; }
     }
 
     public class MatchSettings
@@ -57,6 +61,13 @@ namespace YoTennis.Models
         public bool TieBreakFinal { get; set; }
     }
 
+    public enum ServeSpeed
+    {
+        SloveServe,
+        MediumServe,
+        FastServe,
+        UnspecifiedServe
+    }
     public enum ServePositionOnTheCenter { Left, Right }
 
     public enum ServeFailKind
@@ -75,10 +86,6 @@ namespace YoTennis.Models
 
     public enum Player { First, Second }
 
-    public enum Serve { First, NetTouchOnFirst, Second }
-
-    public enum EnumInTheGame { love, fifteen, thirty, forty, advantage, game }
-
     public enum PointKind
     {
         Ace,
@@ -86,6 +93,7 @@ namespace YoTennis.Models
         Backhand,
         Error,
         UnforcedError,
-        Unspecified
+        Unspecified,
+        DoubleFaults
     }
 }

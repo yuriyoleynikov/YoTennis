@@ -11,9 +11,20 @@ namespace YoTennis.Models
         public List<GameEvent> Events { get; private set; }
         public State CurrentState { get; private set; }
 
-        public void AddPoint(bool firstPlayer)
+        public void AddPoint(Player GetPointPlayer, PointKind PointKind, ServeSpeed ServeSpeed)
         {
             //AddPoint
+            /*
+            if (GetPointPlayer == Player.First)
+            {
+                CurrentState.ScoreInGame.Score.FirstPlayer ++;
+            }
+            else
+            {
+                CurrentState.ScoreInGame.Score.SecondPlayer++;
+            }
+
+            */
         }
 
         public void AddEvent(GameEvent gameEvent)
@@ -40,46 +51,64 @@ namespace YoTennis.Models
         {
             CurrentState.PlayerOnLeft = gameEvent.PlayerOnLeft;
             CurrentState.PlayerServes = gameEvent.PlayerServes;
-            CurrentState.MatchState = MatchState.Playing;
             CurrentState.ScoreInSets = new List<Set> { new Set() };
             CurrentState.ScoreInGame = new Game();
             CurrentState.SecondServe = false;
             CurrentState.ServePositionOnTheCenter = ServePositionOnTheCenter.Right;
-            CurrentState.TheGameTime = gameEvent.OccuredAt;
-        }        
+            CurrentState.GameTime = gameEvent.OccuredAt;
+            CurrentState.MatchState = MatchState.Playing;
+        }
 
         private void On(ChangeSidesGame gameEvent)
         {
-            CurrentState
+            /*
+            if (CurrentState.PlayerOnLeft == Player.First)
+                CurrentState.PlayerOnLeft = Player.Second;
+            else
+                CurrentState.PlayerOnLeft = Player.First;
+                */
         }
 
         private void On(ChangeServeGame gameEvent)
         {
-            CurrentState.Score.InTheGame.FirstPlayerServing = !CurrentState.Score.InTheGame.FirstPlayerServing;
+            /*
+            if (CurrentState.PlayerServes == Player.First)
+                CurrentState.PlayerServes = Player.Second;
+            else
+                CurrentState.PlayerServes = Player.First;
+                */
         }
 
         private void On(ServeFailEvent gameEvent)
         {
-            if (CurrentState.Score.InTheGame.Serve == Serve.First)
-                CurrentState.Score.InTheGame.Serve = Serve.Second;
-            else AddPoint(!CurrentState.Score.InTheGame.FirstPlayerServing);
+            if (gameEvent.Serve == ServeFailKind.Error)
+                if (CurrentState.SecondServe == false)
+                    CurrentState.SecondServe = true;
+                else
+                {
+                    var player = CurrentState.PlayerServes;
+
+                    if (player == Player.First)
+                        player = Player.Second;
+                    else
+                        player = Player.First;
+
+                    AddPoint(player, PointKind.DoubleFaults, gameEvent.ServeSpeed);
+                }
         }
 
-        private void On(ServeNetTouchEvent gameEvent)
-        {
-
-        }
         private void On(PointEvent gameEvent)
         {
-
+            AddPoint(gameEvent.PlayerPoint, gameEvent.Kind, gameEvent.ServeSpeed);
         }
 
         private void On(EndGameEvent gameEvent)
         {
+            //
         }
         private void On(StartGameEvent gameEvent)
         {
-
+            //empty
         }
         private void On(CancelGame gameEvent)
         {
