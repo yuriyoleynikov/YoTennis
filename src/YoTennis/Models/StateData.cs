@@ -7,7 +7,8 @@ namespace YoTennis.Models
 {
     public class State
     {
-        public List<Set> ScoreInSets { get; set; }        
+        public PlayerScore ScoreOnSets { get; set; }
+        public List<Set> ScoreInSets { get; set; }
         public Game ScoreInGame { get; set; }
 
         public DateTime GameTime { get; set; }
@@ -15,7 +16,7 @@ namespace YoTennis.Models
         public Player PlayerServes { get; set; }
         public ServePositionOnTheCenter ServePositionOnTheCenter { get; set; }
         public bool SecondServe { get; set; }
-        public bool ChangeSides { get; set;}
+        public bool ChangeSides { get; set; }
 
         public DateTime MatchDate { get; set; }
         public MatchSettings MatchSettings { get; set; }
@@ -26,11 +27,24 @@ namespace YoTennis.Models
 
         public ServeSpeed ServeSpeed { get; set; }
     }
-        
+
     public struct PlayerScore
     {
         public int FirstPlayer { get; set; }
         public int SecondPlayer { get; set; }
+
+        public static PlayerScore ForPlayer(Player player, int score) =>
+            new PlayerScore
+            {
+                FirstPlayer = player == Player.First ? score : 0,
+                SecondPlayer = player == Player.Second ? score : 0
+            };
+        public static PlayerScore operator +(PlayerScore left, PlayerScore right) =>
+            new PlayerScore
+            {
+                FirstPlayer = left.FirstPlayer + right.FirstPlayer,
+                SecondPlayer = left.SecondPlayer + right.SecondPlayer
+            };
     }
 
     public class Set
@@ -81,6 +95,7 @@ namespace YoTennis.Models
         NotStarted,
         Drawing,
         Playing,
+        ChangingSides,
         Comleted
     }
 
