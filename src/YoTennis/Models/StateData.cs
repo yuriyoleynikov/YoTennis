@@ -73,6 +73,8 @@ namespace YoTennis.Models
     {
         public int SetsForWin { get; set; }
         public bool TieBreakFinal { get; set; }
+        public int GamesInSet { get; set; } = 6;
+        public int PointsInGame { get; set; } = 4;
     }
 
     public enum ServeSpeed
@@ -96,7 +98,7 @@ namespace YoTennis.Models
         Drawing,
         Playing,
         ChangingSides,
-        Comleted
+        Completed
     }
 
     public enum Player { First, Second }

@@ -11,17 +11,13 @@ namespace YoTennis.Models
         public List<GameEvent> Events { get; private set; }
         public State CurrentState { get; private set; } = new State();
 
-        public void AddPoint(Player getPointPlayer)
+        private void AddPoint(Player wonPlayer)
         {
-            var score = CurrentState.ScoreInGame.Score = CurrentState.ScoreInGame.Score + PlayerScore.ForPlayer(getPointPlayer, 1);
-            if (score.FirstPlayer >= 4 && score.SecondPlayer + 1 < score.FirstPlayer)
-            {
-                PlayerWonGame(Player.First);
-            }
-            else if (score.SecondPlayer >= 4 && score.FirstPlayer + 1 < score.SecondPlayer)
-            {
-                PlayerWonGame(Player.Second);
-            }
+            var score = CurrentState.ScoreInGame.Score = CurrentState.ScoreInGame.Score + PlayerScore.ForPlayer(wonPlayer, 1);
+
+            if ((score.FirstPlayer >= CurrentState.MatchSettings.PointsInGame && score.SecondPlayer + 1 < score.FirstPlayer)
+                || (score.SecondPlayer >= CurrentState.MatchSettings.PointsInGame && score.FirstPlayer + 1 < score.SecondPlayer))
+                PlayerWonGame(wonPlayer);
             else
             {
                 CurrentState.ServePositionOnTheCenter = CurrentState.ServePositionOnTheCenter == ServePositionOnTheCenter.Left ?
@@ -30,29 +26,25 @@ namespace YoTennis.Models
             }
         }
 
-        private void PlayerWonGame(Player player)
+        private void PlayerWonGame(Player wonPlayer)
         {
             var currentSetIndex = CurrentState.ScoreInSets.Count - 1;
 
             var currentSet = CurrentState.ScoreInSets[currentSetIndex];
             var currentSetScore = currentSet.Score;
 
-            currentSetScore = currentSetScore + PlayerScore.ForPlayer(player, 1);
+            currentSetScore = currentSetScore + PlayerScore.ForPlayer(wonPlayer, 1);
             currentSet.Score = currentSetScore;
 
-            if (currentSetScore.FirstPlayer >= 6 && currentSetScore.SecondPlayer + 1 < currentSetScore.FirstPlayer)
-            {
-                PlayerWonSet(Player.First);
-            }
-            else if (currentSetScore.SecondPlayer >= 6 && currentSetScore.FirstPlayer + 1 < currentSetScore.SecondPlayer)
-            {
-                PlayerWonSet(Player.Second);
-            }
+            if ((currentSetScore.FirstPlayer >= CurrentState.MatchSettings.GamesInSet && currentSetScore.SecondPlayer + 1 < currentSetScore.FirstPlayer)
+                || (currentSetScore.SecondPlayer >= CurrentState.MatchSettings.GamesInSet && currentSetScore.FirstPlayer + 1 < currentSetScore.SecondPlayer))
+                PlayerWonSet(wonPlayer);
             else
             {
                 CurrentState.ServePositionOnTheCenter = ServePositionOnTheCenter.Right;
                 CurrentState.SecondServe = false;
                 CurrentState.ScoreInGame = new Game();
+
                 CurrentState.PlayerServes = CurrentState.PlayerServes == Player.First ? Player.Second : Player.First;
             }
 
@@ -64,11 +56,22 @@ namespace YoTennis.Models
             }
         }
 
-        private void PlayerWonSet(Player first)
+        private void PlayerWonSet(Player wonPlayer)
         {
+            CurrentState.ScoreOnSets = PlayerScore.ForPlayer(wonPlayer, 1);
+
+            if (CurrentState.MatchSettings.SetsForWin == 3)
+            {
+                if ((CurrentState.ScoreOnSets.FirstPlayer == 2) || (CurrentState.ScoreOnSets.SecondPlayer == 2))
+                    CurrentState.MatchState = MatchState.Completed;
+            }
+            else if (CurrentState.MatchSettings.SetsForWin == 5)
+            {
+                if ((CurrentState.ScoreOnSets.FirstPlayer == 3) || (CurrentState.ScoreOnSets.SecondPlayer == 3))
+                    CurrentState.MatchState = MatchState.Completed;
+            }
 
             CurrentState.ScoreInSets.Add(new Set());
-
         }
 
         public void AddEvent(GameEvent gameEvent)
