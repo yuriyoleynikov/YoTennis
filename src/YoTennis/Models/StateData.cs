@@ -14,9 +14,8 @@ namespace YoTennis.Models
         public DateTime GameTime { get; set; }
         public Player PlayerOnLeft { get; set; }
         public Player PlayerServes { get; set; }
-        public ServePositionOnTheCenter ServePositionOnTheCenter { get; set; }
+        public ServePositionOnTheCenterLine ServePositionOnTheCenterLine { get; set; }
         public bool SecondServe { get; set; }
-        public bool ChangeSides { get; set; }
 
         public DateTime MatchDate { get; set; }
         public MatchSettings MatchSettings { get; set; }
@@ -55,7 +54,7 @@ namespace YoTennis.Models
 
     public class TieBreak
     {
-        public PlayerScore Player { get; set; }
+        public PlayerScore Score { get; set; }
     }
 
     public class Game
@@ -75,16 +74,17 @@ namespace YoTennis.Models
         public bool TieBreakFinal { get; set; }
         public int GamesInSet { get; set; } = 6;
         public int PointsInGame { get; set; } = 4;
+        public int PointsInTieBreak { get; set; } = 7;
     }
 
     public enum ServeSpeed
     {
-        SloveServe,
-        MediumServe,
-        FastServe,
-        UnspecifiedServe
+        Unspecified,
+        Slow,
+        Medium,
+        Fast
     }
-    public enum ServePositionOnTheCenter { Left, Right }
+    public enum ServePositionOnTheCenterLine { Left, Right }
 
     public enum ServeFailKind
     {
@@ -96,8 +96,12 @@ namespace YoTennis.Models
     {
         NotStarted,
         Drawing,
-        Playing,
+        BeginingGame,
+        PlayingGame,
         ChangingSides,
+        BeginTieBreak,
+        PlayingTieBreak,
+        ChangingSidesOnTiebreak,
         Completed
     }
 
@@ -105,12 +109,12 @@ namespace YoTennis.Models
 
     public enum PointKind
     {
+        Unspecified,
         Ace,
         Forehand,
         Backhand,
         Error,
         UnforcedError,
-        Unspecified,
         DoubleFaults
     }
 }

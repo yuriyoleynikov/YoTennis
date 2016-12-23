@@ -19,22 +19,17 @@ namespace YoTennis.Models
         //empty
     }
 
-    public class EndGameEvent : GameEvent
+    public class StartTieBreakEvent : GameEvent
     {
         //empty
     }
-    
-    public class StartFirstGameEvent : GameEvent
-    {
-        //empty
-    }
-
+        
     public class ChangeSidesGame : GameEvent
     {
         //empty
     }
 
-    public class ChangeServeGame : GameEvent
+    public class ChangeSidesOnTiebreakGame : GameEvent
     {
         //empty
     }
