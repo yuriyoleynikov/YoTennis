@@ -14,6 +14,14 @@ namespace YoTennis.Tests.Test
         static DateTime _gameDate = new DateTime(1986, 9, 27);
 
         [Fact]
+        public void Chek_NoEvent()
+        {
+            var myGame = new GameModel();
+
+            myGame.CurrentState.MatchState.Should().Be(MatchState.NotStarted);
+        }
+
+        [Fact]
         public void Chek_StartEvent()
         {
             var myGame = new GameModel();
@@ -72,13 +80,13 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenter.Should().Be(ServePositionOnTheCenter.Right);
+            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
             myGame.CurrentState.GameTime.Should().Be(_matchDate);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.Playing);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
         }
 
         [Fact]
-        public void Chek_PointEvent()
+        public void Chek_StartGameEvent()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -98,12 +106,7 @@ namespace YoTennis.Tests.Test
                 PlayerOnLeft = Player.First,
                 PlayerServes = Player.Second
             });
-            myGame.AddEvent(new PointEvent
-            {
-                PlayerPoint = Player.Second,
-                ServeSpeed = ServeSpeed.UnspecifiedServe,
-                Kind = PointKind.Forehand
-            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
 
             myGame.CurrentState.MatchDate.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
@@ -116,11 +119,11 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(1);
+            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenter.Should().Be(ServePositionOnTheCenter.Left);
-            myGame.CurrentState.GameTime.Should().Be(_matchDate);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.Playing);
+            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
+            myGame.CurrentState.GameTime.Should().Be(_gameDate);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingGame);
         }
         [Fact]
         public void Chek_Not_Expected_ChangesSides()
@@ -172,13 +175,13 @@ namespace YoTennis.Tests.Test
                 PlayerOnLeft = Player.First,
                 PlayerServes = Player.Second
             });
-
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
             for (int i = 0; i < 2; i++)
             {
                 myGame.AddEvent(new PointEvent
                 {
                     PlayerPoint = Player.Second,
-                    ServeSpeed = ServeSpeed.UnspecifiedServe,
+                    ServeSpeed = ServeSpeed.Unspecified,
                     Kind = PointKind.Forehand
                 });
             }
@@ -196,9 +199,9 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(2);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenter.Should().Be(ServePositionOnTheCenter.Right);
-            myGame.CurrentState.GameTime.Should().Be(_matchDate);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.Playing);
+            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
+            myGame.CurrentState.GameTime.Should().Be(_gameDate);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingGame);
         }
 
         [Fact]
@@ -222,13 +225,13 @@ namespace YoTennis.Tests.Test
                 PlayerOnLeft = Player.First,
                 PlayerServes = Player.Second
             });
-
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
             for (int i = 0; i < 4; i++)
             {
                 myGame.AddEvent(new PointEvent
                 {
                     PlayerPoint = Player.Second,
-                    ServeSpeed = ServeSpeed.UnspecifiedServe,
+                    ServeSpeed = ServeSpeed.Unspecified,
                     Kind = PointKind.Forehand
                 });
             }
@@ -246,10 +249,9 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenter.Should().Be(ServePositionOnTheCenter.Right);
-            myGame.CurrentState.GameTime.Should().Be(_matchDate);
+            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
+            myGame.CurrentState.GameTime.Should().Be(_gameDate);
             myGame.CurrentState.MatchState.Should().Be(MatchState.ChangingSides);
-            myGame.CurrentState.ChangeSides.Should().Be(true);
         }
 
         [Fact]
@@ -273,13 +275,13 @@ namespace YoTennis.Tests.Test
                 PlayerOnLeft = Player.First,
                 PlayerServes = Player.Second
             });
-
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
             for (int i = 0; i < 4; i++)
             {
                 myGame.AddEvent(new PointEvent
                 {
                     PlayerPoint = Player.Second,
-                    ServeSpeed = ServeSpeed.UnspecifiedServe,
+                    ServeSpeed = ServeSpeed.Unspecified,
                     Kind = PointKind.Forehand
                 });
             }
@@ -299,10 +301,9 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenter.Should().Be(ServePositionOnTheCenter.Right);
-            myGame.CurrentState.GameTime.Should().Be(_matchDate);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.Playing);
-            myGame.CurrentState.ChangeSides.Should().Be(false);
+            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
+            myGame.CurrentState.GameTime.Should().Be(_gameDate);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.ChangingSides);
         }
 
         [Fact]
@@ -326,21 +327,19 @@ namespace YoTennis.Tests.Test
                 PlayerOnLeft = Player.First,
                 PlayerServes = Player.Second
             });
-
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
             for (int i = 0; i < 4; i++)
             {
                 myGame.AddEvent(new PointEvent
                 {
                     PlayerPoint = Player.Second,
-                    ServeSpeed = ServeSpeed.UnspecifiedServe,
+                    ServeSpeed = ServeSpeed.Unspecified,
                     Kind = PointKind.Forehand
                 });
             }
 
             myGame.AddEvent(new ChangeSidesGame());
-            myGame.AddEvent(new StartGameEvent {
-                 OccuredAt = _gameDate
-            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
 
             myGame.CurrentState.MatchDate.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
@@ -355,10 +354,9 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenter.Should().Be(ServePositionOnTheCenter.Right);
+            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
             myGame.CurrentState.GameTime.Should().Be(_gameDate);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.Playing);
-            myGame.CurrentState.ChangeSides.Should().Be(false);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingGame);
         }
     }
 }
