@@ -36,34 +36,27 @@ namespace YoTennis.Models
                 if ((score.FirstPlayer >= CurrentState.MatchSettings.PointsInTieBreak && score.SecondPlayer + 1 < score.FirstPlayer) ||
                     (score.SecondPlayer >= CurrentState.MatchSettings.PointsInTieBreak && score.FirstPlayer + 1 < score.SecondPlayer))
                 {
-                    PlayerWonTB(wonPlayer);
+                    CurrentState.ScoreInSets[set].Score = CurrentState.ScoreInSets[set].Score + PlayerScore.ForPlayer(wonPlayer, 1);
+                    PlayerWonSet(wonPlayer);
                 }
                 else
                 {
                     CurrentState.ServePositionOnTheCenterLine = CurrentState.ServePositionOnTheCenterLine == ServePositionOnTheCenterLine.Left ?
                         ServePositionOnTheCenterLine.Right : ServePositionOnTheCenterLine.Left;
                     CurrentState.SecondServe = false;
+
+                    if ((score.FirstPlayer + score.SecondPlayer) % 2 != 0)
+                    {
+                        CurrentState.PlayerServes = CurrentState.PlayerServes.Other();
+                    }
+
+                    if ((score.FirstPlayer + score.SecondPlayer) % 6 == 0)
+                    {
+                        CurrentState.MatchState = MatchState.ChangingSidesOnTiebreak;
+                    }
                 }
             }
-        }
-
-        private void PlayerWonTB(Player wonPlayer)
-        {
-            CurrentState.ScoreOnSets = PlayerScore.ForPlayer(wonPlayer, 1);
-
-            if (CurrentState.MatchSettings.SetsForWin == 3)
-            {
-                if ((CurrentState.ScoreOnSets.FirstPlayer == 2) || (CurrentState.ScoreOnSets.SecondPlayer == 2))
-                    CurrentState.MatchState = MatchState.Completed;
-            }
-            else if (CurrentState.MatchSettings.SetsForWin == 5)
-            {
-                if ((CurrentState.ScoreOnSets.FirstPlayer == 3) || (CurrentState.ScoreOnSets.SecondPlayer == 3))
-                    CurrentState.MatchState = MatchState.Completed;
-            }
-
-            CurrentState.ScoreInSets.Add(new Set());
-        }
+        }              
 
         private void PlayerWonGame(Player wonPlayer)
         {
@@ -76,7 +69,9 @@ namespace YoTennis.Models
             currentSet.Score = currentSetScore;
 
             if ((currentSetScore.FirstPlayer >= CurrentState.MatchSettings.GamesInSet && currentSetScore.SecondPlayer + 1 < currentSetScore.FirstPlayer)
-                || (currentSetScore.SecondPlayer >= CurrentState.MatchSettings.GamesInSet && currentSetScore.FirstPlayer + 1 < currentSetScore.SecondPlayer))
+                || (currentSetScore.SecondPlayer >= CurrentState.MatchSettings.GamesInSet && currentSetScore.FirstPlayer + 1 < currentSetScore.SecondPlayer) ||
+                (currentSetScore.FirstPlayer == CurrentState.MatchSettings.GamesInSet + 1) ||
+                (currentSetScore.SecondPlayer == CurrentState.MatchSettings.GamesInSet + 1))
             {
                 PlayerWonSet(wonPlayer);
                 if (CurrentState.MatchState != MatchState.Completed)
@@ -90,6 +85,11 @@ namespace YoTennis.Models
             else if (currentSetScore.FirstPlayer == CurrentState.MatchSettings.GamesInSet &&
                 currentSetScore.SecondPlayer == CurrentState.MatchSettings.GamesInSet)
             {
+                CurrentState.PlayerServes = CurrentState.PlayerServes.Other();
+                CurrentState.ServePositionOnTheCenterLine = ServePositionOnTheCenterLine.Right;                
+                CurrentState.SecondServe = false;
+                CurrentState.ScoreInGame = new Game();
+
                 CurrentState.MatchState = MatchState.BeginTieBreak;
             }
             else
@@ -100,7 +100,9 @@ namespace YoTennis.Models
                 CurrentState.ScoreInGame = new Game();
             }
 
-            if (CurrentState.MatchState != MatchState.Completed)
+            if ((CurrentState.MatchState != MatchState.Completed) &&
+                (CurrentState.MatchState != MatchState.BeginTieBreak) &&
+                (CurrentState.MatchState != MatchState.PlayingTieBreak))
             {
                 CurrentState.PlayerServes = CurrentState.PlayerServes == Player.First ? Player.Second : Player.First;
                 if ((currentSetScore.FirstPlayer + currentSetScore.SecondPlayer) % 2 != 0)
@@ -121,7 +123,9 @@ namespace YoTennis.Models
                 ((CurrentState.ScoreOnSets.FirstPlayer == 3) || (CurrentState.ScoreOnSets.SecondPlayer == 3)))
                 CurrentState.MatchState = MatchState.Completed;
             else
+            {
                 CurrentState.ScoreInSets.Add(new Set());
+            }
         }
 
         public void AddEvent(GameEvent gameEvent)
@@ -159,21 +163,22 @@ namespace YoTennis.Models
             CurrentState.MatchState = MatchState.BeginingGame;
         }
 
-        private void On(ChangeSidesGame gameEvent)
+        private void On(ChangeSidesGameEvent gameEvent)
         {
-            CurrentState.PlayerOnLeft = CurrentState.PlayerOnLeft == Player.First ? Player.Second : Player.First;
+            CurrentState.PlayerOnLeft = CurrentState.PlayerOnLeft.Other();
             CurrentState.MatchState = MatchState.BeginingGame;
         }
 
         private void On(ChangeSidesOnTiebreakGame gameEvent)
         {
-
+            CurrentState.PlayerOnLeft = CurrentState.PlayerOnLeft == Player.First ? Player.Second : Player.First;
+            CurrentState.MatchState = MatchState.PlayingTieBreak;
         }
 
         private void On(ServeFailEvent gameEvent)
         {
             if (gameEvent.Serve == ServeFailKind.Error)
-                if (CurrentState.SecondServe == false)
+                if (!CurrentState.SecondServe)
                     CurrentState.SecondServe = true;
                 else
                 {
@@ -199,7 +204,7 @@ namespace YoTennis.Models
             CurrentState.GameTime = gameEvent.OccuredAt;
             if (CurrentState.MatchState == MatchState.BeginTieBreak)
             {
-                CurrentState.MatchState = MatchState.PlayingTieBreak;
+                CurrentState.MatchState = MatchState.PlayingTieBreak;                
             }
         }
         private void On(StartGameEvent gameEvent)

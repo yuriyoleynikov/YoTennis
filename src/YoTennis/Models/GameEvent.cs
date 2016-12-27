@@ -24,7 +24,7 @@ namespace YoTennis.Models
         //empty
     }
         
-    public class ChangeSidesGame : GameEvent
+    public class ChangeSidesGameEvent : GameEvent
     {
         //empty
     }

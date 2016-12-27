@@ -107,6 +107,12 @@ namespace YoTennis.Models
 
     public enum Player { First, Second }
 
+    public static class PlayerExtentions
+    {
+        public static Player Other(this Player player) => player == Player.First ? Player.Second : Player.First;
+        
+    }
+
     public enum PointKind
     {
         Unspecified,
