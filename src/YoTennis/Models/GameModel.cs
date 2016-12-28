@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YoTennis.Models.Events;
 
 namespace YoTennis.Models
 {
@@ -37,6 +38,10 @@ namespace YoTennis.Models
                     (score.SecondPlayer >= CurrentState.MatchSettings.PointsInTieBreak && score.FirstPlayer + 1 < score.SecondPlayer))
                 {
                     CurrentState.ScoreInSets[set].Score = CurrentState.ScoreInSets[set].Score + PlayerScore.ForPlayer(wonPlayer, 1);
+                    CurrentState.PlayerServes = CurrentState.PlayerServes.Other();
+                    CurrentState.ServePositionOnTheCenterLine = ServePositionOnTheCenterLine.Right;
+                    CurrentState.MatchState = MatchState.ChangingSides;
+
                     PlayerWonSet(wonPlayer);
                 }
                 else
@@ -125,6 +130,7 @@ namespace YoTennis.Models
             else
             {
                 CurrentState.ScoreInSets.Add(new Set());
+                
             }
         }
 
@@ -198,7 +204,6 @@ namespace YoTennis.Models
             AddPoint(gameEvent.PlayerPoint);
         }
 
-
         private void On(StartTieBreakEvent gameEvent)
         {
             CurrentState.GameTime = gameEvent.OccuredAt;
@@ -207,6 +212,7 @@ namespace YoTennis.Models
                 CurrentState.MatchState = MatchState.PlayingTieBreak;                
             }
         }
+
         private void On(StartGameEvent gameEvent)
         {
             if (CurrentState.MatchState != MatchState.BeginingGame)
@@ -216,7 +222,8 @@ namespace YoTennis.Models
             CurrentState.MatchState = MatchState.PlayingGame;
 
         }
-        private void On(CancelGame gameEvent)
+
+        private void On(CancelGameEvent gameEvent)
         {
         }
     }
