@@ -7,7 +7,7 @@ namespace YoTennis.Models
 {
     public class Set
     {
-        public PlayerScore Score { get; set; }
-        public PlayerScore TieBreakScore { get; set; }
+        public Score Score { get; set; }
+        public Score TiebreakScore { get; set; }
     }
 }

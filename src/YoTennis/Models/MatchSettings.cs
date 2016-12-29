@@ -7,10 +7,10 @@ namespace YoTennis.Models
 {
     public class MatchSettings
     {
-        public int SetsForWin { get; set; }
-        public bool TieBreakFinal { get; set; }
+        public int SetsForWin { get; set; } = 2;
+        public bool TiebreakFinal { get; set; } = false;
         public int GamesInSet { get; set; } = 6;
         public int PointsInGame { get; set; } = 4;
-        public int PointsInTieBreak { get; set; } = 7;
+        public int PointsInTiebreak { get; set; } = 7;
     }
 }

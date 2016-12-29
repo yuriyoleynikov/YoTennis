@@ -17,7 +17,7 @@ namespace YoTennis.Tests.Test
         static DateTime _gameDate3 = new DateTime(1986, 9, 29);
 
         [Fact]
-        public void Chek_NoEvent()
+        public void Check_NoEvent()
         {
             var myGame = new GameModel();
 
@@ -25,7 +25,7 @@ namespace YoTennis.Tests.Test
         }
 
         [Fact]
-        public void Chek_StartEvent()
+        public void Check_StartEvent()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -36,20 +36,20 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
             myGame.CurrentState.MatchState.Should().Be(MatchState.Drawing);
         }
 
         [Fact]
-        public void Chek_DrawEvent()
+        public void Check_DrawEvent()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -60,7 +60,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -70,26 +70,26 @@ namespace YoTennis.Tests.Test
                 PlayerServes = Player.Second
             });
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_matchDate);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_matchDate);
             myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
         }
 
         [Fact]
-        public void Chek_StartGameEvent()
+        public void Cheсk_StartGameEvent()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -100,7 +100,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -111,26 +111,26 @@ namespace YoTennis.Tests.Test
             });
             myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
             myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingGame);
         }
 
         [Fact]
-        public void Chek_Not_Expected_ChangesSides()
+        public void Cheсk_Not_Expected_ChangesSides()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -141,7 +141,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
 
@@ -153,13 +153,13 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             })).ShouldThrow<InvalidOperationException>();
         }
 
         [Fact]
-        public void Chek_2Points_Event()
+        public void Cheсk_2Points_Event()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -170,7 +170,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -190,26 +190,26 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(2);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(2);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
             myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingGame);
         }
 
         [Fact]
-        public void Chek_4Points_Event()
+        public void Cheсk_4Points_Event()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -220,7 +220,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -240,26 +240,26 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(1);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(1);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
             myGame.CurrentState.MatchState.Should().Be(MatchState.ChangingSides);
         }
 
         [Fact]
-        public void Chek_4Points_Event_ChangeSidesEvent()
+        public void Cheсk_4Points_Event_ChangeSidesEvent()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -270,7 +270,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -292,26 +292,26 @@ namespace YoTennis.Tests.Test
 
             myGame.AddEvent(new ChangeSidesGameEvent());
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(1);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(1);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
             myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
         }
 
         [Fact]
-        public void Chek_4Points_Event_ChangeSidesEvent_StartGameEvent()
+        public void Cheсk_4Points_Event_ChangeSidesEvent_StartGameEvent()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -322,7 +322,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -345,26 +345,26 @@ namespace YoTennis.Tests.Test
             myGame.AddEvent(new ChangeSidesGameEvent());
             myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate2 });
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(1);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(1);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate2);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate2);
             myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingGame);
         }
 
         [Fact]
-        public void Chek_2GamesEvent()
+        public void Cheсk_2GamesEvent()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -375,7 +375,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -407,26 +407,26 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(2);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(2);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate2);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate2);
             myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
         }
 
         [Fact]
-        public void Chek_FailEvent()
+        public void Cheсk_FailEvent()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -437,7 +437,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -450,26 +450,26 @@ namespace YoTennis.Tests.Test
 
             myGame.AddEvent(new ServeFailEvent { Serve = ServeFailKind.Error });
             
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(true);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
             myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingGame);
         }
 
         [Fact]
-        public void Chek_3GamesEvent()
+        public void Cheсk_3GamesEvent()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -480,7 +480,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -523,26 +523,26 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(3);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(3);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.MatchState.Should().Be(MatchState.ChangingSides);
         }
 
         [Fact]
-        public void Chek_5GamesEvent()
+        public void Cheсk_5GamesEvent()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -553,7 +553,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -601,28 +601,28 @@ namespace YoTennis.Tests.Test
                 }
                 myGame.AddEvent(new ChangeSidesGameEvent());
             }
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(5);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(5);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
         }
 
         [Fact]
-        public void Chek_10Games()
+        public void Check_10Games()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -633,7 +633,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -719,28 +719,28 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(5);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(5);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(5);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(5);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
         }
 
         [Fact]
-        public void Chek_11Games()
+        public void Check_11Games()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -751,7 +751,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -828,28 +828,28 @@ namespace YoTennis.Tests.Test
 
 
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(5);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(5);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
         }
 
         [Fact]
-        public void Chek_12Games()
+        public void Check_12Games()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -860,7 +860,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -946,28 +946,28 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginTieBreak);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginTiebreak);
         }
 
         [Fact]
-        public void Chek_12Games_StartTB()
+        public void Cheсk_12Games_StartTB()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -978,7 +978,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -1064,30 +1064,30 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.AddEvent(new StartTieBreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTieBreak);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTiebreak);
         }
 
         [Fact]
-        public void Chek_12Games_1Point()
+        public void Cheсk_12Games_1Point()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -1098,7 +1098,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -1184,7 +1184,7 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.AddEvent(new StartTieBreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 1; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -1196,30 +1196,30 @@ namespace YoTennis.Tests.Test
             }
 
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().TieBreakScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().TieBreakScore.SecondPlayer.Should().Be(1);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(1);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Left);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTieBreak);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Left);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTiebreak);
         }
 
         [Fact]
-        public void Chek_12Games_2Points()
+        public void Cheсk_12Games_2Points()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -1230,7 +1230,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -1316,7 +1316,7 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.AddEvent(new StartTieBreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 2; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -1328,30 +1328,30 @@ namespace YoTennis.Tests.Test
             }
 
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().TieBreakScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().TieBreakScore.SecondPlayer.Should().Be(2);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(2);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTieBreak);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTiebreak);
         }
 
         [Fact]
-        public void Chek_12Games_3Points()
+        public void Cheсk_12Games_3Points()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -1362,7 +1362,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -1448,7 +1448,7 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.AddEvent(new StartTieBreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 3; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -1460,30 +1460,30 @@ namespace YoTennis.Tests.Test
             }
 
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().TieBreakScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().TieBreakScore.SecondPlayer.Should().Be(3);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(3);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Left);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTieBreak);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Left);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTiebreak);
         }
 
         [Fact]
-        public void Chek_12Games_6Points()
+        public void Cheсk_12Games_6Points()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -1494,7 +1494,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -1580,7 +1580,7 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.AddEvent(new StartTieBreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 6; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -1592,30 +1592,30 @@ namespace YoTennis.Tests.Test
             }
 
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().TieBreakScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().TieBreakScore.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(6);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.MatchState.Should().Be(MatchState.ChangingSidesOnTiebreak);
         }
 
         [Fact]
-        public void Chek_12Games_6Points_CS()
+        public void Cheсk_12Games_6Points_CS()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -1626,7 +1626,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -1712,7 +1712,7 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.AddEvent(new StartTieBreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 6; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -1722,32 +1722,32 @@ namespace YoTennis.Tests.Test
                     Kind = PointKind.Forehand
                 });
             }
-            myGame.AddEvent(new ChangeSidesOnTiebreakGame { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new ChangeSidesOnTiebreakEvent { OccuredAt = _gameDate3 });
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().TieBreakScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().TieBreakScore.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(6);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTieBreak);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTiebreak);
         }
 
         [Fact]
-        public void Chek_12Games_12Points()
+        public void Check_12Games_12Points()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -1758,7 +1758,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -1844,7 +1844,7 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.AddEvent(new StartTieBreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 6; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -1854,8 +1854,8 @@ namespace YoTennis.Tests.Test
                     Kind = PointKind.Forehand
                 });
             }
-            myGame.AddEvent(new ChangeSidesOnTiebreakGame { OccuredAt = _gameDate3 });
-            myGame.AddEvent(new StartTieBreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new ChangeSidesOnTiebreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 6; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -1867,30 +1867,30 @@ namespace YoTennis.Tests.Test
             }
 
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().TieBreakScore.FirstPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInSets.Last().TieBreakScore.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(6);
+            myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(6);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.MatchState.Should().Be(MatchState.ChangingSidesOnTiebreak);
         }
 
         [Fact]
-        public void Chek_12Games_13Points()
+        public void Check_12Games_13Points()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -1901,7 +1901,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -1987,7 +1987,7 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.AddEvent(new StartTieBreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 6; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -1997,8 +1997,8 @@ namespace YoTennis.Tests.Test
                     Kind = PointKind.Forehand
                 });
             }
-            myGame.AddEvent(new ChangeSidesOnTiebreakGame { OccuredAt = _gameDate3 });
-            myGame.AddEvent(new StartTieBreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new ChangeSidesOnTiebreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 6; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -2008,7 +2008,7 @@ namespace YoTennis.Tests.Test
                     Kind = PointKind.Forehand
                 });
             }
-            myGame.AddEvent(new ChangeSidesOnTiebreakGame { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new ChangeSidesOnTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 1; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -2019,30 +2019,30 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().TieBreakScore.FirstPlayer.Should().Be(7);
-            myGame.CurrentState.ScoreInSets.Last().TieBreakScore.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(7);
+            myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(6);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Left);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTieBreak);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Left);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTiebreak);
         }
 
         [Fact]
-        public void Chek_12Games_14Points()
+        public void Cheсk_12Games_14Points()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -2053,7 +2053,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -2139,7 +2139,7 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.AddEvent(new StartTieBreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 6; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -2149,8 +2149,8 @@ namespace YoTennis.Tests.Test
                     Kind = PointKind.Forehand
                 });
             }
-            myGame.AddEvent(new ChangeSidesOnTiebreakGame { OccuredAt = _gameDate3 });
-            myGame.AddEvent(new StartTieBreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new ChangeSidesOnTiebreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 6; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -2160,7 +2160,7 @@ namespace YoTennis.Tests.Test
                     Kind = PointKind.Forehand
                 });
             }
-            myGame.AddEvent(new ChangeSidesOnTiebreakGame { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new ChangeSidesOnTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 2; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -2171,32 +2171,32 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(1);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(1);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
 
-            myGame.CurrentState.ScoreInSets[0].Score.FirstPlayer.Should().Be(7);
-            myGame.CurrentState.ScoreInSets[0].Score.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.Sets[0].Score.FirstPlayer.Should().Be(7);
+            myGame.CurrentState.Sets[0].Score.SecondPlayer.Should().Be(6);
 
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.MatchState.Should().Be(MatchState.ChangingSides);
         }
 
         [Fact]
-        public void Chek_12Games_14Points_CS()
+        public void Cheсk_12Games_14Points_CS()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -2207,7 +2207,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -2293,7 +2293,7 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.AddEvent(new StartTieBreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 6; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -2303,8 +2303,8 @@ namespace YoTennis.Tests.Test
                     Kind = PointKind.Forehand
                 });
             }
-            myGame.AddEvent(new ChangeSidesOnTiebreakGame { OccuredAt = _gameDate3 });
-            myGame.AddEvent(new StartTieBreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new ChangeSidesOnTiebreakEvent { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 6; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -2314,7 +2314,7 @@ namespace YoTennis.Tests.Test
                     Kind = PointKind.Forehand
                 });
             }
-            myGame.AddEvent(new ChangeSidesOnTiebreakGame { OccuredAt = _gameDate3 });
+            myGame.AddEvent(new ChangeSidesOnTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 2; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -2326,34 +2326,34 @@ namespace YoTennis.Tests.Test
             }
             myGame.AddEvent(new ChangeSidesGameEvent());
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(1);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(1);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
 
-            myGame.CurrentState.ScoreInSets[0].Score.FirstPlayer.Should().Be(7);
-            myGame.CurrentState.ScoreInSets[0].Score.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.Sets[0].Score.FirstPlayer.Should().Be(7);
+            myGame.CurrentState.Sets[0].Score.SecondPlayer.Should().Be(6);
 
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
         }
 
 
 
         [Fact]
-        public void Chek_1SetEvent()
+        public void Cheсk_1SetEvent()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -2364,7 +2364,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -2424,28 +2424,28 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(1);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(1);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
         }
 
         [Fact]
-        public void Chek_1SetEvent_Other1()
+        public void Cheсk_1SetEvent_Other1()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -2456,7 +2456,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -2527,28 +2527,28 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(1);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(1);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.MatchState.Should().Be(MatchState.ChangingSides);
         }
 
         [Fact]
-        public void Chek_1Set_1ChangeSides()
+        public void Cheсk_1Set_1ChangeSides()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -2559,7 +2559,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -2631,28 +2631,28 @@ namespace YoTennis.Tests.Test
             }
             myGame.AddEvent(new ChangeSidesGameEvent());
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(1);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(1);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
         }
 
         [Fact]
-        public void Chek_1Set_1Game()
+        public void Cheсk_1Set_1Game()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -2663,7 +2663,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -2746,30 +2746,30 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(1);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(1);
-            myGame.CurrentState.ScoreInSets[0].Score.FirstPlayer.Should().Be(1);
-            myGame.CurrentState.ScoreInSets[0].Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(1);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(1);
+            myGame.CurrentState.Sets[0].Score.FirstPlayer.Should().Be(1);
+            myGame.CurrentState.Sets[0].Score.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.MatchState.Should().Be(MatchState.ChangingSides);
         }
 
         [Fact]
-        public void Chek_1Set_5Game()
+        public void Cheсk_1Set_5Game()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -2780,7 +2780,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -2829,31 +2829,31 @@ namespace YoTennis.Tests.Test
                 myGame.AddEvent(new ChangeSidesGameEvent());
             }
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(1);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(5);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(1);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(5);
 
-            myGame.CurrentState.ScoreInSets[0].Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets[0].Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Sets[0].Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets[0].Score.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
-            myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
-            myGame.CurrentState.GameTime.Should().Be(_gameDate3);
+            myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
+            myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
         }
 
         [Fact]
-        public void Chek_2Sets()
+        public void Cheсk_2Sets()
         {
             var myGame = new GameModel();
             myGame.AddEvent(new StartEvent
@@ -2864,7 +2864,7 @@ namespace YoTennis.Tests.Test
                 Settings = new MatchSettings
                 {
                     SetsForWin = 3,
-                    TieBreakFinal = false
+                    TiebreakFinal = false
                 }
             });
             myGame.AddEvent(new DrawEvent
@@ -2924,21 +2924,21 @@ namespace YoTennis.Tests.Test
                 });
             }
 
-            myGame.CurrentState.MatchDate.Should().Be(_matchDate);
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
-            myGame.CurrentState.MatchSettings.TieBreakFinal.Should().Be(false);
+            myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
 
             //myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             //myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.ScoreOnSets.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreOnSets.SecondPlayer.Should().Be(2);
-            myGame.CurrentState.ScoreInSets.Last().Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets.Last().Score.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(2);
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
 
-            myGame.CurrentState.ScoreInSets[0].Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.ScoreInSets[0].Score.SecondPlayer.Should().Be(6);
+            myGame.CurrentState.Sets[0].Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Sets[0].Score.SecondPlayer.Should().Be(6);
             //myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
             //myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
             //myGame.CurrentState.SecondServe.Should().Be(false);

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace YoTennis.Models.Events
 {
-    public class ChangeSidesOnTiebreakGame : GameEvent
+    public class ChangeSidesOnTiebreakEvent : GameEvent
     {
         //empty
     }

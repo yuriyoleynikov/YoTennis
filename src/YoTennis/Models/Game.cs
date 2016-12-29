@@ -7,6 +7,6 @@ namespace YoTennis.Models
 {
     public class Game
     {
-        public PlayerScore Score { get; set; }
+        public Score Score { get; set; }
     }
 }

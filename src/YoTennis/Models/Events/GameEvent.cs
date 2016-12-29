@@ -7,6 +7,6 @@ namespace YoTennis.Models
 {
     public class GameEvent
     {
-        public DateTime OccuredAt;
+        public DateTime OccuredAt { get; set; }
     }
 }
