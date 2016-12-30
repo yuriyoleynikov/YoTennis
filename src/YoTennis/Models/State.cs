@@ -9,7 +9,7 @@ namespace YoTennis.Models
     {
         public Score SetScore { get; set; }
         public List<Set> Sets { get; set; }
-        public Game GameScore { get; set; }
+        public Game Game { get; set; }
 
         public DateTime GameStratedAt { get; set; }
         public Player PlayerOnLeft { get; set; }
@@ -46,7 +46,7 @@ namespace YoTennis.Models
     {
         NotStarted,
         Drawing,
-        BeginingGame,
+        BeginGame,
         PlayingGame,
         ChangingSides,
         BeginTiebreak,

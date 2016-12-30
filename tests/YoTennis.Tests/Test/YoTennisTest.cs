@@ -80,12 +80,12 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_matchDate);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
         }
 
         [Fact]
@@ -121,8 +121,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
@@ -200,8 +200,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(2);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(2);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
@@ -250,8 +250,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(1);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
@@ -302,12 +302,12 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(1);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
         }
 
         [Fact]
@@ -355,8 +355,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(1);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate2);
@@ -417,12 +417,12 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(2);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate2);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
         }
 
         [Fact]
@@ -460,8 +460,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(true);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
@@ -533,8 +533,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(3);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
@@ -613,12 +613,12 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(5);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
         }
 
         [Fact]
@@ -731,12 +731,12 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(5);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(5);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
         }
 
         [Fact]
@@ -840,12 +840,12 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(5);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
         }
 
         [Fact]
@@ -958,8 +958,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
@@ -1078,8 +1078,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
@@ -1208,8 +1208,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(1);
             myGame.CurrentState.SecondServe.Should().Be(false);
@@ -1340,8 +1340,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(2);
             myGame.CurrentState.SecondServe.Should().Be(false);
@@ -1472,8 +1472,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(3);
             myGame.CurrentState.SecondServe.Should().Be(false);
@@ -1604,8 +1604,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(6);
             myGame.CurrentState.SecondServe.Should().Be(false);
@@ -1736,8 +1736,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(6);
             myGame.CurrentState.SecondServe.Should().Be(false);
@@ -1879,8 +1879,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(6);
             myGame.CurrentState.SecondServe.Should().Be(false);
@@ -2031,8 +2031,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(7);
             myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(6);
             myGame.CurrentState.SecondServe.Should().Be(false);
@@ -2187,8 +2187,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.Sets[0].Score.FirstPlayer.Should().Be(7);
             myGame.CurrentState.Sets[0].Score.SecondPlayer.Should().Be(6);
 
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
@@ -2342,12 +2342,12 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.Sets[0].Score.FirstPlayer.Should().Be(7);
             myGame.CurrentState.Sets[0].Score.SecondPlayer.Should().Be(6);
 
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
         }
 
 
@@ -2436,12 +2436,12 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SetScore.SecondPlayer.Should().Be(1);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
         }
 
         [Fact]
@@ -2539,8 +2539,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SetScore.SecondPlayer.Should().Be(1);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
@@ -2643,12 +2643,12 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SetScore.SecondPlayer.Should().Be(1);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
         }
 
         [Fact]
@@ -2760,8 +2760,8 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(1);
             myGame.CurrentState.Sets[0].Score.FirstPlayer.Should().Be(1);
             myGame.CurrentState.Sets[0].Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
@@ -2844,12 +2844,12 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.Sets[0].Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets[0].Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.GameScore.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.GameScore.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginingGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
         }
 
         [Fact]
