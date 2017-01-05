@@ -8,16 +8,17 @@ namespace YoTennis.Services
 {
     public class InMemoryMatchService : IMatchService
     {
-        private GameModel _gameModel = new GameModel();
+        private GameHandler _gameHandler = new GameHandler();
 
-        public async Task AddEvent(GameEvent gameEvent)
+        public Task AddEvent(GameEvent gameEvent)
         {
-            _gameModel.AddEvent(gameEvent);
+            _gameHandler.AddEvent(gameEvent);
+            return Task.FromResult(0);
         }
 
-        public async Task<State> GetState()
+        public Task<MatchModel> GetState()
         {
-            return _gameModel.CurrentState;
+            return Task.FromResult(_gameHandler.CurrentState);
         }
     }
 }

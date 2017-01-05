@@ -24,7 +24,7 @@ namespace YoTennis.Controllers
         public async Task<IActionResult> Index()
         {
             var state = await _matchService.GetState();
-            if (state.MatchState == Models.MatchState.NotStarted)
+            if (state.State == Models.MatchState.NotStarted)
                 return View("NotStarted", state);
             return View();
         }
