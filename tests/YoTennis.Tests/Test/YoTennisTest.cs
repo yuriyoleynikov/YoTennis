@@ -85,7 +85,7 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_matchDate);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]
@@ -307,7 +307,7 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]
@@ -422,7 +422,7 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate2);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]
@@ -618,7 +618,7 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]
@@ -736,7 +736,7 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]
@@ -845,7 +845,7 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]
@@ -963,7 +963,7 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginTiebreak);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginningTiebreak);
         }
 
         [Fact]
@@ -2347,7 +2347,7 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginningGame);
         }
 
 
@@ -2441,7 +2441,7 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]
@@ -2648,7 +2648,7 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]
@@ -2849,7 +2849,7 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]

@@ -46,10 +46,10 @@ namespace YoTennis.Models
     {
         NotStarted,
         Drawing,
-        BeginGame,
+        BeginningGame,
         PlayingGame,
         ChangingSides,
-        BeginTiebreak,
+        BeginningTiebreak,
         PlayingTiebreak,
         ChangingSidesOnTiebreak,
         Completed
