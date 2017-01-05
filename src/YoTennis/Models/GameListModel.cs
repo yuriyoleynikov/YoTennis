@@ -7,6 +7,6 @@ namespace YoTennis.Models
 {
     public class GameListModel
     {
-        public IEnumerable<GameModel> Games { get; set; }
+        public IEnumerable<GameHandler> Games { get; set; }
     }
 }

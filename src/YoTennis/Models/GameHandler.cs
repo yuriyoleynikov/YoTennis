@@ -6,16 +6,16 @@ using YoTennis.Models.Events;
 
 namespace YoTennis.Models
 {
-    public class GameModel
+    public class GameHandler
     {
         public List<GameEvent> Events { get; private set; }
-        public State CurrentState { get; private set; } = new State();
+        public MatchModel CurrentState { get; private set; } = new MatchModel();
 
         private void AddPoint(Player wonPlayer)
         {
-            if (CurrentState.MatchState == MatchState.PlayingGame)
+            if (CurrentState.State == MatchState.PlayingGame)
             {
-                var score = CurrentState.Game.Score = CurrentState.Game.Score + Score.ForPlayer(wonPlayer, 1);
+                var score = CurrentState.GameScore = CurrentState.GameScore + Score.ForPlayer(wonPlayer, 1);
 
                 if ((score.FirstPlayer >= CurrentState.MatchSettings.PointsInGame && score.SecondPlayer + 1 < score.FirstPlayer)
                     || (score.SecondPlayer >= CurrentState.MatchSettings.PointsInGame && score.FirstPlayer + 1 < score.SecondPlayer))
@@ -26,7 +26,7 @@ namespace YoTennis.Models
                     CurrentState.SecondServe = false;
                 }
             }
-            else if (CurrentState.MatchState == MatchState.PlayingTiebreak)
+            else if (CurrentState.State == MatchState.PlayingTiebreak)
             {
                 var set = CurrentState.Sets.Count - 1;
                 var score = CurrentState.Sets[set].TiebreakScore =
@@ -38,7 +38,7 @@ namespace YoTennis.Models
                     CurrentState.Sets[set].Score = CurrentState.Sets[set].Score + Score.ForPlayer(wonPlayer, 1);
                     CurrentState.PlayerServes = CurrentState.PlayerServes.Other();
                     CurrentState.ServePosition = ServePosition.Right;
-                    CurrentState.MatchState = MatchState.ChangingSides;
+                    CurrentState.State = MatchState.ChangingSides;
 
                     PlayerWonSet(wonPlayer);
                 }
@@ -54,7 +54,7 @@ namespace YoTennis.Models
 
                     if ((score.FirstPlayer + score.SecondPlayer) % 6 == 0)
                     {
-                        CurrentState.MatchState = MatchState.ChangingSidesOnTiebreak;
+                        CurrentState.State = MatchState.ChangingSidesOnTiebreak;
                     }
                 }
             }
@@ -78,12 +78,12 @@ namespace YoTennis.Models
                 (currentSetScore.SecondPlayer == CurrentState.MatchSettings.GamesInSet + 1))
             {
                 PlayerWonSet(wonPlayer);
-                if (CurrentState.MatchState != MatchState.Completed)
+                if (CurrentState.State != MatchState.Completed)
                 {
-                    CurrentState.MatchState = MatchState.BeginningGame;
+                    CurrentState.State = MatchState.BeginningGame;
                     CurrentState.ServePosition = ServePosition.Right;
                     CurrentState.SecondServe = false;
-                    CurrentState.Game = new Game();
+                    CurrentState.GameScore = new Score();
                 }
             }
             else if (currentSetScore.FirstPlayer == CurrentState.MatchSettings.GamesInSet &&
@@ -92,43 +92,43 @@ namespace YoTennis.Models
                 CurrentState.PlayerServes = CurrentState.PlayerServes.Other();
                 CurrentState.ServePosition = ServePosition.Right;                
                 CurrentState.SecondServe = false;
-                CurrentState.Game = new Game();
+                CurrentState.GameScore = new Score();
 
-                CurrentState.MatchState = MatchState.BeginningTiebreak;
+                CurrentState.State = MatchState.BeginningTiebreak;
             }
             else
             {
-                CurrentState.MatchState = MatchState.BeginningGame;
+                CurrentState.State = MatchState.BeginningGame;
                 CurrentState.ServePosition = ServePosition.Right;
                 CurrentState.SecondServe = false;
-                CurrentState.Game = new Game();
+                CurrentState.GameScore = new Score();
             }
 
-            if ((CurrentState.MatchState != MatchState.Completed) &&
-                (CurrentState.MatchState != MatchState.BeginningTiebreak) &&
-                (CurrentState.MatchState != MatchState.PlayingTiebreak))
+            if ((CurrentState.State != MatchState.Completed) &&
+                (CurrentState.State != MatchState.BeginningTiebreak) &&
+                (CurrentState.State != MatchState.PlayingTiebreak))
             {
                 CurrentState.PlayerServes = CurrentState.PlayerServes.Other();
                 if ((currentSetScore.FirstPlayer + currentSetScore.SecondPlayer) % 2 != 0)
                 {
-                    CurrentState.MatchState = MatchState.ChangingSides;
+                    CurrentState.State = MatchState.ChangingSides;
                 }
             }
         }
 
         private void PlayerWonSet(Player wonPlayer)
         {
-            CurrentState.SetScore = CurrentState.SetScore + Score.ForPlayer(wonPlayer, 1);
+            CurrentState.MatchScore = CurrentState.MatchScore + Score.ForPlayer(wonPlayer, 1);
 
             if ((CurrentState.MatchSettings.SetsForWin == 3) &&
-                ((CurrentState.SetScore.FirstPlayer == 2) || (CurrentState.SetScore.SecondPlayer == 2)))
-                CurrentState.MatchState = MatchState.Completed;
+                ((CurrentState.MatchScore.FirstPlayer == 2) || (CurrentState.MatchScore.SecondPlayer == 2)))
+                CurrentState.State = MatchState.Completed;
             else if ((CurrentState.MatchSettings.SetsForWin == 5) &&
-                ((CurrentState.SetScore.FirstPlayer == 3) || (CurrentState.SetScore.SecondPlayer == 3)))
-                CurrentState.MatchState = MatchState.Completed;
+                ((CurrentState.MatchScore.FirstPlayer == 3) || (CurrentState.MatchScore.SecondPlayer == 3)))
+                CurrentState.State = MatchState.Completed;
             else
             {
-                CurrentState.Sets.Add(new Set());
+                CurrentState.Sets.Add(new SetModel());
                 
             }
         }
@@ -143,7 +143,7 @@ namespace YoTennis.Models
         private void On(StartEvent gameEvent)
         {
 
-            if (CurrentState.MatchState != MatchState.NotStarted)
+            if (CurrentState.State != MatchState.NotStarted)
                 throw new InvalidOperationException("Not Expected");
 
 
@@ -151,7 +151,7 @@ namespace YoTennis.Models
             CurrentState.FirstPlayer = gameEvent.FirstPlayer;
             CurrentState.SecondPlayer = gameEvent.SecondPlayer;
             CurrentState.MatchStartedAt = gameEvent.OccuredAt;
-            CurrentState.MatchState = MatchState.Drawing;
+            CurrentState.State = MatchState.Drawing;
 
             Events = new List<GameEvent>();
         }
@@ -160,24 +160,24 @@ namespace YoTennis.Models
         {
             CurrentState.PlayerOnLeft = gameEvent.PlayerOnLeft;
             CurrentState.PlayerServes = gameEvent.PlayerServes;
-            CurrentState.Sets = new List<Set> { new Set() };
-            CurrentState.Game = new Game();
+            CurrentState.Sets = new List<SetModel> { new SetModel() };
+            CurrentState.GameScore = new Score();
             CurrentState.SecondServe = false;
             CurrentState.ServePosition = ServePosition.Right;
             CurrentState.GameStratedAt = gameEvent.OccuredAt;
-            CurrentState.MatchState = MatchState.BeginningGame;
+            CurrentState.State = MatchState.BeginningGame;
         }
 
         private void On(ChangeSidesGameEvent gameEvent)
         {
             CurrentState.PlayerOnLeft = CurrentState.PlayerOnLeft.Other();
-            CurrentState.MatchState = MatchState.BeginningGame;
+            CurrentState.State = MatchState.BeginningGame;
         }
 
         private void On(ChangeSidesOnTiebreakEvent gameEvent)
         {
             CurrentState.PlayerOnLeft = CurrentState.PlayerOnLeft.Other();
-            CurrentState.MatchState = MatchState.PlayingTiebreak;
+            CurrentState.State = MatchState.PlayingTiebreak;
         }
 
         private void On(ServeFailEvent gameEvent)
@@ -206,19 +206,19 @@ namespace YoTennis.Models
         private void On(StartTiebreakEvent gameEvent)
         {
             CurrentState.GameStratedAt = gameEvent.OccuredAt;
-            if (CurrentState.MatchState == MatchState.BeginningTiebreak)
+            if (CurrentState.State == MatchState.BeginningTiebreak)
             {
-                CurrentState.MatchState = MatchState.PlayingTiebreak;                
+                CurrentState.State = MatchState.PlayingTiebreak;                
             }
         }
 
         private void On(StartGameEvent gameEvent)
         {
-            if (CurrentState.MatchState != MatchState.BeginningGame)
+            if (CurrentState.State != MatchState.BeginningGame)
                 throw new InvalidOperationException("Not Expected");
 
             CurrentState.GameStratedAt = gameEvent.OccuredAt;
-            CurrentState.MatchState = MatchState.PlayingGame;
+            CurrentState.State = MatchState.PlayingGame;
 
         }
 

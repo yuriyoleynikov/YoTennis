@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace YoTennis.Models
 {
-    public class State
+    public class MatchModel
     {
-        public Score SetScore { get; set; }
-        public List<Set> Sets { get; set; }
-        public Game Game { get; set; }
+        public Score MatchScore { get; set; }
+        public List<SetModel> Sets { get; set; }
+        public Score GameScore { get; set; }
 
         public DateTime GameStratedAt { get; set; }
         public Player PlayerOnLeft { get; set; }
@@ -22,7 +22,7 @@ namespace YoTennis.Models
         public string FirstPlayer { get; set; }
         public string SecondPlayer { get; set; }
 
-        public MatchState MatchState { get; set; }
+        public MatchState State { get; set; }
     }
 
     public enum ServeSpeed
