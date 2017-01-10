@@ -1,0 +1,39 @@
+@model YoTennis.Models.MatchModel
+
+@{
+    ViewData["Title"] = "Drawing";
+}
+
+<h2>Drawing</h2>
+<pre>@Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented)</pre>
+
+<form asp-action="Draw">
+    <div class="form-horizontal">
+        <h4>MatchModel</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="PlayerOnLeft" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PlayerOnLeft" class="form-control" />
+                <span asp-validation-for="PlayerOnLeft" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PlayerServes" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PlayerServes" class="form-control" />
+                <span asp-validation-for="PlayerServes" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Start" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

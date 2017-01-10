@@ -1,0 +1,14 @@
+@model YoTennis.Models.MatchModel
+
+@{
+    ViewData["Title"] = "ChangingSidesOnTiebreak";
+}
+
+<h2>ChangingSidesOnTiebreak</h2>
+<pre>@Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented)</pre>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
