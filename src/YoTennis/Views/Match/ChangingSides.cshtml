@@ -7,7 +7,15 @@
 <h2>ChangingSides</h2>
 <pre>@Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented)</pre>
 
-
+<form asp-action="ChangeSides">
+    <div class="form-horizontal">       
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Change Sides" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

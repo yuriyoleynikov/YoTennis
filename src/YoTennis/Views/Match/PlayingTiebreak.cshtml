@@ -7,7 +7,25 @@
 <h2>PlayingTiebreak</h2>
 <pre>@Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented)</pre>
 
+<form asp-action="PointToFirst">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add Point To First Player" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
 
+<form asp-action="PointToSecond">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add Point To Second Player" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

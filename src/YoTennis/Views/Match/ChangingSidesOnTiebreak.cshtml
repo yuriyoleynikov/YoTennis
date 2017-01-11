@@ -7,7 +7,15 @@
 <h2>ChangingSidesOnTiebreak</h2>
 <pre>@Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented)</pre>
 
-
+<form asp-action="ChangeSidesOnTiebreak">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Change Sides On Tiebreak" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
