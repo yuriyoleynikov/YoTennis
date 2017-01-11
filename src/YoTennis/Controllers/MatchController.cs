@@ -21,7 +21,7 @@ namespace YoTennis.Controllers
 
         public IActionResult Create()
         {
-            return Content("ok");
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Index()
@@ -115,6 +115,39 @@ namespace YoTennis.Controllers
             {
                 OccuredAt = DateTime.UtcNow,
                 PlayerPoint = Player.Second
+            });
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeSides(ChangeSidesCommand changeSidesCommand)
+        {
+            await _matchService.AddEvent(new ChangeSidesGameEvent
+            {
+                OccuredAt = DateTime.UtcNow
+            });
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> StartTiebreak(StartTiebreakCommand startTiebreakCommand)
+        {
+            await _matchService.AddEvent(new StartTiebreakEvent
+            {
+                OccuredAt = DateTime.UtcNow
+            });
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeSidesOnTiebreak(ChangeSidesOnTiebreakCommand changeSidesOnTiebreakCommand)
+        {
+            await _matchService.AddEvent(new ChangeSidesOnTiebreakEvent
+            {
+                OccuredAt = DateTime.UtcNow
             });
 
             return RedirectToAction(nameof(Index));
