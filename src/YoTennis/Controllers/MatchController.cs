@@ -64,7 +64,7 @@ namespace YoTennis.Controllers
             await _matchService.AddEvent(new StartEvent
             {
                 OccuredAt = DateTime.UtcNow,
-                Settings = strartCommand.Settings,
+                Settings = strartCommand.MatchSettings,
                 FirstPlayer = strartCommand.FirstPlayer,
                 SecondPlayer = strartCommand.SecondPlayer
             });
