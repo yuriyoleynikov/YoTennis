@@ -7,6 +7,7 @@ using YoTennis.Services;
 using YoTennis.Models.Commands;
 using YoTennis.Models;
 using YoTennis.Models.Events;
+using YoTennis.Models.Match;
 
 namespace YoTennis.Controllers
 {
@@ -29,7 +30,7 @@ namespace YoTennis.Controllers
             var state = await _matchService.GetState();
 
             if (state.State == Models.MatchState.NotStarted)
-                return View("NotStarted", state);
+                return View("NotStarted", new NotStartedModel { Match = state });
 
             if (state.State == Models.MatchState.Drawing)
                 return View("Drawing", state);
@@ -59,14 +60,23 @@ namespace YoTennis.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Start(StartCommand strartCommand)
+        public async Task<IActionResult> Start(StartCommand command)
         {
+            if (!ModelState.IsValid)
+                return View("NotStarted", new NotStartedModel { Match = await _matchService.GetState(), Form = command });
+
             await _matchService.AddEvent(new StartEvent
             {
                 OccuredAt = DateTime.UtcNow,
-                Settings = strartCommand.MatchSettings,
-                FirstPlayer = strartCommand.FirstPlayer,
-                SecondPlayer = strartCommand.SecondPlayer
+                Settings = new MatchSettings {
+                    SetsForWin = command.SetsForWin,
+                    GamesInSet = command.GamesInSet,
+                    PointsInGame = command.PointsInGame,
+                    PointsInTiebreak = command.PointsInTiebreak,
+                    TiebreakFinal = command.TiebreakFinal
+                },
+                FirstPlayer = command.FirstPlayer,
+                SecondPlayer = command.SecondPlayer
             });
 
             return RedirectToAction(nameof(Index));

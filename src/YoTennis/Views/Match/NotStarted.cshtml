@@ -1,43 +1,13 @@
-@model YoTennis.Models.MatchModel
+@model NotStartedModel
 
 @{
-    ViewData["Title"] = "NotStarted";
+    ViewData["Title"] = "Not Started";
 }
 
-<h2>NotStarted</h2>
-<pre>@Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented)</pre>
+<h2>Not Started</h2>
 
-<form asp-action="Start">
-    <div class="form-horizontal">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="FirstPlayer" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="FirstPlayer" class="form-control" />
-                <span asp-validation-for="FirstPlayer" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="SecondPlayer" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="SecondPlayer" class="form-control" />
-                <span asp-validation-for="SecondPlayer" class="text-danger" />
-            </div>
-        </div>        
-        <div class="form-group">
-            <label asp-for="MatchSettings.SetsForWin" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="MatchSettings.SetsForWin" class="form-control" />
-                <span asp-validation-for="MatchSettings.SetsForWin" class="text-danger" />
-            </div>
-        </div>   
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="To Draw" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-</form>
+@Html.Partial("_MatchState", Model.Match)
+@Html.Partial("_StartMatchForm", Model.Form)
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
