@@ -7,7 +7,7 @@
 <h2>Not Started</h2>
 
 @Html.Partial("_MatchState", Model.Match)
-@Html.Partial("_StartMatchForm", Model.Form)
+@Html.Partial("_NotStartedForm", Model.Form)
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

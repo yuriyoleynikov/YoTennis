@@ -1,21 +1,13 @@
-@model YoTennis.Models.MatchModel
+@model ChangingSidesModel
 
 @{
-    ViewData["Title"] = "ChangingSides";
+    ViewData["Title"] = "Changing Sides";
 }
 
-<h2>ChangingSides</h2>
-<pre>@Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented)</pre>
+<h2>Changing Sides</h2>
 
-<form asp-action="ChangeSides">
-    <div class="form-horizontal">       
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Change Sides" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-</form>
+@Html.Partial("_MatchState", Model.Match)
+@Html.Partial("_ChangingSidesForm", Model.Form)
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

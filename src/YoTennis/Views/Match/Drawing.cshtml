@@ -1,36 +1,14 @@
-@model YoTennis.Models.MatchModel
+@model DrawingModel
 
 @{
     ViewData["Title"] = "Drawing";
 }
 
 <h2>Drawing</h2>
-<pre>@Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented)</pre>
 
-<form asp-action="Draw">
-    <div class="form-horizontal">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="PlayerOnLeft" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="PlayerOnLeft" class="form-control" />
-                <span asp-validation-for="PlayerOnLeft" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="PlayerServes" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="PlayerServes" class="form-control" />
-                <span asp-validation-for="PlayerServes" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Start" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-</form>
+@Html.Partial("_MatchState", Model.Match)
+@Html.Partial("_DrawForm", Model.Form,
+    new ViewDataDictionary(ViewData) { ["FirstPlayerName"] = Model.Match.FirstPlayer, ["SecondPlayerName"] = Model.Match.SecondPlayer })
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -1,0 +1,25 @@
+@model PointCommand
+
+<form asp-action="PointToFirst">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Point to @ViewData["FirstPlayerName"]" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<form asp-action="PointToSecond">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Point to @ViewData["SecondPlayerName"]" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

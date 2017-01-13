@@ -1,31 +1,14 @@
-@model YoTennis.Models.MatchModel
+@model PlayingGameModel
 
 @{
-    ViewData["Title"] = "PlayingGame";
+    ViewData["Title"] = "Playing Game";
 }
 
-<h2>PlayingGame</h2>
-<pre>@Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented)</pre>
+<h2>Playing Game</h2>
 
-<form asp-action="PointToFirst">
-    <div class="form-horizontal">
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Add Point To First Player" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-</form>
-
-<form asp-action="PointToSecond">
-    <div class="form-horizontal">
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Add Point To Second Player" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-</form>
+@Html.Partial("_MatchState", Model.Match)
+@Html.Partial("_PlayingGameForm", Model.Form,
+    new ViewDataDictionary(ViewData) { ["FirstPlayerName"] = Model.Match.FirstPlayer, ["SecondPlayerName"] = Model.Match.SecondPlayer })
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

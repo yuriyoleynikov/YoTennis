@@ -1,8 +1,8 @@
 ﻿namespace YoTennis.Models.Match
 {
-    public class NotStartedModel
+    public class PlayingGameModel
     {
         public MatchModel Match;
-        public Commands.StartCommand Form;
+        public Commands.PointCommand Form;
     }
 }

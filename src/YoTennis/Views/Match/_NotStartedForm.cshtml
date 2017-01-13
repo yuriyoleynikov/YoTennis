@@ -20,15 +20,29 @@
         <div class="form-group">
             <label asp-for="SetsForWin" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="SetsForWin" class="form-control" />
+                <input asp-for="SetsForWin" value="3" class="form-control" />
                 <span asp-validation-for="SetsForWin" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TiebreakFinal" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TiebreakFinal" value="false" class="form-control" />
+                <span asp-validation-for="TiebreakFinal" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
             <label asp-for="GamesInSet" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="GamesInSet" class="form-control" />
+                <input asp-for="GamesInSet" value="6" class="form-control" />
                 <span asp-validation-for="GamesInSet" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PointsInGame" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PointsInGame" value="4" class="form-control" />
+                <span asp-validation-for="PointsInGame" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
@@ -36,5 +50,4 @@
                 <input type="submit" value="To Draw" class="btn btn-default" />
             </div>
         </div>
-    </div>
 </form>

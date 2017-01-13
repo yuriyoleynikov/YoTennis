@@ -1,21 +1,13 @@
-@model YoTennis.Models.MatchModel
+@model BeginningGameModel
 
 @{
     ViewData["Title"] = "BeginningGame";
 }
 
-<h2>BeginningGame</h2>
-<pre>@Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented)</pre>
+<h2>Beginning Game</h2>
 
-<form asp-action="StartGame">
-    <div class="form-horizontal">
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Begin Game" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-</form>
+@Html.Partial("_MatchState", Model.Match)
+@Html.Partial("_BeginningGameForm", Model.Form)
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

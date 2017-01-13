@@ -33,28 +33,28 @@ namespace YoTennis.Controllers
                 return View("NotStarted", new NotStartedModel { Match = state });
 
             if (state.State == Models.MatchState.Drawing)
-                return View("Drawing", state);
+                return View("Drawing", new DrawingModel { Match = state });
 
             if (state.State == Models.MatchState.BeginningGame)
-                return View("BeginningGame", state);
+                return View("BeginningGame", new BeginningGameModel { Match = state });
 
             if (state.State == Models.MatchState.PlayingGame)
-                return View("PlayingGame", state);
+                return View("PlayingGame", new PlayingGameModel { Match = state });
 
             if (state.State == Models.MatchState.ChangingSides)
-                return View("ChangingSides", state);
+                return View("ChangingSides", new ChangingSidesModel { Match = state });
 
             if (state.State == Models.MatchState.BeginningTiebreak)
-                return View("BeginningTiebreak", state);
+                return View("BeginningTiebreak", new BeginningTiebreakModel { Match = state });
 
             if (state.State == Models.MatchState.PlayingTiebreak)
-                return View("PlayingTiebreak", state);
+                return View("PlayingTiebreak", new PlayingTiebreakModel { Match = state });
 
             if (state.State == Models.MatchState.ChangingSidesOnTiebreak)
-                return View("ChangingSidesOnTiebreak", state);
+                return View("ChangingSidesOnTiebreak", new ChangingSidesOnTiebreakModel { Match = state });
 
             if (state.State == Models.MatchState.Completed)
-                return View("Completed", state);
+                return View("Completed", new CompletedModel { Match = state });
 
             return View();
         }
