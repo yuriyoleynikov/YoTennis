@@ -1,5 +1,57 @@
 @model PointCommand
 
+<form asp-action="ServeFail">
+    <div class="form-group">
+        <label asp-for="Kind" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <label>
+                <input asp-for="Kind" type="radio" value="Slow" />
+            </label>
+            <label>
+                <input asp-for="Kind" type="radio" value="Medium" />
+            </label>
+            <span asp-validation-for="Kind" class="text-danger" />
+        </div>
+    </div>
+
+
+
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Serve Fail" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<form asp-action="NetTouch">
+
+
+
+
+
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Net Touch" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<form asp-action="Ace">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Ace" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
 <form asp-action="PointToFirst">
     <div class="form-horizontal">
         <div class="form-group">

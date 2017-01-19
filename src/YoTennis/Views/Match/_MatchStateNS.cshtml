@@ -1,0 +1,4 @@
+@model MatchModel
+
+<a asp-action="Restart" class="btn btn-danger" onclick="return confirm('Are you sure to restart match?')">Restart Match</a>
+<pre>@Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter())</pre>

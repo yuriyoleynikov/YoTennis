@@ -1,3 +1,155 @@
 ﻿@model MatchModel
 
+<a asp-action="Restart" class="btn btn-danger" onclick="return confirm('Are you sure to restart match?')">Restart Match</a>
 <pre>@Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented, new Newtonsoft.Json.Converters.StringEnumConverter())</pre>
+
+<div class="">
+    <div class=""><p>Time 0:10:00</p></div>
+</div>
+<div class="">
+    <div class="">
+        @if (Model.PlayerOnLeft == Player.First)
+        {
+            <p>L</p>
+        }
+    </div>
+    <div class="">
+        @if (Model.PlayerServes == Player.First)
+        {
+            <p>></p>
+        }
+    </div>
+    <div class="">
+        <p>@Model.FirstPlayer</p>
+    </div>
+    @foreach (var i in Model.Sets)
+    {
+        <div class=""><p>@i.Score.FirstPlayer</p></div>
+    }
+</div>
+<div class="">
+    <div class="">
+        @if (Model.PlayerOnLeft == Player.Second)
+        {
+            <p>L</p>
+        }
+    </div>
+    <div class="">
+        @if (Model.PlayerServes == Player.Second)
+        {
+            <p>></p>
+        }
+    </div>
+    <div class="">
+        <p>@Model.SecondPlayer</p>
+    </div>
+    @foreach (var i in Model.Sets)
+    {
+        <div class=""><p>@i.Score.SecondPlayer</p></div>
+    }
+</div>
+<div class="">
+    <div class=""><p>0:01:00</p></div>
+</div>
+
+<div class="">
+    <div class="">
+        @if (Model.State == MatchState.PlayingGame)
+        {
+            <p>Game</p>
+        }
+        else
+        {
+            <p>Tiebreak</p>
+        }
+    </div>
+</div>
+<div class="">
+    <div class="">
+        @if (Model.PlayerServes == Player.First)
+        {
+            <p>Serve @Model.FirstPlayer</p>
+        }
+        else
+        {
+            <p>Serve @Model.SecondPlayer</p>
+        }
+    </div>
+</div>
+<div class="">
+    <div class="">
+        @if (Model.ServePosition == ServePosition.Right)
+        {
+            <p>Right</p>
+        }
+        else
+        {
+            <p>Left</p>
+        }
+    </div>
+</div>
+<div class="">
+    <div class="">
+        @if (Model.SecondServe)
+        {
+            <p>Second Serve</p>
+        }
+    </div>
+</div>
+<div class="">
+    <div class="">
+        @if (Model.GameScore.FirstPlayer == 0)
+        {
+            <p>0</p>
+        }
+        else if (Model.GameScore.FirstPlayer == 1)
+        {
+            <p>15</p>
+        }
+        else if (Model.GameScore.FirstPlayer == 2)
+        {
+            <p>30</p>
+        }
+        else if (Model.GameScore.FirstPlayer == 3)
+        {
+            <p>40</p>
+        }
+        else if (Model.GameScore.FirstPlayer > Model.GameScore.SecondPlayer)
+        {
+            <p>Ad</p>
+        }
+        else
+        {
+            <p>40</p>
+        }
+    </div>
+    <div class="">
+        -
+    </div>
+    <div class="">
+        @if (Model.GameScore.SecondPlayer == 0)
+        {
+            <p>0</p>
+        }
+        else if (Model.GameScore.SecondPlayer == 1)
+        {
+            <p>15</p>
+        }
+        else if (Model.GameScore.SecondPlayer == 2)
+        {
+            <p>30</p>
+        }
+        else if (Model.GameScore.SecondPlayer == 3)
+        {
+            <p>40</p>
+        }
+        else if (Model.GameScore.SecondPlayer > Model.GameScore.FirstPlayer)
+        {
+            <p>Ad</p>
+        }
+        else
+        {
+            <p>40</p>
+        }
+    </div>
+</div>

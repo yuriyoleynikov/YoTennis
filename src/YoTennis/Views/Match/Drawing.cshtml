@@ -6,7 +6,7 @@
 
 <h2>Drawing</h2>
 
-@Html.Partial("_MatchState", Model.Match)
+@Html.Partial("_MatchStateNS", Model.Match)
 @Html.Partial("_DrawForm", Model.Form,
     new ViewDataDictionary(ViewData) { ["FirstPlayerName"] = Model.Match.FirstPlayer, ["SecondPlayerName"] = Model.Match.SecondPlayer })
 
