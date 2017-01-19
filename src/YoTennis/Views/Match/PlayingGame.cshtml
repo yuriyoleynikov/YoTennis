@@ -4,10 +4,10 @@
     ViewData["Title"] = "Playing Game";
 }
 
-<h2>Playing Game</h2>
-
-@Html.Partial("_MatchState", Model.Match)
-@Html.Partial("_PlayingGameForm", Model.Form,
+@Html.Partial("Restart")
+@Html.Partial("MatchState", Model.Match)
+@Html.Partial("GameState", Model.Match)
+@Html.Partial("PlayingGameForm", Model.Form,
     new ViewDataDictionary(ViewData) { ["FirstPlayerName"] = Model.Match.FirstPlayer, ["SecondPlayerName"] = Model.Match.SecondPlayer })
 
 @section Scripts {

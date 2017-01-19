@@ -1,0 +1,54 @@
+@model MatchModel
+
+<div class="">
+    <div class=""><p>0:01:00</p></div>
+</div>
+
+<div class="">
+    <div class="">
+            <p>Tiebreak</p>
+    </div>
+</div>
+<div class="">
+    <div class="">
+        @if (Model.PlayerServes == Player.First)
+        {
+            <p>Serve @Model.FirstPlayer</p>
+        }
+        else
+        {
+            <p>Serve @Model.SecondPlayer</p>
+        }
+    </div>
+</div>
+<div class="">
+    <div class="">
+        @if (Model.ServePosition == ServePosition.Right)
+        {
+            <p>Right</p>
+        }
+        else
+        {
+            <p>Left</p>
+        }
+    </div>
+</div>
+<div class="">
+    <div class="">
+        @if (Model.SecondServe)
+        {
+            <p>Second Serve</p>
+        }
+    </div>
+</div>
+<div class="">
+    <div class="">
+        <p>@Model.Sets.Last().TiebreakScore.FirstPlayer</p>        
+    </div>
+    <div class="">
+        -
+    </div>
+    <div class="">
+        <p>@Model.Sets.Last().TiebreakScore.SecondPlayer</p>
+    </div>
+</div>

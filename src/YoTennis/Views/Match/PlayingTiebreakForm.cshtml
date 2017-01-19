@@ -1,22 +1,6 @@
 @model PointCommand
 
-<form asp-action="ServeFail">
-    <div class="form-group">
-        <label asp-for="Kind" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <label>
-                <input asp-for="Kind" type="radio" value="Slow" />
-            </label>
-            <label>
-                <input asp-for="Kind" type="radio" value="Medium" />
-            </label>
-            <span asp-validation-for="Kind" class="text-danger" />
-        </div>
-    </div>
-
-
-
-
+<form asp-action="ServeFail">    
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -27,12 +11,6 @@
 </form>
 
 <form asp-action="NetTouch">
-
-
-
-
-
-
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

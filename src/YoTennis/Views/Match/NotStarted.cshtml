@@ -1,13 +1,11 @@
 @model NotStartedModel
 
 @{
-    ViewData["Title"] = "Not Started";
+    ViewData["Title"] = "Match";
 }
 
-<h2>Not Started</h2>
-
-@Html.Partial("_MatchStateNS", Model.Match)
-@Html.Partial("_NotStartedForm", Model.Form)
+@Html.Partial("Restart")
+@Html.Partial("NotStartedForm", Model.Form)
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
