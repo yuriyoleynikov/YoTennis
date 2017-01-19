@@ -20,5 +20,11 @@ namespace YoTennis.Services
         {
             return Task.FromResult(_gameHandler.CurrentState);
         }
+
+        public Task Reset()
+        {
+            _gameHandler = new GameHandler();
+            return Task.FromResult(0);
+        }
     }
 }
