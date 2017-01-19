@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace YoTennis.Models.Commands
 {
-    public class PointCommand
+    public class ServeFailCommand
     {
-        public Player PlayerPoint { get; set; }
-        public PointKind Kind { get; set; }
+        public ServeFailKind Serve { get; set; }
         public ServeSpeed ServeSpeed { get; set; }
     }
 }
