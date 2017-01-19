@@ -20,6 +20,12 @@ namespace YoTennis.Controllers
             _matchService = matchService;
         }
 
+        public async Task<IActionResult> Restart()
+        {
+            await _matchService.Reset();
+            return RedirectToAction(nameof(Index));
+        }
+
         public IActionResult Create()
         {
             return RedirectToAction(nameof(Index));
@@ -68,7 +74,8 @@ namespace YoTennis.Controllers
             await _matchService.AddEvent(new StartEvent
             {
                 OccuredAt = DateTime.UtcNow,
-                Settings = new MatchSettings {
+                Settings = new MatchSettings
+                {
                     SetsForWin = command.SetsForWin,
                     GamesInSet = command.GamesInSet,
                     PointsInGame = command.PointsInGame,
@@ -106,6 +113,43 @@ namespace YoTennis.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ServeFail(ServeFailCommand serveFailCommand)
+        {
+            await _matchService.AddEvent(new ServeFailEvent
+            {
+                OccuredAt = DateTime.UtcNow,
+                Serve = ServeFailKind.Error
+            });
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NetTouch(ServeFailCommand serveFailCommand)
+        {
+            await _matchService.AddEvent(new ServeFailEvent
+            {
+                OccuredAt = DateTime.UtcNow,
+                Serve = ServeFailKind.NetTouch
+            });
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Ace(PointCommand pointCommand)
+        {
+            var state = await _matchService.GetState();
+
+            await _matchService.AddEvent(new PointEvent
+            {
+                OccuredAt = DateTime.UtcNow,
+                PlayerPoint = state.PlayerServes
+            });
+
+            return RedirectToAction(nameof(Index));
+        }
         [HttpPost]
         public async Task<IActionResult> PointToFirst(PointCommand pointCommand)
         {
