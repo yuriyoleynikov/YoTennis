@@ -1,0 +1,23 @@
+<script>
+    var currentSpeed = null;
+    var previousSpeedBtnClass;
+    var formSpeedInputIds = ["serve-fail-speed", "net-touch-speed", "ace-speed", "point-to-first-speed", "point-to-second-speed"];
+    function onSpeedClicked(speed) {
+        if (currentSpeed) {
+            document.getElementById(currentSpeed + "-btn").className = previousSpeedBtnClass;
+        }
+        if (currentSpeed === speed) {
+            speed = "unspecified";
+            currentSpeed = null;
+        }
+        else {
+            currentSpeed = speed;
+            var btn = document.getElementById(currentSpeed + "-btn");
+            previousSpeedBtnClass = btn.className;
+            btn.className = previousSpeedBtnClass + " active";
+        }
+        for (var id of formSpeedInputIds) {
+            document.getElementById(id).value = speed;
+        }
+    }
+</script>

@@ -117,6 +117,13 @@ textarea {
     flex-grow: 0;
 }
 
+.game-commands {
+    display: flex;
+}
+.game-commands > div {
+    flex-grow: 1;
+}
+
 /*
     .matchcontainer {
     display: flex;

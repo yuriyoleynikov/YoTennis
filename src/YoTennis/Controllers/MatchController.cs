@@ -119,7 +119,8 @@ namespace YoTennis.Controllers
             await _matchService.AddEvent(new ServeFailEvent
             {
                 OccuredAt = DateTime.UtcNow,
-                Serve = ServeFailKind.Error
+                Serve = ServeFailKind.Error,
+                ServeSpeed = serveFailCommand.ServeSpeed
             });
 
             return RedirectToAction(nameof(Index));
@@ -145,7 +146,8 @@ namespace YoTennis.Controllers
             await _matchService.AddEvent(new PointEvent
             {
                 OccuredAt = DateTime.UtcNow,
-                PlayerPoint = state.PlayerServes
+                PlayerPoint = state.PlayerServes,
+                Kind = PointKind.Ace
             });
 
             return RedirectToAction(nameof(Index));
@@ -156,7 +158,8 @@ namespace YoTennis.Controllers
             await _matchService.AddEvent(new PointEvent
             {
                 OccuredAt = DateTime.UtcNow,
-                PlayerPoint = Player.First
+                PlayerPoint = Player.First,
+                Kind = PointKind.Unspecified
             });
 
             return RedirectToAction(nameof(Index));
@@ -168,7 +171,8 @@ namespace YoTennis.Controllers
             await _matchService.AddEvent(new PointEvent
             {
                 OccuredAt = DateTime.UtcNow,
-                PlayerPoint = Player.Second
+                PlayerPoint = Player.Second,
+                Kind = PointKind.Unspecified
             });
 
             return RedirectToAction(nameof(Index));
