@@ -1,107 +1,89 @@
 @model MatchModel
 
-<div class="">
-    <div class=""><p>0:01:00</p></div>
+<div class="match-container time-container">
+    <div>@((DateTime.UtcNow - Model.GameStratedAt).ToString(@"mm\:ss"))</div>
 </div>
 
-<div class="">
-    <div class="">
-        @if (Model.State == MatchState.PlayingGame)
-        {
-            <p>Game</p>
-        }
-        else
-        {
-            <p>Tiebreak</p>
-        }
-    </div>
+<div class="match-container game-container">
+    <div>Game</div>
 </div>
-<div class="">
-    <div class="">
+
+<div class="match-container game-container">
         @if (Model.PlayerServes == Player.First)
         {
-            <p>Serve @Model.FirstPlayer</p>
+            <div class="game">Serve @Model.FirstPlayer</div>
         }
         else
         {
-            <p>Serve @Model.SecondPlayer</p>
+            <div class="game">Serve @Model.SecondPlayer</div>
         }
-    </div>
 </div>
-<div class="">
-    <div class="">
+<div class="match-container game-container">
         @if (Model.ServePosition == ServePosition.Right)
         {
-            <p>Right</p>
+            <div>Right</div>
         }
         else
         {
-            <p>Left</p>
+            <div>Left</div>
         }
-    </div>
 </div>
-<div class="">
-    <div class="">
+<div class="match-container game-container">
         @if (Model.SecondServe)
         {
-            <p>Second Serve</p>
+            <div>Second Serve</div>
         }
-    </div>
+        else
+        {
+            <div>&nbsp;</div>
+        }
 </div>
-<div class="">
-    <div class="">
+<div class="match-container game-container game-score">
+    <div class="player-score">
         @if (Model.GameScore.FirstPlayer == 0)
         {
-            <p>0</p>
+            <div>0</div>
         }
         else if (Model.GameScore.FirstPlayer == 1)
         {
-            <p>15</p>
+            <div>15</div>
         }
         else if (Model.GameScore.FirstPlayer == 2)
         {
-            <p>30</p>
+            <div>30</div>
         }
-        else if (Model.GameScore.FirstPlayer == 3)
+        else if (Model.GameScore.FirstPlayer == 3 || Model.GameScore.FirstPlayer <= Model.GameScore.SecondPlayer)
         {
-            <p>40</p>
-        }
-        else if (Model.GameScore.FirstPlayer > Model.GameScore.SecondPlayer)
-        {
-            <p>Ad</p>
+            <div>40</div>
         }
         else
         {
-            <p>40</p>
+            <div>Ad</div>
         }
     </div>
-    <div class="">
+    <div class="seperator">
         -
     </div>
-    <div class="">
+    <div class="second-player-score">
         @if (Model.GameScore.SecondPlayer == 0)
         {
-            <p>0</p>
+            <div>0</div>
         }
         else if (Model.GameScore.SecondPlayer == 1)
         {
-            <p>15</p>
+            <div>15</div>
         }
         else if (Model.GameScore.SecondPlayer == 2)
         {
-            <p>30</p>
+            <div>30</div>
         }
-        else if (Model.GameScore.SecondPlayer == 3)
+        else if (Model.GameScore.SecondPlayer == 3 || Model.GameScore.SecondPlayer <= Model.GameScore.FirstPlayer)
         {
-            <p>40</p>
-        }
-        else if (Model.GameScore.SecondPlayer > Model.GameScore.FirstPlayer)
-        {
-            <p>Ad</p>
+            <div>40</div>
         }
         else
         {
-            <p>40</p>
+            <div>Ad</div>
         }
     </div>
 </div>

@@ -1,47 +1,47 @@
 @model MatchModel
 
-<div class="">
-    <div class=""><p>Time 0:10:00</p></div>
+<div class="match-container time-container">
+    <div class="time-position">Time</div>
+    <div>@((DateTime.UtcNow - Model.MatchStartedAt).ToString(@"h\:mm\:ss"))</div>
 </div>
-<div class="">
-    <div class="">
+
+<div class="match-container">
+    <div class="position-left">
         @if (Model.PlayerOnLeft == Player.First)
         {
-            <p>L</p>
+            <div>L</div>
+            <div>&nbsp;</div>
         }
+        else
+        {
+            <div>&nbsp;</div>
+            <div>L</div>
+        }
+
     </div>
-    <div class="">
+    <div class="position-left">
         @if (Model.PlayerServes == Player.First)
         {
-            <p>></p>
+            <div>></div>
+            <div>&nbsp;</div>
+        }
+        else
+        {
+            <div>&nbsp;</div>
+            <div>></div>
         }
     </div>
-    <div class="">
-        <p>@Model.FirstPlayer</p>
+    <div class="position-left">
+        <div>@Model.FirstPlayer</div>
+        <div>@Model.SecondPlayer</div>
     </div>
+
     @foreach (var i in Model.Sets)
     {
-        <div class=""><p>@i.Score.FirstPlayer</p></div>
+        <div class="position-left">
+            <div>@i.Score.FirstPlayer</div>
+            <div>@i.Score.SecondPlayer</div>
+        </div>
     }
-</div>
-<div class="">
-    <div class="">
-        @if (Model.PlayerOnLeft == Player.Second)
-        {
-            <p>L</p>
-        }
-    </div>
-    <div class="">
-        @if (Model.PlayerServes == Player.Second)
-        {
-            <p>></p>
-        }
-    </div>
-    <div class="">
-        <p>@Model.SecondPlayer</p>
-    </div>
-    @foreach (var i in Model.Sets)
-    {
-        <div class=""><p>@i.Score.SecondPlayer</p></div>
-    }
+
 </div>
