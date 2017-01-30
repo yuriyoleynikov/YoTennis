@@ -1,34 +1,51 @@
 @model PointCommand
-
-<form asp-action="ServeFail">
-    <div class="position-down">
-        <input type="submit" value="Serve Fail" class="btn btn-default" />
+<div class="game-commands">
+    <div>
+        <div class="btn-group-vertical" role="group">
+            <a id="slow-btn" href="#" onclick="onSpeedClicked('slow')" class="btn btn-default">Slow</a>
+            <a id="medium-btn" href="#" onclick="onSpeedClicked('medium')" class="btn btn-default">Medium</a>
+            <a id="fast-btn" href="#" onclick="onSpeedClicked('fast')" class="btn btn-default">Fast</a>
+        </div>
     </div>
-</form>
+    <div>
+        <form asp-action="ServeFail">
+            <input type="hidden" asp-for="ServeSpeed" id="serve-fail-speed" />
+            <div class="position-down">
+                <input type="submit" value="Serve Fail" class="btn btn-default" />
+            </div>
+        </form>
 
-<form asp-action="NetTouch">
-    <div class="position-down">
-        <input type="submit" value="Net Touch" class="btn btn-default" />
-    </div>
-</form>
+        <form asp-action="NetTouch">
+            <input type="hidden" asp-for="ServeSpeed" id="net-touch-speed" />
+            <div class="position-down">
+                <input type="submit" value="Net Touch" class="btn btn-default" />
+            </div>
+        </form>
 
-<form asp-action="Ace">
-    <div class="position-down">
-        <input type="submit" value="Ace" class="btn btn-default" />
-    </div>
-</form>
+        <form asp-action="Ace">
+            <input type="hidden" asp-for="ServeSpeed" id="ace-speed" />
+            <div class="position-down">
+                <input type="submit" value="Ace" class="btn btn-default" />
+            </div>
+        </form>
 
-<form asp-action="PointToFirst">
-    <div class="position-down">
-        <input type="submit" value="Point to @ViewData["FirstPlayerName"]" class="btn btn-default" />
-    </div>
-</form>
+        <form asp-action="PointToFirst">
+            <input type="hidden" asp-for="ServeSpeed" id="point-to-first-speed" />
+            <div class="position-down">
+                <input type="submit" value="Point to @ViewData["FirstPlayerName"]" class="btn btn-default" />
+            </div>
+        </form>
 
-<form asp-action="PointToSecond">
-    <div class="position-down">
-        <input type="submit" value="Point to @ViewData["SecondPlayerName"]" class="btn btn-default" />
+        <form asp-action="PointToSecond">
+            <input type="hidden" asp-for="ServeSpeed" id="point-to-second-speed" />
+            <div class="position-down">
+                <input type="submit" value="Point to @ViewData["SecondPlayerName"]" class="btn btn-default" />
+            </div>
+        </form>
     </div>
-</form>
+
+</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

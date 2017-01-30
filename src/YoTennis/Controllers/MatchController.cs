@@ -112,9 +112,9 @@ namespace YoTennis.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
+       
         [HttpPost]
-        public async Task<IActionResult> ServeFail(ServeFailCommand serveFailCommand)
+        public async Task<IActionResult> ServeFail(ClickCommand serveFailCommand)
         {
             await _matchService.AddEvent(new ServeFailEvent
             {
@@ -127,19 +127,20 @@ namespace YoTennis.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> NetTouch(ServeFailCommand serveFailCommand)
+        public async Task<IActionResult> NetTouch(ClickCommand serveFailCommand)
         {
             await _matchService.AddEvent(new ServeFailEvent
             {
                 OccuredAt = DateTime.UtcNow,
-                Serve = ServeFailKind.NetTouch
+                Serve = ServeFailKind.NetTouch,
+                ServeSpeed = serveFailCommand.ServeSpeed
             });
 
             return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Ace(PointCommand pointCommand)
+        public async Task<IActionResult> Ace(ClickCommand pointCommand)
         {
             var state = await _matchService.GetState();
 
@@ -153,7 +154,7 @@ namespace YoTennis.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpPost]
-        public async Task<IActionResult> PointToFirst(PointCommand pointCommand)
+        public async Task<IActionResult> PointToFirst(ClickCommand pointCommand)
         {
             await _matchService.AddEvent(new PointEvent
             {
@@ -166,7 +167,7 @@ namespace YoTennis.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PointToSecond(PointCommand pointCommand)
+        public async Task<IActionResult> PointToSecond(ClickCommand pointCommand)
         {
             await _matchService.AddEvent(new PointEvent
             {
