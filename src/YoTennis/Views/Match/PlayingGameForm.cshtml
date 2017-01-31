@@ -9,47 +9,27 @@
         </div>
     </div>
     <div>
-        <form asp-action="ClickCommand">
-            <input type="hidden" asp-for="ServeSpeed"/>
+        <form asp-action="ClickCommand" id="commandForm">
+            <input type="hidden" asp-for="ServeSpeed" id="serve-speed"/>
             <div class="position-down">
-                <input type="submit" value="Serve Fail" class="btn btn-default" id="serve-fail" />
+                <button class="btn btn-default" onclick="sendFailCommand('ServeFail')">Serve Fail</button>
             </div>
 
             <div class="position-down">
-                <input type="submit" value="Net Touch" class="btn btn-default" />
+                <button class="btn btn-default" onclick="sendFailCommand('NetTouch')">Net Touch</button>
             </div>
 
             <div class="position-down">
-                <input type="submit" value="Ace" class="btn btn-default" />
+                <button class="btn btn-default" onclick="sendPointCommand('Ace')">Ace</button>
             </div>
 
             <div class="position-down">
-                <input type="submit" value="Point to @ViewData["FirstPlayerName"]" class="btn btn-default" />
+                <button class="btn btn-default" onclick="sendPointCommand('PointToFirst')">Point to @ViewData["FirstPlayerName"]</button>
             </div>
 
             <div class="position-down">
-                <input type="submit" value="Point to @ViewData["SecondPlayerName"]" class="btn btn-default" />
+                <button class="btn btn-default" onclick="sendPointCommand('PointToSecond')">Point to @ViewData["SecondPlayerName"]</button>
             </div>
-        </form>
-
-        <form asp-action="NetTouch">
-            <input type="hidden" asp-for="ServeSpeed" id="net-touch-speed" />
-
-        </form>
-
-        <form asp-action="Ace">
-            <input type="hidden" asp-for="ServeSpeed" id="ace-speed" />
-
-        </form>
-
-        <form asp-action="PointToFirst">
-            <input type="hidden" asp-for="ServeSpeed" id="point-to-first-speed" />
-
-        </form>
-
-        <form asp-action="PointToSecond">
-            <input type="hidden" asp-for="ServeSpeed" id="point-to-second-speed" />
-
         </form>
     </div>
 </div>
