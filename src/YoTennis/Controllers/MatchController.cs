@@ -112,7 +112,7 @@ namespace YoTennis.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-       
+
         [HttpPost]
         public async Task<IActionResult> ServeFail(ClickCommand serveFailCommand)
         {
@@ -210,6 +210,6 @@ namespace YoTennis.Controllers
             });
 
             return RedirectToAction(nameof(Index));
-        }
+        }        
     }
 }
