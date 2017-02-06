@@ -17,17 +17,18 @@
         }
         document.getElementById("serve-speed").value = speed;
     }
-    function sendFailCommand(failKind) {
+    function sendCommand(action) {
         var form = document.getElementById("commandForm");
-        form.action = "/Match/" + failKind;
+        form.action = "/Match/" + action;
         form.submit();
     }
-    function sendPointCommand(pointKind) {
+    function setPointCommand(action) {
         var form = document.getElementById("commandForm");
-        form.action = "/Match/" + pointKind;
-        //form.submit();
+        form.action = "/Match/" + action;
         document.getElementById("step1").style.display = "none";
         document.getElementById("step2").style.display = "block";
-        return false;
+    }
+    function setPointKind(kind) {
+        document.getElementById("point-kind").value = kind;
     }
 </script>

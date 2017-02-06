@@ -70,6 +70,7 @@ namespace YoTennis.Models
         Ace,
         Forehand,
         Backhand,
+        NetPoint,
         Error,
         UnforcedError,
         DoubleFaults

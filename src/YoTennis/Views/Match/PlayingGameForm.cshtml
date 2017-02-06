@@ -9,27 +9,27 @@
             </div>
         </div>
         <div>
-
             <input type="hidden" asp-for="ServeSpeed" id="serve-speed" />
+            <input type="hidden" asp-for="Kind" id="point-kind" />
             <div>
                 <div class="position-down">
-                    <button class="btn btn-default" onclick="sendFailCommand('ServeFail')">Serve Fail</button>
+                    <button class="btn btn-default" onclick="sendCommand('ServeFail')">Serve Fail</button>
                 </div>
 
                 <div class="position-down">
-                    <button class="btn btn-default" onclick="sendFailCommand('NetTouch')">Net Touch</button>
+                    <button class="btn btn-default" onclick="sendCommand('NetTouch')">Net Touch</button>
                 </div>
 
                 <div class="position-down">
-                    <button class="btn btn-default" onclick="sendPointCommand('Ace')">Ace</button>
+                    <button class="btn btn-default" onclick="sendCommand('Ace')">Ace</button>
                 </div>
 
                 <div class="position-down">
-                    <button class="btn btn-default" onclick="sendPointCommand('PointToFirst')">Point to @ViewData["FirstPlayerName"]</button>
+                    <button class="btn btn-default" onclick="setPointCommand('PointToFirst'); event.preventDefault();">Point to @ViewData["FirstPlayerName"]</button>
                 </div>
 
                 <div class="position-down">
-                    <button class="btn btn-default" onclick="sendPointCommand('PointToSecond')">Point to @ViewData["SecondPlayerName"]</button>
+                    <button class="btn btn-default" onclick="setPointCommand('PointToSecond'); event.preventDefault();">Point to @ViewData["SecondPlayerName"]</button>
                 </div>
             </div>
         </div>
