@@ -26,6 +26,12 @@ namespace YoTennis.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Cancel()
+        {
+            await _matchService.Undo();
+            return RedirectToAction(nameof(Index));
+        }
+
         public IActionResult Create()
         {
             return RedirectToAction(nameof(Index));

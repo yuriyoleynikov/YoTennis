@@ -60,7 +60,23 @@ namespace YoTennis.Models
             }
             else
                 throw new InvalidOperationException("Not Expected");
-        }              
+        }
+
+        public void UndoLastEvent()
+        {
+            if (Events.Count <= 0)
+                throw new InvalidOperationException("No events to undo");
+
+            var events = Events;
+
+            Events = new List<GameEvent>(events.Count);
+            CurrentState = new MatchModel();
+
+            foreach (var ev in events.Take(events.Count - 1))
+            {
+                AddEvent(ev);
+            }
+        }
 
         private void PlayerWonGame(Player wonPlayer)
         {

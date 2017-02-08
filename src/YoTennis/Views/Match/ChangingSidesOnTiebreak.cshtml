@@ -8,6 +8,7 @@
 @Html.Partial("MatchState", Model.Match)
 @Html.Partial("TiebreakState", Model.Match)
 @Html.Partial("ChangingSidesOnTiebreakForm", Model.Form)
+@Html.Partial("Cancel")
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

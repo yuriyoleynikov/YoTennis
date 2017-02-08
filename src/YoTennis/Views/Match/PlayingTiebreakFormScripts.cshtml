@@ -1,0 +1,34 @@
+<script>
+    var currentSpeed = null;
+    var previousSpeedBtnClass;
+    function onSpeedClicked(speed) {
+        if (currentSpeed) {
+            document.getElementById(currentSpeed + "-btn").className = previousSpeedBtnClass;
+        }
+        if (currentSpeed === speed) {
+            speed = "unspecified";
+            currentSpeed = null;
+        }
+        else {
+            currentSpeed = speed;
+            var btn = document.getElementById(currentSpeed + "-btn");
+            previousSpeedBtnClass = btn.className;
+            btn.className = previousSpeedBtnClass + " active";
+        }
+        document.getElementById("serve-speed").value = speed;
+    }
+    function sendCommand(action) {
+        var form = document.getElementById("commandForm");
+        form.action = "/Match/" + action;
+        form.submit();
+    }
+    function setPointCommand(action) {
+        var form = document.getElementById("commandForm");
+        form.action = "/Match/" + action;
+        document.getElementById("step1").style.display = "none";
+        document.getElementById("step2").style.display = "block";
+    }
+    function setPointKind(kind) {
+        document.getElementById("point-kind").value = kind;
+    }
+</script>

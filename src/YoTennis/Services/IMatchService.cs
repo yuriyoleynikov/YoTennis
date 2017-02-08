@@ -11,5 +11,6 @@ namespace YoTennis.Services
         Task AddEvent(GameEvent gameEvent);
         Task<MatchModel> GetState();
         Task Reset();
+        Task Undo();
     }
 }
