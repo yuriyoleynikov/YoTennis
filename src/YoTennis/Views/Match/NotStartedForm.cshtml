@@ -1,54 +1,61 @@
 ﻿@model StartCommand
 
-<form asp-action="Start">
-    <div class="form-horizontal">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="FirstPlayer" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="FirstPlayer" class="form-control" />
-                <span asp-validation-for="FirstPlayer" class="text-danger" />
+<div class="test-container">
+    <div>
+        <form asp-action="Start">
+            <div class="form-horizontal">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group my-center">
+                    <label asp-for="FirstPlayer" class="control-label"></label>
+                    <input asp-for="FirstPlayer" class="form-control center-block" />
+                    <span asp-validation-for="FirstPlayer" class="text-danger" />
+                </div>
+                <div class="form-group my-center">
+                    <label asp-for="SecondPlayer" class="control-label"></label>
+                    <input asp-for="SecondPlayer" class="form-control center-block" />
+                    <span asp-validation-for="SecondPlayer" class="text-danger" />
+                </div>
+                <div>
+                    <div class="position-down">
+                        <button class="btn btn-default center-block" onclick="moreOptions(); event.preventDefault();">More Options</button>
+                    </div>
+                </div>
+                <div id="more-options" style="display: none;" class="game-commands">
+                    <div class="form-group my-center">
+                        <label asp-for="SetsForWin" class="control-label"></label>
+
+                        <input asp-for="SetsForWin" value="3" class="form-control center-block" />
+                        <span asp-validation-for="SetsForWin" class="text-danger" />
+
+                    </div>
+                    <div class="form-group my-center">
+                        <label asp-for="TiebreakFinal" class="control-label"></label>
+
+                        <input asp-for="TiebreakFinal" value="false" class="center-block" />
+                        <span asp-validation-for="TiebreakFinal" class="text-danger" />
+
+                    </div>
+                    <div class="form-group my-center">
+                        <label asp-for="GamesInSet" class="control-label"></label>
+
+                        <input asp-for="GamesInSet" value="6" class="form-control center-block" />
+                        <span asp-validation-for="GamesInSet" class="text-danger" />
+
+                    </div>
+                    <div class="form-group my-center">
+                        <label asp-for="PointsInGame" class="control-label"></label>
+
+                        <input asp-for="PointsInGame" value="4" class="form-control center-block" />
+                        <span asp-validation-for="PointsInGame" class="text-danger" />
+
+                    </div>
+                </div>
+                <div class="form-group match-container center-container">
+                    <div>
+                        <input type="submit" value="To Draw" class="btn btn-default" />
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="SecondPlayer" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="SecondPlayer" class="form-control" />
-                <span asp-validation-for="SecondPlayer" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="SetsForWin" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="SetsForWin" value="3" class="form-control" />
-                <span asp-validation-for="SetsForWin" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="TiebreakFinal" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="TiebreakFinal" value="false" class="" />
-                <span asp-validation-for="TiebreakFinal" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="GamesInSet" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="GamesInSet" value="6" class="form-control" />
-                <span asp-validation-for="GamesInSet" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="PointsInGame" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="PointsInGame" value="4" class="form-control" />
-                <span asp-validation-for="PointsInGame" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group match-container center-container">
-            <div>
-                <input type="submit" value="To Draw" class="btn btn-default" />
-            </div>
-        </div>
+        </form>
     </div>
-</form>
+</div>
