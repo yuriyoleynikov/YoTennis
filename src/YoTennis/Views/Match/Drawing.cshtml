@@ -1,0 +1,15 @@
+@model DrawingModel
+
+@{
+    ViewData["Title"] = "Match";
+}
+
+@Html.Partial("Restart")
+@Html.Partial("DrawForm", Model.Form,
+    new ViewDataDictionary(ViewData) { ["FirstPlayerName"] = Model.Match.FirstPlayer, ["SecondPlayerName"] = Model.Match.SecondPlayer })
+@Html.Partial("Cancel")
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @Html.Partial("DrawScripts")
+}

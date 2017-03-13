@@ -32,7 +32,12 @@ namespace YoTennis.Models
         Medium,
         Fast
     }
-    public enum ServePosition { Left, Right }
+
+    public enum ServePosition
+    {
+        Right,
+        Left
+    }
 
     public enum ServeFailKind
     {
@@ -53,7 +58,11 @@ namespace YoTennis.Models
         Completed
     }
 
-    public enum Player { First, Second }
+    public enum Player
+    {
+        First,
+        Second
+    }
 
     public enum PointKind
     {
@@ -61,6 +70,7 @@ namespace YoTennis.Models
         Ace,
         Forehand,
         Backhand,
+        NetPoint,
         Error,
         UnforcedError,
         DoubleFaults

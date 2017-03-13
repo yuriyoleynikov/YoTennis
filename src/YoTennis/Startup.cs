@@ -27,7 +27,7 @@ namespace YoTennis
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
+                builder.AddUserSecrets<Startup>();
             }
 
             builder.AddEnvironmentVariables();
@@ -52,6 +52,7 @@ namespace YoTennis
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddSingleton<IMatchService, InMemoryMatchService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

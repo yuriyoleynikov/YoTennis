@@ -1,0 +1,12 @@
+@model CompletedModel
+
+@{
+    ViewData["Title"] = "Match";
+}
+
+@Html.Partial("Restart")
+@Html.Partial("MatchState", Model.Match)
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
