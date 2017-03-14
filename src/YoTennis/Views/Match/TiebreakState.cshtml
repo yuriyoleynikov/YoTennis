@@ -1,0 +1,50 @@
+@model MatchModel
+
+<div class="match-container time-container">
+    <div>Time @((DateTime.UtcNow - Model.GameStratedAt).ToString(@"mm\:ss"))</div>
+</div>
+
+<div class="match-container tiebreak-container">
+    <div>Tiebreak</div>
+</div>
+<div class="match-container tiebreak-container">
+    @if (Model.PlayerServes == Player.First)
+    {
+        <div>Serve @Model.FirstPlayer</div>
+    }
+    else
+    {
+        <div>Serve @Model.SecondPlayer</div>
+    }
+</div>
+<div class="match-container tiebreak-container">
+    @if (Model.ServePosition == ServePosition.Right)
+    {
+        <div>Right</div>
+    }
+    else
+    {
+        <div>Left</div>
+    }
+</div>
+<div class="match-container tiebreak-container">
+    @if (Model.SecondServe)
+    {
+        <div>Second Serve</div>
+    }
+    else
+    {
+        <div>&nbsp;</div>
+    }
+</div>
+<div class="match-container tiebreak-container tiebreak-score">
+    <div class="player-score">
+        <div>@Model.Sets.Last().TiebreakScore.FirstPlayer</div>
+    </div>
+    <div class="seperator">
+        -
+    </div>
+    <div class="second-player-score">
+        <div>@Model.Sets.Last().TiebreakScore.SecondPlayer</div>
+    </div>
+</div>

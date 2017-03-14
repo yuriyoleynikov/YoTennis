@@ -1,0 +1,89 @@
+@model MatchModel
+
+<div class="match-container time-container">
+    <div>@((DateTime.UtcNow - Model.GameStratedAt).ToString(@"mm\:ss"))</div>
+</div>
+
+<div class="match-container game-container">
+    <div>Game</div>
+</div>
+
+<div class="match-container game-container">
+        @if (Model.PlayerServes == Player.First)
+        {
+            <div class="game">Serve @Model.FirstPlayer</div>
+        }
+        else
+        {
+            <div class="game">Serve @Model.SecondPlayer</div>
+        }
+</div>
+<div class="match-container game-container">
+        @if (Model.ServePosition == ServePosition.Right)
+        {
+            <div>Right</div>
+        }
+        else
+        {
+            <div>Left</div>
+        }
+</div>
+<div class="match-container game-container">
+        @if (Model.SecondServe)
+        {
+            <div>Second Serve</div>
+        }
+        else
+        {
+            <div>&nbsp;</div>
+        }
+</div>
+<div class="match-container game-container game-score">
+    <div class="player-score">
+        @if (Model.GameScore.FirstPlayer == 0)
+        {
+            <div>0</div>
+        }
+        else if (Model.GameScore.FirstPlayer == 1)
+        {
+            <div>15</div>
+        }
+        else if (Model.GameScore.FirstPlayer == 2)
+        {
+            <div>30</div>
+        }
+        else if (Model.GameScore.FirstPlayer == 3 || Model.GameScore.FirstPlayer <= Model.GameScore.SecondPlayer)
+        {
+            <div>40</div>
+        }
+        else
+        {
+            <div>Ad</div>
+        }
+    </div>
+    <div class="seperator">
+        -
+    </div>
+    <div class="second-player-score">
+        @if (Model.GameScore.SecondPlayer == 0)
+        {
+            <div>0</div>
+        }
+        else if (Model.GameScore.SecondPlayer == 1)
+        {
+            <div>15</div>
+        }
+        else if (Model.GameScore.SecondPlayer == 2)
+        {
+            <div>30</div>
+        }
+        else if (Model.GameScore.SecondPlayer == 3 || Model.GameScore.SecondPlayer <= Model.GameScore.FirstPlayer)
+        {
+            <div>40</div>
+        }
+        else
+        {
+            <div>Ad</div>
+        }
+    </div>
+</div>

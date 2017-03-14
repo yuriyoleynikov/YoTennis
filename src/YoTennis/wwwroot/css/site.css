@@ -1,4 +1,4 @@
-﻿body {
+body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -25,26 +25,171 @@ textarea {
 
 /* buttons and links extension to use brackets: [ click me ] */
 .btn-bracketed::before {
-    display:inline-block;
+    display: inline-block;
     content: "[";
     padding-right: 0.5em;
 }
+
 .btn-bracketed::after {
-    display:inline-block;
+    display: inline-block;
     content: "]";
     padding-left: 0.5em;
 }
 
 /* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"]
-{
+.carousel-inner .item img[src$=".svg"] {
     width: 100%;
 }
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
-  /* Hide captions */
-  .carousel-caption {
-    display: none
-  }
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
 }
+
+
+.match-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.time-container {
+    justify-content: flex-end;
+}
+
+.time-position {
+    margin-right: 3em;
+}
+
+.game-container {
+    justify-content: center;
+}
+
+.center-container {
+    justify-content: center;
+}
+
+.game-information {
+    margin: 2em;
+}
+
+.game-score {
+    font-size: 4em;
+}
+
+.seperator {
+    margin: 0 .5em;
+}
+
+.player-score {
+    width: 1.5em;
+    text-align: right;
+}
+
+.second-player-score {
+    text-align: left;
+    width: 1.5em;
+}
+
+.tiebreak-container {
+    justify-content: center;
+}
+
+.tiebreak-information {
+    margin: 2em;
+}
+
+.tiebreak-score {
+    font-size: 4em;
+}
+
+.position-left {
+    margin-right: .5em;
+}
+
+.position-down {
+    margin-bottom: 1em;
+}
+
+.match-item {
+    flex-grow: 0;
+}
+
+.game-commands {
+    display: flex;
+}
+
+    .game-commands > div {
+        flex-grow: 1;
+    }
+
+.test-container {
+    display: flex;
+    justify-content: center;
+}
+
+.form-group {
+    text-align: right;
+}
+.my-center {
+    text-align: center;
+}
+/*
+    .matchcontainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+    .matchcontainer > div {
+        align-self: center;
+    }
+
+
+.time {
+    justify-content: flex-end;
+}
+
+.position {
+    margin-right: .5em;
+}
+
+.serve-flag {
+    margin-right: .5em;
+}
+
+.player-name {
+    margin-right: .5em;
+}
+
+.score {
+    margin-right: .5em;
+}
+
+    .score.current {
+        font-weight: bold;
+        font-size: 2em;
+    }
+
+.game-score {
+    justify-content: center;
+}
+
+    .game-score .entry {
+        font-size: 3em;
+        align-self: center;
+    }
+
+    .game-score .separator {
+        font-size: 2em;
+        align-self: center;
+        margin-left: .5em;
+        margin-right: .5em;
+    }
+
+.game {
+    justify-content: center;
+}
+
+*/

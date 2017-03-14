@@ -1,0 +1,11 @@
+@model StartTiebreakCommand
+
+<form asp-action="StartTiebreak">
+    <div class="match-container game-container">
+        <input type="submit" value="Start Tiebreak" class="btn btn-default" />
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

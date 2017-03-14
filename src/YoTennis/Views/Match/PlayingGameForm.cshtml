@@ -1,0 +1,49 @@
+@model ClickCommand
+<form asp-action="ClickCommand" id="commandForm">
+    <div id="step1">
+        <div class="game-commands">
+            <div>
+                <div class="btn-group-vertical" role="group">
+                    <a id="slow-btn" href="#" onclick="onSpeedClicked('slow')" class="btn btn-default">Slow</a>
+                    <a id="medium-btn" href="#" onclick="onSpeedClicked('medium')" class="btn btn-default">Medium</a>
+                    <a id="fast-btn" href="#" onclick="onSpeedClicked('fast')" class="btn btn-default">Fast</a>
+                </div>
+                <div>
+
+                </div>
+
+            </div>
+            <div>
+                <input type="hidden" asp-for="ServeSpeed" id="serve-speed" />
+                <input type="hidden" asp-for="Kind" id="point-kind" />
+                <div>
+                    <div class="position-down">
+                        <button class="btn btn-default" onclick="sendCommand('ServeFail')">Serve Fail</button>
+                    </div>
+
+                    <div class="position-down">
+                        <button class="btn btn-default" onclick="sendCommand('NetTouch')">Net Touch</button>
+                    </div>
+
+                    <div class="position-down">
+                        <button class="btn btn-default" onclick="sendCommand('Ace')">Ace</button>
+                    </div>
+
+                    <div class="position-down">
+                        <button class="btn btn-default" onclick="setPointCommand('PointToFirst'); event.preventDefault();">Point to @ViewData["FirstPlayerName"]</button>
+                    </div>
+
+                    <div class="position-down">
+                        <button class="btn btn-default" onclick="setPointCommand('PointToSecond'); event.preventDefault();">Point to @ViewData["SecondPlayerName"]</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.Partial("Cancel")
+    </div>
+    <div id="step2" style="display: none;" class="game-commands">@Html.Partial("PointGameSpecifiy")</div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

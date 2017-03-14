@@ -19,15 +19,15 @@ namespace YoTennis.Tests.Test
         [Fact]
         public void Check_NoEvent()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
 
-            myGame.CurrentState.MatchState.Should().Be(MatchState.NotStarted);
+            myGame.CurrentState.State.Should().Be(MatchState.NotStarted);
         }
 
         [Fact]
         public void Check_StartEvent()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -45,13 +45,13 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
             myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.Drawing);
+            myGame.CurrentState.State.Should().Be(MatchState.Drawing);
         }
 
         [Fact]
         public void Check_DrawEvent()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -80,18 +80,18 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_matchDate);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]
         public void Cheсk_StartGameEvent()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -121,18 +121,18 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingGame);
+            myGame.CurrentState.State.Should().Be(MatchState.PlayingGame);
         }
 
         [Fact]
         public void Cheсk_Not_Expected_ChangesSides()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -161,7 +161,7 @@ namespace YoTennis.Tests.Test
         [Fact]
         public void Cheсk_2Points_Event()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -200,18 +200,18 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(2);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(2);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingGame);
+            myGame.CurrentState.State.Should().Be(MatchState.PlayingGame);
         }
 
         [Fact]
         public void Cheсk_4Points_Event()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -250,18 +250,18 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(1);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.ChangingSides);
+            myGame.CurrentState.State.Should().Be(MatchState.ChangingSides);
         }
 
         [Fact]
         public void Cheсk_4Points_Event_ChangeSidesEvent()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -302,18 +302,18 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(1);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]
         public void Cheсk_4Points_Event_ChangeSidesEvent_StartGameEvent()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -355,18 +355,18 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(1);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate2);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingGame);
+            myGame.CurrentState.State.Should().Be(MatchState.PlayingGame);
         }
 
         [Fact]
         public void Cheсk_2GamesEvent()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -417,18 +417,18 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(2);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate2);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]
         public void Cheсk_FailEvent()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -460,18 +460,18 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(true);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingGame);
+            myGame.CurrentState.State.Should().Be(MatchState.PlayingGame);
         }
 
         [Fact]
         public void Cheсk_3GamesEvent()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -533,18 +533,18 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(3);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.ChangingSides);
+            myGame.CurrentState.State.Should().Be(MatchState.ChangingSides);
         }
 
         [Fact]
         public void Cheсk_5GamesEvent()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -609,22 +609,22 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(5);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]
         public void Check_10Games()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -727,22 +727,22 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(5);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(5);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]
         public void Check_11Games()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -836,22 +836,22 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(5);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]
         public void Check_12Games()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -954,22 +954,22 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginTiebreak);
+            myGame.CurrentState.State.Should().Be(MatchState.BeginningTiebreak);
         }
 
         [Fact]
         public void Cheсk_12Games_StartTB()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -1074,22 +1074,22 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTiebreak);
+            myGame.CurrentState.State.Should().Be(MatchState.PlayingTiebreak);
         }
 
         [Fact]
         public void Cheсk_12Games_1Point()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -1204,24 +1204,24 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(1);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Left);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTiebreak);
+            myGame.CurrentState.State.Should().Be(MatchState.PlayingTiebreak);
         }
 
         [Fact]
         public void Cheсk_12Games_2Points()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -1336,24 +1336,24 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(2);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTiebreak);
+            myGame.CurrentState.State.Should().Be(MatchState.PlayingTiebreak);
         }
 
         [Fact]
         public void Cheсk_12Games_3Points()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -1468,24 +1468,24 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(3);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Left);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTiebreak);
+            myGame.CurrentState.State.Should().Be(MatchState.PlayingTiebreak);
         }
 
         [Fact]
         public void Cheсk_12Games_6Points()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -1600,24 +1600,24 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(6);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.ChangingSidesOnTiebreak);
+            myGame.CurrentState.State.Should().Be(MatchState.ChangingSidesOnTiebreak);
         }
 
         [Fact]
         public void Cheсk_12Games_6Points_CS()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -1732,24 +1732,24 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(6);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTiebreak);
+            myGame.CurrentState.State.Should().Be(MatchState.PlayingTiebreak);
         }
 
         [Fact]
         public void Check_12Games_12Points()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -1875,24 +1875,24 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(6);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.ChangingSidesOnTiebreak);
+            myGame.CurrentState.State.Should().Be(MatchState.ChangingSidesOnTiebreak);
         }
 
         [Fact]
         public void Check_12Games_13Points()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -2027,24 +2027,24 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().TiebreakScore.FirstPlayer.Should().Be(7);
             myGame.CurrentState.Sets.Last().TiebreakScore.SecondPlayer.Should().Be(6);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Left);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.PlayingTiebreak);
+            myGame.CurrentState.State.Should().Be(MatchState.PlayingTiebreak);
         }
 
         [Fact]
         public void Cheсk_12Games_14Points()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -2179,26 +2179,26 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(1);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(1);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
 
             myGame.CurrentState.Sets[0].Score.FirstPlayer.Should().Be(7);
             myGame.CurrentState.Sets[0].Score.SecondPlayer.Should().Be(6);
 
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.ChangingSides);
+            myGame.CurrentState.State.Should().Be(MatchState.ChangingSides);
         }
 
         [Fact]
         public void Cheсk_12Games_14Points_CS()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -2334,20 +2334,20 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(1);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(1);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
 
             myGame.CurrentState.Sets[0].Score.FirstPlayer.Should().Be(7);
             myGame.CurrentState.Sets[0].Score.SecondPlayer.Should().Be(6);
 
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
         }
 
 
@@ -2355,7 +2355,7 @@ namespace YoTennis.Tests.Test
         [Fact]
         public void Cheсk_1SetEvent()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -2432,22 +2432,22 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(1);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(1);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]
         public void Cheсk_1SetEvent_Other1()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -2535,22 +2535,22 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.Second);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(1);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(1);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.ChangingSides);
+            myGame.CurrentState.State.Should().Be(MatchState.ChangingSides);
         }
 
         [Fact]
         public void Cheсk_1Set_1ChangeSides()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -2639,22 +2639,22 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(1);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(1);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]
         public void Cheсk_1Set_1Game()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -2754,24 +2754,24 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.Second);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(1);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(1);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(1);
             myGame.CurrentState.Sets[0].Score.FirstPlayer.Should().Be(1);
             myGame.CurrentState.Sets[0].Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.ChangingSides);
+            myGame.CurrentState.State.Should().Be(MatchState.ChangingSides);
         }
 
         [Fact]
         public void Cheсk_1Set_5Game()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -2837,25 +2837,25 @@ namespace YoTennis.Tests.Test
 
             myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(1);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(1);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(5);
 
             myGame.CurrentState.Sets[0].Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets[0].Score.SecondPlayer.Should().Be(6);
-            myGame.CurrentState.Game.Score.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.Game.Score.SecondPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.GameScore.SecondPlayer.Should().Be(0);
             myGame.CurrentState.SecondServe.Should().Be(false);
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.BeginGame);
+            myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
         }
 
         [Fact]
         public void Cheсk_2Sets()
         {
-            var myGame = new GameModel();
+            var myGame = new GameHandler();
             myGame.AddEvent(new StartEvent
             {
                 OccuredAt = _matchDate,
@@ -2932,19 +2932,19 @@ namespace YoTennis.Tests.Test
 
             //myGame.CurrentState.PlayerOnLeft.Should().Be(Player.First);
             //myGame.CurrentState.PlayerServes.Should().Be(Player.First);
-            myGame.CurrentState.SetScore.FirstPlayer.Should().Be(0);
-            myGame.CurrentState.SetScore.SecondPlayer.Should().Be(2);
+            myGame.CurrentState.MatchScore.FirstPlayer.Should().Be(0);
+            myGame.CurrentState.MatchScore.SecondPlayer.Should().Be(2);
             myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(6);
 
             myGame.CurrentState.Sets[0].Score.FirstPlayer.Should().Be(0);
             myGame.CurrentState.Sets[0].Score.SecondPlayer.Should().Be(6);
-            //myGame.CurrentState.ScoreInGame.Score.FirstPlayer.Should().Be(0);
-            //myGame.CurrentState.ScoreInGame.Score.SecondPlayer.Should().Be(0);
+            //myGame.CurrentState.ScoreInGameScore.FirstPlayer.Should().Be(0);
+            //myGame.CurrentState.ScoreInGameScore.SecondPlayer.Should().Be(0);
             //myGame.CurrentState.SecondServe.Should().Be(false);
             //myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
             //myGame.CurrentState.GameTime.Should().Be(_gameDate3);
-            myGame.CurrentState.MatchState.Should().Be(MatchState.Completed);
+            myGame.CurrentState.State.Should().Be(MatchState.Completed);
         }
     }
 }

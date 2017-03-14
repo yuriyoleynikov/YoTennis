@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace YoTennis.Models
 {
-    public class State
+    public class MatchModel
     {
-        public Score SetScore { get; set; }
-        public List<Set> Sets { get; set; }
-        public Game Game { get; set; }
+        public Score MatchScore { get; set; }
+        public List<SetModel> Sets { get; set; }
+        public Score GameScore { get; set; }
 
         public DateTime GameStratedAt { get; set; }
         public Player PlayerOnLeft { get; set; }
@@ -22,9 +22,7 @@ namespace YoTennis.Models
         public string FirstPlayer { get; set; }
         public string SecondPlayer { get; set; }
 
-        public MatchState MatchState { get; set; }
-
-        public ServeSpeed ServeSpeed { get; set; }
+        public MatchState State { get; set; }
     }
 
     public enum ServeSpeed
@@ -34,7 +32,12 @@ namespace YoTennis.Models
         Medium,
         Fast
     }
-    public enum ServePosition { Left, Right }
+
+    public enum ServePosition
+    {
+        Right,
+        Left
+    }
 
     public enum ServeFailKind
     {
@@ -46,16 +49,20 @@ namespace YoTennis.Models
     {
         NotStarted,
         Drawing,
-        BeginGame,
+        BeginningGame,
         PlayingGame,
         ChangingSides,
-        BeginTiebreak,
+        BeginningTiebreak,
         PlayingTiebreak,
         ChangingSidesOnTiebreak,
         Completed
     }
 
-    public enum Player { First, Second }
+    public enum Player
+    {
+        First,
+        Second
+    }
 
     public enum PointKind
     {
@@ -63,6 +70,7 @@ namespace YoTennis.Models
         Ace,
         Forehand,
         Backhand,
+        NetPoint,
         Error,
         UnforcedError,
         DoubleFaults
