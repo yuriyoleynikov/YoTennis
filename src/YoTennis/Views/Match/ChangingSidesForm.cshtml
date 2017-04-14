@@ -1,6 +1,6 @@
 @model ChangeSidesCommand
 
-<form asp-action="ChangeSides">
+<form asp-action="ChangeSides/@ViewBag.MatchId">
     <div class="match-container game-container">
         <input type="submit" value="Change Sides" class="btn btn-default" />
     </div>

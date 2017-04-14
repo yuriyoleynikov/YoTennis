@@ -8,7 +8,7 @@ namespace YoTennis.Models
 {
     public class GameHandler
     {
-        public List<GameEvent> Events { get; private set; }
+        public List<GameEvent> Events { get; private set; } = new List<GameEvent>();
         public MatchModel CurrentState { get; private set; } = new MatchModel();
 
         private void AddPoint(Player wonPlayer)
@@ -168,8 +168,6 @@ namespace YoTennis.Models
             CurrentState.SecondPlayer = gameEvent.SecondPlayer;
             CurrentState.MatchStartedAt = gameEvent.OccuredAt;
             CurrentState.State = MatchState.Drawing;
-
-            Events = new List<GameEvent>();
         }
 
         private void On(DrawEvent gameEvent)

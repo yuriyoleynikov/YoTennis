@@ -1,6 +1,6 @@
 @model StartGameCommand
 
-<form asp-action="StartGame">
+<form asp-action="StartGame/@ViewBag.MatchId">
     <div class="match-container game-container">
         <input type="submit" value="Begin Game" class="btn btn-default" />
     </div>

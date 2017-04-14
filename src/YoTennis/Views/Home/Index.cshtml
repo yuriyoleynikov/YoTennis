@@ -1,5 +1,33 @@
-﻿@{
+﻿@model IEnumerable<MyMatchModel>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <p><a asp-action="Create" asp-controller="Match" class="btn btn-default btn-lg">Create Match</a></p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Match Id
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var match in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelMatch => match.Id)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Index", "Match", new { id = match.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = match.Id }) |
+                    @Html.ActionLink("Delete", "Delete", "Home", new { id = match.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

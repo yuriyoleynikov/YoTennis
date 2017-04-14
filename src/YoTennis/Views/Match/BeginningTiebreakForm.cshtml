@@ -1,6 +1,6 @@
 @model StartTiebreakCommand
 
-<form asp-action="StartTiebreak">
+<form asp-action="StartTiebreak/@ViewBag.MatchId">
     <div class="match-container game-container">
         <input type="submit" value="Start Tiebreak" class="btn btn-default" />
     </div>
