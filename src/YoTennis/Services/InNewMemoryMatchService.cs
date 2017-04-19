@@ -3,35 +3,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YoTennis.Data;
 using YoTennis.Models;
 
 namespace YoTennis.Services
 {
     public class InNewMemoryMatchService : IMatchService
     {
-        private readonly IEnumerable<MatchEvent> _matchEvents;
-        private Guid _matchId;
+        private Dictionary<string, Dictionary<string, List<GameEvent>>> _users;
+        private List<GameEvent> _matchEvents;
+        private string _matchId;
+        private string _userId;
 
-        public InNewMemoryMatchService(IEnumerable<MatchEvent> matchEvents, Guid matchId)
+        public InNewMemoryMatchService(Dictionary<string, Dictionary<string, List<GameEvent>>> users, string userId, string matchId)
         {
-            _matchEvents = matchEvents;
+            _users = users;
+            var matches = _users[userId];
+            _matchEvents = matches[matchId];            
             _matchId = matchId;
-        }
+            _userId = userId;
+        }        
 
         public async Task AddEventAsync(GameEvent gameEvent)
         {
             var _gameHandler = await LoadGameHandler();
-
-            var version = _gameHandler.Events.Count;
-
-            _matchEvents.ToList().Add(
-                new MatchEvent
-                {
-                    Event = JsonConvert.SerializeObject(gameEvent, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects }),
-                    MatchId = _matchId,
-                    Version = version
-                });            
+            
+            _matchEvents.Add(gameEvent);  
         }
         
         public async Task<MatchModel> GetStateAsync()
@@ -45,8 +41,8 @@ namespace YoTennis.Services
         {
             GameHandler _gameHandler = new GameHandler();
 
-            foreach (var matchEvent in _matchEvents.Where(matchEvent => matchEvent.MatchId == _matchId).OrderBy(matchEvent => matchEvent.Version).ToArray())
-                _gameHandler.AddEvent(JsonConvert.DeserializeObject<GameEvent>(matchEvent.Event, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects }));
+            foreach (var matchEvent in _matchEvents)
+                _gameHandler.AddEvent(matchEvent);
 
             return _gameHandler;
         }
@@ -60,15 +56,17 @@ namespace YoTennis.Services
 
         public async Task UndoAsync()
         {
-            var lastMatchEvent = _matchEvents
-                .Where(matchEvent => matchEvent.MatchId == _matchId)
-                .OrderByDescending(matchEvent => matchEvent.Version)
-                .ToList()
-                .FirstOrDefault();
-
-            if (lastMatchEvent != null)
+            var matches = _users[_userId];
+            var matchEvents = matches[_matchId];
+            if (matchEvents.Count != 0)
             {
-                _matchEvents.ToList().Remove(lastMatchEvent);
+                matchEvents = matchEvents.Take(_matchEvents.Count - 1).ToList();
+
+                matches.Remove(_matchId);
+                matches.Add(_matchId, matchEvents);
+
+                _users.Remove(_userId);
+                _users.Add(_userId, matches);
             }
         }
     }
