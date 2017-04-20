@@ -7,7 +7,7 @@ using YoTennis.Models;
 namespace YoTennis.Services
 {
     public class InMemoryMatchService : IMatchService
-    {
+    {        
         private GameHandler _gameHandler = new GameHandler();
 
         public Task AddEventAsync(GameEvent gameEvent)

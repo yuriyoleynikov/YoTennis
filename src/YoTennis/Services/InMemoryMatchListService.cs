@@ -8,53 +8,47 @@ namespace YoTennis.Services
 {
     public class InMemoryMatchListService : IMatchListService
     {
-        private Dictionary<string, Dictionary<string, List<GameEvent>>> _users = new Dictionary<string, Dictionary<string, List<GameEvent>>>();
+        private Dictionary<string, Dictionary<string, InMemoryMatchService>> _users =
+            new Dictionary<string, Dictionary<string, InMemoryMatchService>>();
 
-        public async Task<string> CreateMatch(string userId)
+        public Task<string> CreateMatch(string userId)
         {
-            var guid = Guid.NewGuid();
-            var match = new Dictionary<string, List<GameEvent>>();
+            var matches = GetOrCreateUser(userId);
+            var matchId = Guid.NewGuid().ToString();
 
-            if (_users.ContainsKey(userId))
-            {
-                match = _users[userId];
-            }
-            
-            match.Add(guid.ToString(), new List<GameEvent>());
-            _users[userId] = match;
+            matches.Add(matchId, new InMemoryMatchService());
 
-            return guid.ToString();
+            return Task.FromResult(matchId);
         }
 
-        public async Task DeleteMatch(string userId, string matchId)
+        private Dictionary<string, InMemoryMatchService> GetOrCreateUser(string userId)
         {
-            var matches = _users[userId];
+            if (_users.TryGetValue(userId, out var userMatches))
+                return userMatches;
 
-            if (!matches.ContainsKey(matchId))
+            userMatches = new Dictionary<string, InMemoryMatchService>();
+            _users.Add(userId, userMatches);
+
+            return userMatches;
+        }
+
+        public Task DeleteMatch(string userId, string matchId)
+        {
+            if (!_users.TryGetValue(userId, out var matches) || !matches.ContainsKey(matchId))
                 throw new KeyNotFoundException("Match not found.");
 
             matches.Remove(matchId);
+            return Task.FromResult(0);
         }
 
-        public async Task<IEnumerable<string>> GetMatches(string userId)
-        {
-            if (!_users.ContainsKey(userId))
-            {
-                return new List<string>();
-            }
-            var matches = _users[userId];
+        public Task<IEnumerable<string>> GetMatches(string userId) =>
+            Task.FromResult(_users.TryGetValue(userId, out var userMatches)
+                ? userMatches.Keys
+                : Enumerable.Empty<string>());
 
-            return matches.Keys;
-        }
-
-        public async Task<IMatchService> GetMatchService(string userId, string matchId)
-        {
-            var matches = _users[userId];
-
-            if (!matches.ContainsKey(matchId))
-                throw new KeyNotFoundException("Match not found.");
-
-            return new InNewMemoryMatchService(_users, userId, matchId);
-        }
+        public Task<IMatchService> GetMatchService(string userId, string matchId) =>
+            _users.TryGetValue(userId, out var matches) && matches.TryGetValue(matchId, out var matchService)
+                ? Task.FromResult((IMatchService) matchService)
+                : throw new KeyNotFoundException("Match not found.");
     }
 }
