@@ -22,7 +22,6 @@ namespace YoTennis.Tests.Test
             await repository.CreateMatch("user");
             var test = repository.GetMatches("user");
             var t2 = await test;
-            t2.ToList().Capacity.
         }
     }
 }
