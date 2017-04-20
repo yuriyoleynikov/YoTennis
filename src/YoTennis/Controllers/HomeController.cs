@@ -44,6 +44,20 @@ namespace YoTennis.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Details(string id)
+        {
+            try
+            {
+                var match = await _matchListService.GetMatchService(UserId, id);
+                var matchState = await match.GetStateAsync();
+                return View(matchState);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
