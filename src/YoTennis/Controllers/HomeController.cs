@@ -25,7 +25,7 @@ namespace YoTennis.Controllers
         public async Task<IActionResult> Index()
         {
             var ids = await _matchListService.GetMatches(UserId);
-            var view = ids.Select(id => new MyMatchModel { Id = id, UserId = UserId });
+            var view = ids.Select(id => new MyMatchModel { Id = id});
 
             return View(view);
         }
