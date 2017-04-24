@@ -28,14 +28,15 @@ namespace YoTennis.Services
 
         public async Task DeleteMatch(string userId, string matchId)
         {
-            var guid = Guid.Parse(matchId);
+            var matchToRemove = Guid.TryParse(matchId, out var guid)
+                ? await _context.Matches.Where(match => match.UserId == userId && match.Id == guid)
+                    .SingleOrDefaultAsync()
+                : null;
 
-            var matchExists = await _context.Matches.Where(match => match.UserId == userId && match.Id == guid).AnyAsync();
-
-            if (!matchExists)
+            if (matchToRemove == null)
                 throw new KeyNotFoundException("Match not found.");
 
-            _context.Matches.Remove(new Match { Id = guid, UserId = userId });
+            _context.Matches.Remove(matchToRemove);
             await _context.SaveChangesAsync();
         }
 
@@ -46,16 +47,9 @@ namespace YoTennis.Services
             return matchIds.Select(matchId => matchId.ToString());
         }
 
-        public async Task<IMatchService> GetMatchService(string userId, string matchId)
-        {
-            var guid = Guid.Parse(matchId);
-            
-            var matchExists = await _context.Matches.Where(match=>match.UserId == userId && match.Id == guid).AnyAsync();
-
-            if (!matchExists)
-                throw new KeyNotFoundException("Match not found.");
-
-            return new DatabaseMatchService(_context, guid);
-        }
+        public async Task<IMatchService> GetMatchService(string userId, string matchId) =>
+            (Guid.TryParse(matchId, out var guid) && await _context.Matches.Where(match => match.UserId == userId && match.Id == guid).AnyAsync())
+            ? new DatabaseMatchService(_context, guid)
+            : throw new KeyNotFoundException("Match not found.");
     }
 }
