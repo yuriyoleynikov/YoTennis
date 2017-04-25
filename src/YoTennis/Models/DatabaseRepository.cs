@@ -21,7 +21,7 @@ namespace YoTennis.Models
                 throw new ArgumentNullException(nameof(userId));
 
             return _context.Matches.Where(x => x.UserId == userId)
-                .Select(x => new MyMatchModel { Id = x.Id.ToString() });
+                .Select(x => new MyMatchModel { Name = x.Id.ToString() });
         }
     }
 }

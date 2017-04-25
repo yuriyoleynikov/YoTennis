@@ -10,9 +10,11 @@
     <thead>
         <tr>
             <th>
-                Match Id
+                Name
             </th>
-            <th></th>
+            <th>
+                Date
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -20,12 +22,15 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelMatch => match.Id)
+                    @Html.DisplayFor(modelMatch => match.Name)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Index", "Match", new { id = match.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = match.Id }) |
-                    @Html.ActionLink("Delete", "Delete", "Home", new { id = match.Id })
+                    @Html.DisplayFor(modelMatch => match.Date)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Index", "Match", new { id = match.Name }) |
+                    @Html.ActionLink("Details", "Details", new { id = match.Name }) |
+                    @Html.ActionLink("Delete", "Delete", "Home", new { id = match.Name })
                 </td>
             </tr>
         }

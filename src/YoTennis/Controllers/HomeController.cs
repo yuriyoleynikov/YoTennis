@@ -25,7 +25,14 @@ namespace YoTennis.Controllers
         public async Task<IActionResult> Index()
         {
             var ids = await _matchListService.GetMatches(UserId);
-            var view = ids.Select(id => new MyMatchModel { Id = id});
+            List<MyMatchModel> view = new List<MyMatchModel>();
+            foreach (var i in ids)
+            {
+                var match = await _matchListService.GetMatchService(UserId, i);
+                var state = await match.GetStateAsync();
+                view.Add(new MyMatchModel { Name = state.FirstPlayer != null ? state.FirstPlayer + " - " + state.SecondPlayer : "None",
+                    Date = state.MatchStartedAt != DateTime.MinValue ? state.MatchStartedAt.ToString() : "None" });
+            }
 
             return View(view);
         }

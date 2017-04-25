@@ -7,6 +7,7 @@ namespace YoTennis.Models
 {
     public class MyMatchModel
     {
-        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Date { get; set; }
     }
 }
