@@ -15,13 +15,13 @@ namespace YoTennis.Models
             _context = context;
         }
 
-        public IEnumerable<MyMatchModel> GetMatchListByUser(string userId)
+        public IEnumerable<MatchModelView> GetMatchListByUser(string userId)
         {
             if (userId == null)
                 throw new ArgumentNullException(nameof(userId));
 
             return _context.Matches.Where(x => x.UserId == userId)
-                .Select(x => new MyMatchModel { Name = x.Id.ToString() });
+                .Select(x => new MatchModelView { Id = x.Id.ToString() });
         }
     }
 }

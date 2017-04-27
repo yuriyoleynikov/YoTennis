@@ -29,7 +29,8 @@ namespace YoTennis.Services
             _context.MatchEvents.Add(
                 new MatchEvent
                 {
-                    Event = JsonConvert.SerializeObject(gameEvent, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects }),
+                    Event = JsonConvert.SerializeObject(gameEvent, 
+                    new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects }),
                     MatchId = _matchId,
                     Version = version
                 });

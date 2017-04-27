@@ -8,6 +8,6 @@ namespace YoTennis.Models
 {
     public interface IMatchesRepository
     {
-        IEnumerable<MyMatchModel> GetMatchListByUser(string userId);
+        IEnumerable<MatchModelView> GetMatchListByUser(string userId);
     }
 }

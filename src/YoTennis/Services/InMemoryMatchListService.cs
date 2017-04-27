@@ -46,6 +46,11 @@ namespace YoTennis.Services
                 ? userMatches.Keys
                 : Enumerable.Empty<string>());
 
+        public Task<IEnumerable<string>> GetMatches2(string userId, int count, int skip) =>
+            Task.FromResult(_users.TryGetValue(userId, out var userMatches)
+                ? userMatches.Keys.Skip(skip).Take(count)
+                : Enumerable.Empty<string>());
+
         public Task<IMatchService> GetMatchService(string userId, string matchId) =>
             _users.TryGetValue(userId, out var matches) && matches.TryGetValue(matchId, out var matchService)
                 ? Task.FromResult((IMatchService) matchService)

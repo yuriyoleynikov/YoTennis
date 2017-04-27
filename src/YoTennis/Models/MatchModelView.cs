@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace YoTennis.Models
 {
-    public class MyMatchModel
+    public class MatchModelView
     {
-        public string Name { get; set; }
+        public string Id { get; set; }
         public string Date { get; set; }
+        public string Name { get; set; }
     }
 }

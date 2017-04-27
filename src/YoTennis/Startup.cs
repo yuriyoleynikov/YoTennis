@@ -53,10 +53,9 @@ namespace YoTennis
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
-            //services.AddSingleton<IMatchService, InMemoryMatchService>();
-            //services.AddScoped<IMatchListService, DatabaseMatchListService>();
-            services.AddSingleton<IMatchListService, InMemoryMatchListService>();
+            services.AddTransient<ISmsSender, AuthMessageSender>();            
+            services.AddScoped<IMatchListService, DatabaseMatchListService>();
+            //services.AddSingleton<IMatchListService, InMemoryMatchListService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

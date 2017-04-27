@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MyMatchModel>
+﻿@model ContainerForMatchModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -18,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var match in Model)
+        @foreach (var match in Model.ListMatchModelView)
         {
             <tr>
                 <td>
@@ -28,11 +28,37 @@
                     @Html.DisplayFor(modelMatch => match.Date)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Index", "Match", new { id = match.Name }) |
-                    @Html.ActionLink("Details", "Details", new { id = match.Name }) |
-                    @Html.ActionLink("Delete", "Delete", "Home", new { id = match.Name })
+                    @Html.ActionLink("Edit", "Index", "Match", new { id = match.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = match.Id }) |
+                    @Html.ActionLink("Delete", "Delete", "Home", new { id = match.Id })
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<p>Show - 
+    @Html.ActionLink("10", "Index", "Home", new { count = 10, skip = 0 }) |
+    @Html.ActionLink("20", "Index", "Home", new { count = 20, skip = 0 }) |
+    @Html.ActionLink("All", "Index", "Home", new { count = Model.CountMatches, skip = 0 })
+</p>
+
+@if (Model.Count != Model.CountMatches)
+{
+    <p>
+        Page
+        @if (Model.Skip != 0)
+        {
+            @Html.ActionLink("<", "Index", "Home", new { count = Model.Count, skip = Model.Skip - Model.Count })
+        }
+        @{
+            int currentPage = Model.Skip == 0 ? 1 : Model.Skip / Model.Count + 1;
+        }
+        @currentPage
+        @if (Model.Skip + Model.Count < Model.CountMatches)
+        {
+            @Html.ActionLink(">", "Index", "Home", new { count = Model.Count, skip = Model.Skip + Model.Count })
+        }
+    </p>
+}
+<p>@Model.CountMatches Matches in system</p>
+

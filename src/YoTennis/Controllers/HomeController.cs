@@ -22,19 +22,33 @@ namespace YoTennis.Controllers
             _matchListService = matchListService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int count, int skip)
         {
-            var ids = await _matchListService.GetMatches(UserId);
-            List<MyMatchModel> view = new List<MyMatchModel>();
-            foreach (var i in ids)
+            count = count == 0 ? 10 : count;
+
+            var idsForAllMatches = await _matchListService.GetMatches(UserId);
+            var countMatches = idsForAllMatches.Count();
+
+            var idsForSelectMatches = await _matchListService.GetMatches2(UserId, count, skip);
+
+            var listOfMatchModelView = new List<MatchModelView>();
+            foreach (var id in idsForSelectMatches)
             {
-                var match = await _matchListService.GetMatchService(UserId, i);
+                var match = await _matchListService.GetMatchService(UserId, id);
                 var state = await match.GetStateAsync();
-                view.Add(new MyMatchModel { Name = state.FirstPlayer != null ? state.FirstPlayer + " - " + state.SecondPlayer : "None",
+                listOfMatchModelView.Add(new MatchModelView {
+                    Id = id,
+                    Name = state.FirstPlayer != null ? state.FirstPlayer + " - " + state.SecondPlayer : "None",
                     Date = state.MatchStartedAt != DateTime.MinValue ? state.MatchStartedAt.ToString() : "None" });
             }
 
-            return View(view);
+            var containerForMatchModel = new ContainerForMatchModel {
+                ListMatchModelView = listOfMatchModelView,
+                CountMatches = countMatches,
+                Count = count,
+                Skip = skip };
+
+            return View(containerForMatchModel);
         }
         
         public async Task<IActionResult> Delete(string id)

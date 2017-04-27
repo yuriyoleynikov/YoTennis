@@ -47,6 +47,14 @@ namespace YoTennis.Services
             return matchIds.Select(matchId => matchId.ToString());
         }
 
+        public async Task<IEnumerable<string>> GetMatches2(string userId, int count, int skip)
+        {
+            var matchIds = await _context.Matches.Where(match => match.UserId == userId)
+                .Select(match => match.Id).ToArrayAsync();
+
+            return matchIds.Select(matchId => matchId.ToString()).Skip(skip).Take(count);
+        }
+
         public async Task<IMatchService> GetMatchService(string userId, string matchId) =>
             (Guid.TryParse(matchId, out var guid) && await _context.Matches.Where(match => match.UserId == userId && match.Id == guid).AnyAsync())
             ? new DatabaseMatchService(_context, guid)
