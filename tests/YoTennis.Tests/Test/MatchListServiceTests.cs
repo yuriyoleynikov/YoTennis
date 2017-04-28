@@ -20,7 +20,7 @@ namespace YoTennis.Tests.Test
             IMatchListService matchListService = GetMatchListService();
 
             await matchListService.CreateMatch("user");
-            var match = await matchListService.GetMatches("user");
+            var match = await matchListService.GetMatches("user", 10, 0);
             match.Should().NotBeNullOrEmpty();
         }
 
@@ -30,7 +30,7 @@ namespace YoTennis.Tests.Test
             IMatchListService matchListService = GetMatchListService();
 
             await matchListService.CreateMatch("user");
-            var match = await matchListService.GetMatches("user");
+            var match = await matchListService.GetMatches("user", 10, 0);
             match.Should().NotBeNullOrEmpty();
         }
 
@@ -40,7 +40,7 @@ namespace YoTennis.Tests.Test
             IMatchListService matchListService = GetMatchListService();
 
             await matchListService.CreateMatch("user");
-            var match = await matchListService.GetMatches("user2");
+            var match = await matchListService.GetMatches("user2", 10, 0);
             match.Should().BeNullOrEmpty();
         }
 
@@ -50,11 +50,11 @@ namespace YoTennis.Tests.Test
             IMatchListService matchListService = GetMatchListService();
 
             await matchListService.CreateMatch("user");
-            var matchIds = await matchListService.GetMatches("user");
+            var matchIds = await matchListService.GetMatches("user", 10, 0);
             var matchId = matchIds.SingleOrDefault();
 
             await matchListService.DeleteMatch("user", matchId);
-            var matches = await matchListService.GetMatches("user");
+            var matches = await matchListService.GetMatches("user", 10, 0);
             matches.Should().BeNullOrEmpty();
         }
 
@@ -64,7 +64,7 @@ namespace YoTennis.Tests.Test
             IMatchListService matchListService = GetMatchListService();
 
             await matchListService.CreateMatch("user");
-            var matchIds = await matchListService.GetMatches("user");
+            var matchIds = await matchListService.GetMatches("user", 10, 0);
             var matchId = matchIds.SingleOrDefault();
 
             new Func<Task>(() => matchListService.DeleteMatch("user1", matchId)).ShouldThrow<KeyNotFoundException>();
@@ -85,7 +85,7 @@ namespace YoTennis.Tests.Test
             IMatchListService matchListService = GetMatchListService();
 
             await matchListService.CreateMatch("user");
-            var matchIds = await matchListService.GetMatches("user");
+            var matchIds = await matchListService.GetMatches("user", 10, 0);
             var matchId = matchIds.SingleOrDefault();
 
             new Func<Task>(() => matchListService.DeleteMatch("otherUser", "otherId"))
@@ -98,7 +98,7 @@ namespace YoTennis.Tests.Test
             IMatchListService matchListService = GetMatchListService();
 
             await matchListService.CreateMatch("user");
-            var matchIds = await matchListService.GetMatches("user");
+            var matchIds = await matchListService.GetMatches("user", 10, 0);
             var matchId = matchIds.SingleOrDefault();
             var matchService = await matchListService.GetMatchService("user", matchId);
             matchService.Should().NotBeNull();
@@ -110,7 +110,7 @@ namespace YoTennis.Tests.Test
             IMatchListService matchListService = GetMatchListService();
 
             await matchListService.CreateMatch("user");
-            var matchIds = await matchListService.GetMatches("user");
+            var matchIds = await matchListService.GetMatches("user", 10, 0);
             var matchId = matchIds.SingleOrDefault();
             new Func<Task>(() => matchListService.GetMatchService("otherUser", matchId))
                 .ShouldThrow<KeyNotFoundException>();
@@ -122,7 +122,7 @@ namespace YoTennis.Tests.Test
             IMatchListService matchListService = GetMatchListService();
 
             await matchListService.CreateMatch("user");
-            var matchIds = await matchListService.GetMatches("user");
+            var matchIds = await matchListService.GetMatches("user", 10, 0);
             var matchId = matchIds.SingleOrDefault();
             new Func<Task>(() => matchListService.GetMatchService("user", "otherId"))
                 .ShouldThrow<KeyNotFoundException>();
@@ -134,7 +134,7 @@ namespace YoTennis.Tests.Test
             IMatchListService matchListService = GetMatchListService();
 
             await matchListService.CreateMatch("user");
-            var matchIds = await matchListService.GetMatches("user");
+            var matchIds = await matchListService.GetMatches("user", 10, 0);
             var matchId = matchIds.SingleOrDefault();
             new Func<Task>(() => matchListService.GetMatchService("otherUser", "otherId"))
                 .ShouldThrow<KeyNotFoundException>();

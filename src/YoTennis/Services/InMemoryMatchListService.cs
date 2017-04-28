@@ -41,19 +41,17 @@ namespace YoTennis.Services
             return Task.FromResult(0);
         }
 
-        public Task<IEnumerable<string>> GetMatches(string userId) =>
-            Task.FromResult(_users.TryGetValue(userId, out var userMatches)
-                ? userMatches.Keys
-                : Enumerable.Empty<string>());
-
-        public Task<IEnumerable<string>> GetMatches2(string userId, int count, int skip) =>
+        public Task<IEnumerable<string>> GetMatches(string userId, int count, int skip) =>
             Task.FromResult(_users.TryGetValue(userId, out var userMatches)
                 ? userMatches.Keys.Skip(skip).Take(count)
                 : Enumerable.Empty<string>());
 
         public Task<IMatchService> GetMatchService(string userId, string matchId) =>
             _users.TryGetValue(userId, out var matches) && matches.TryGetValue(matchId, out var matchService)
-                ? Task.FromResult((IMatchService) matchService)
+                ? Task.FromResult((IMatchService)matchService)
                 : throw new KeyNotFoundException("Match not found.");
+
+        public Task<int> GetMatchCount(string userId) =>
+            Task.FromResult(_users.TryGetValue(userId, out var matches) ? matches.Count : 0);
     }
 }

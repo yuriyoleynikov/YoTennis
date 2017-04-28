@@ -22,14 +22,11 @@ namespace YoTennis.Controllers
             _matchListService = matchListService;
         }
 
-        public async Task<IActionResult> Index(int count, int skip)
+        public async Task<IActionResult> Index(int count = 10, int skip = 0)
         {
-            count = count == 0 ? 10 : count;
+            var totalCount = await _matchListService.GetMatchCount(UserId);
 
-            var idsForAllMatches = await _matchListService.GetMatches(UserId);
-            var countMatches = idsForAllMatches.Count();
-
-            var idsForSelectMatches = await _matchListService.GetMatches2(UserId, count, skip);
+            var idsForSelectMatches = await _matchListService.GetMatches(UserId, count, skip);
 
             var listOfMatchModelView = new List<MatchModelView>();
             foreach (var id in idsForSelectMatches)
@@ -44,14 +41,14 @@ namespace YoTennis.Controllers
 
             var containerForMatchModel = new ContainerForMatchModel {
                 ListMatchModelView = listOfMatchModelView,
-                CountMatches = countMatches,
+                TotalCount = totalCount,
                 Count = count,
                 Skip = skip };
 
             return View(containerForMatchModel);
         }
         
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(string id, string returnUrl)
         {
             try
             {
@@ -62,7 +59,9 @@ namespace YoTennis.Controllers
                 return NotFound();
             }
 
-            return RedirectToAction(nameof(Index));
+            if (string.IsNullOrEmpty(returnUrl))
+                return RedirectToAction(nameof(Index));
+            return LocalRedirect(returnUrl);
         }
 
         public async Task<IActionResult> Details(string id)

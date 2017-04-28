@@ -30,19 +30,27 @@
                 <td>
                     @Html.ActionLink("Edit", "Index", "Match", new { id = match.Id }) |
                     @Html.ActionLink("Details", "Details", new { id = match.Id }) |
-                    @Html.ActionLink("Delete", "Delete", "Home", new { id = match.Id })
+                    @Html.ActionLink("Delete", "Delete", "Home", new
+               {
+                   id = match.Id,
+                   returnUrl = Url.Action("Index", "Home",
+                   new { count = Model.Count,
+                       skip = Model.TotalCount - Model.Skip != 1 ? Model.Skip 
+                       : Model.TotalCount != 1 ? Model.Skip - Model.Count : 0})
+               })
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<p>Show - 
+<p>
+    Show -
     @Html.ActionLink("10", "Index", "Home", new { count = 10, skip = 0 }) |
     @Html.ActionLink("20", "Index", "Home", new { count = 20, skip = 0 }) |
-    @Html.ActionLink("All", "Index", "Home", new { count = Model.CountMatches, skip = 0 })
+    @Html.ActionLink("All", "Index", "Home", new { count = Model.TotalCount, skip = 0 })
 </p>
 
-@if (Model.Count != Model.CountMatches)
+@if (Model.Count != Model.TotalCount)
 {
     <p>
         Page
@@ -54,11 +62,11 @@
             int currentPage = Model.Skip == 0 ? 1 : Model.Skip / Model.Count + 1;
         }
         @currentPage
-        @if (Model.Skip + Model.Count < Model.CountMatches)
+        @if (Model.Skip + Model.Count < Model.TotalCount)
         {
             @Html.ActionLink(">", "Index", "Home", new { count = Model.Count, skip = Model.Skip + Model.Count })
         }
     </p>
-}
-<p>@Model.CountMatches Matches in system</p>
+            }
+<p>@Model.TotalCount Matches in system</p>
 
