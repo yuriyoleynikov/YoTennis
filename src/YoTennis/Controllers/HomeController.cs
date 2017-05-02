@@ -22,32 +22,81 @@ namespace YoTennis.Controllers
             _matchListService = matchListService;
         }
 
-        public async Task<IActionResult> Index(int count = 10, int skip = 0)
+        public static (int count, int skip) CorrectPagination(int totalCount, int count, int skip, int defaultCount = 10)
         {
-            var totalCount = await _matchListService.GetMatchCount(UserId);
+            if (!(totalCount >= 0 && defaultCount > 0))
+                throw new Exception("Not correct");
 
-            var idsForSelectMatches = await _matchListService.GetMatches(UserId, count, skip);
+            if (count < 0)
+                throw new FormatException("Not correct count");
 
-            var listOfMatchModelView = new List<MatchModelView>();
-            foreach (var id in idsForSelectMatches)
+            if (skip > totalCount)
             {
-                var match = await _matchListService.GetMatchService(UserId, id);
-                var state = await match.GetStateAsync();
-                listOfMatchModelView.Add(new MatchModelView {
-                    Id = id,
-                    Name = state.FirstPlayer != null ? state.FirstPlayer + " - " + state.SecondPlayer : "None",
-                    Date = state.MatchStartedAt != DateTime.MinValue ? state.MatchStartedAt.ToString() : "None" });
+                skip = (totalCount / count) * count;
+            }
+            else if (skip == totalCount)
+            {
+                skip = skip - count;
+            }
+            else if (skip < 0)
+            {
+                skip = 0;
             }
 
-            var containerForMatchModel = new ContainerForMatchModel {
-                ListMatchModelView = listOfMatchModelView,
-                TotalCount = totalCount,
-                Count = count,
-                Skip = skip };
-
-            return View(containerForMatchModel);
+            return (count, skip);
+            /*
+                    count > 0
+                    skip >= 0
+                    skip == 0 || skip < totalCount
+                    count == requestedCount || requestedCount <= 0 && count == defaultCount
+                    skip == requestedSkip || requestedSkip < 0 || requestedSkip >= totalCount
+             */
         }
-        
+
+        public async Task<IActionResult> Index(int count = 10, int skip = 0)
+        {
+            try
+            {
+                var totalCount = await _matchListService.GetMatchCount(UserId);
+                var (newCount, newSkip) = CorrectPagination(totalCount, count, skip);
+
+                if (count != newCount || skip != newSkip)
+                {
+                    return RedirectToAction(nameof(Index), new { count = newCount, skip = newSkip });
+                }
+
+                var idsForSelectMatches = await _matchListService.GetMatches(UserId, newCount, newSkip);
+
+                var listOfMatchModelView = new List<MatchModelView>();
+                foreach (var id in idsForSelectMatches)
+                {
+                    var match = await _matchListService.GetMatchService(UserId, id);
+                    var state = await match.GetStateAsync();
+                    listOfMatchModelView.Add(new MatchModelView
+                    {
+                        Id = id,
+                        Name = state.FirstPlayer != null ? state.FirstPlayer + " - " + state.SecondPlayer : "None",
+                        Date = state.MatchStartedAt != DateTime.MinValue ? state.MatchStartedAt.ToString() : "None"
+                    });
+                }
+
+                var containerForMatchModel = new ContainerForMatchModel
+                {
+                    ListMatchModelView = listOfMatchModelView,
+                    TotalCount = totalCount,
+                    Count = newCount,
+                    Skip = newSkip
+                };
+
+                return View(containerForMatchModel);
+            }
+            catch (FormatException)
+            {
+                return NotFound();
+            }
+            
+        }
+
         public async Task<IActionResult> Delete(string id, string returnUrl)
         {
             try
