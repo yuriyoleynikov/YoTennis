@@ -25,38 +25,25 @@ namespace YoTennis.Controllers
         public static (int count, int skip) CorrectPagination(int totalCount, int count, int skip, int defaultCount = 10)
         {
             if (totalCount < 0)
-                throw new ArgumentOutOfRangeException(nameof(totalCount));
+                throw new ArgumentOutOfRangeException(nameof(totalCount), "totalCount < 0");
             if (defaultCount <= 0)
-                throw new ArgumentOutOfRangeException(nameof(defaultCount));
+                throw new ArgumentOutOfRangeException(nameof(defaultCount), "defaultCount <= 0");
 
             if (count <= 0)
                 count = defaultCount;
 
             if (skip > totalCount)
-            {
-                skip = (totalCount / count) * count;                
-            }
+                skip = (totalCount / count) * count;
 
             if (skip == totalCount)
-            {
-                if (totalCount !=0)
+                if (totalCount != 0)
                     skip = skip - count;
                 else
                     skip = 0;
-            }
-            else if (skip < 0)
-            {
+            if (skip < 0)
                 skip = 0;
-            }
 
             return (count, skip);
-            /*
-                    count > 0
-                    skip >= 0
-                    skip == 0 || skip < totalCount
-                    count == requestedCount || requestedCount <= 0 && count == defaultCount
-                    skip == requestedSkip || requestedSkip < 0 || requestedSkip >= totalCount
-             */
         }
 
         public async Task<IActionResult> Index(int count = 10, int skip = 0)
@@ -100,7 +87,7 @@ namespace YoTennis.Controllers
             {
                 return NotFound();
             }
-            
+
         }
 
         public async Task<IActionResult> Delete(string id, string returnUrl)

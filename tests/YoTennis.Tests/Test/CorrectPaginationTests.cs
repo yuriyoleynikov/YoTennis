@@ -20,13 +20,24 @@ namespace YoTennis.Tests.Test
             var (count, skip) = 
                 HomeController.CorrectPagination(totalCount, requestedCount, requestedSkip, defaultCount);
 
-            count.Should().BePositive();
-            skip.Should().BeGreaterOrEqualTo(0);
+            var msg = $"CorrectPagination(totalCount: {totalCount}, count: {requestedCount}, skip: {requestedSkip}, defaultCount: {defaultCount}) == (count: {count}, skip: {skip})";
+
+            count.Should().BePositive(msg);
+            skip.Should().BeGreaterOrEqualTo(0, msg);
+
+            (skip == 0 || skip < totalCount).Should().BeTrue($"{msg}\n{skip} == 0 || {skip} < {totalCount}");
             Assert.True(skip == 0 || skip < totalCount);
+
+            (count == requestedCount || requestedCount <= 0 && count == defaultCount).Should()
+                .BeTrue($"{msg}\n{count} == {requestedCount} || {requestedCount} <= 0 && {count} == {defaultCount}");
             Assert.True(count == requestedCount || requestedCount <= 0 && count == defaultCount);
+
+            (skip == requestedSkip || requestedSkip < 0 || requestedSkip >= totalCount).Should()
+                .BeTrue($"{msg}\n{skip} == {requestedSkip} || {requestedSkip} < 0 || {requestedSkip} >= {totalCount}");
             Assert.True(skip == requestedSkip || requestedSkip < 0 || requestedSkip >= totalCount);
-            count.Should().Be(expectedCount);
-            skip.Should().Be(expectedSkip);
+
+            count.Should().Be(expectedCount, msg);
+            skip.Should().Be(expectedSkip, msg);
         }
 
         [Fact]
@@ -73,6 +84,9 @@ namespace YoTennis.Tests.Test
             //for requestedCount and requestedSkip
             TestCase(100, 0, 1000, 10, 10, 90);
             TestCase(0, 0, 1000, 10, 10, 0);
+
+            //
+            TestCase(10, 100, 10, 10, 100, 0);
         }
     }
 }
