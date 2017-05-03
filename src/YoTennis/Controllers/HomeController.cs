@@ -24,19 +24,25 @@ namespace YoTennis.Controllers
 
         public static (int count, int skip) CorrectPagination(int totalCount, int count, int skip, int defaultCount = 10)
         {
-            if (!(totalCount >= 0 && defaultCount > 0))
-                throw new Exception("Not correct");
+            if (totalCount < 0)
+                throw new ArgumentOutOfRangeException(nameof(totalCount));
+            if (defaultCount <= 0)
+                throw new ArgumentOutOfRangeException(nameof(defaultCount));
 
-            if (count < 0)
-                throw new FormatException("Not correct count");
+            if (count <= 0)
+                count = defaultCount;
 
             if (skip > totalCount)
             {
-                skip = (totalCount / count) * count;
+                skip = (totalCount / count) * count;                
             }
-            else if (skip == totalCount)
+
+            if (skip == totalCount)
             {
-                skip = skip - count;
+                if (totalCount !=0)
+                    skip = skip - count;
+                else
+                    skip = 0;
             }
             else if (skip < 0)
             {
