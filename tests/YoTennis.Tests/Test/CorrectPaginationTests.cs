@@ -10,14 +10,14 @@ namespace YoTennis.Tests.Test
     public class CorrectPaginationTests
     {
         private static void TestCase(
-            int totalCount, 
-            int requestedCount, 
-            int requestedSkip, 
-            int defaultCount, 
-            int expectedCount, 
+            int totalCount,
+            int requestedCount,
+            int requestedSkip,
+            int defaultCount,
+            int expectedCount,
             int expectedSkip)
         {
-            var (count, skip) = 
+            var (count, skip) =
                 HomeController.CorrectPagination(totalCount, requestedCount, requestedSkip, defaultCount);
 
             var msg = $"CorrectPagination(totalCount: {totalCount}, count: {requestedCount}, skip: {requestedSkip}, defaultCount: {defaultCount}) == (count: {count}, skip: {skip})";
@@ -51,7 +51,7 @@ namespace YoTennis.Tests.Test
                 .ShouldThrow<ArgumentOutOfRangeException>().And.ParamName.Should().Be("totalCount");
             new Action(() => TestCase(-100, 10, 0, 10, 10, 0))
                 .ShouldThrow<ArgumentOutOfRangeException>().And.ParamName.Should().Be("totalCount");
-            
+
             //for requestedCount
             TestCase(100, 1000, 0, 10, 1000, 0);
             TestCase(100, 110, 0, 10, 110, 0);
@@ -87,6 +87,15 @@ namespace YoTennis.Tests.Test
 
             //
             TestCase(10, 100, 10, 10, 100, 0);
+
+            TestCase(20, 15, -21, 10, 15, 0);
+            TestCase(21, 15, 20, 10, 15, 20);
+            TestCase(20, 15, 20, 10, 15, 5);
+            TestCase(20, 15, 21, 10, 15, 6);
+            TestCase(20, 15, 321, 10, 15, 6);
+
+            TestCase(20, 30, 21, 10, 30, 0);
+
         }
     }
 }

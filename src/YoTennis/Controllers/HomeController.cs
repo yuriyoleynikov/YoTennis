@@ -32,14 +32,24 @@ namespace YoTennis.Controllers
             if (count <= 0)
                 count = defaultCount;
 
-            if (skip > totalCount)
-                skip = (totalCount / count) * count;
+            var skip_initial = skip;
 
-            if (skip == totalCount)
-                if (totalCount != 0)
-                    skip = skip - count;
+            if (skip > totalCount)
+            {
+                var skip_for_page0 = skip % count;
+                if (skip_for_page0 != 0)
+                {
+                    skip = skip_for_page0 + ((totalCount - skip_for_page0) / count) * count;
+                    if (skip_initial == skip)
+                        skip = 0;
+                }
                 else
-                    skip = 0;
+                    skip = totalCount;
+            }
+
+            if (skip == totalCount && totalCount != 0)
+                skip = skip - count;
+
             if (skip < 0)
                 skip = 0;
 
