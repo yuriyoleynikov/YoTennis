@@ -95,7 +95,7 @@ namespace YoTennis.Tests.Test
             TestCase(20, 15, 321, 10, 15, 6);
 
             TestCase(20, 30, 21, 10, 30, 0);
-
+            TestCase(23, 10, 30, 10, 10, 20);
         }
     }
 }

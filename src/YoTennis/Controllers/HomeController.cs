@@ -44,7 +44,7 @@ namespace YoTennis.Controllers
                         skip = 0;
                 }
                 else
-                    skip = totalCount;
+                    skip = totalCount / count * count;
             }
 
             if (skip == totalCount && totalCount != 0)
