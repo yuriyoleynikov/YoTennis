@@ -1,6 +1,6 @@
 @model YoTennis.Models.Match.NotStartedModel
 
-<form asp-action="ChangeSidesOnTiebreak">
+<form asp-action="ChangeSidesOnTiebreak/@ViewBag.MatchId">
     <div class="match-container game-container">
         <input type="submit" value="Change Sides On Tiebreak" class="btn btn-default" />
     </div>

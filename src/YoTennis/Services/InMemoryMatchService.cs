@@ -7,16 +7,16 @@ using YoTennis.Models;
 namespace YoTennis.Services
 {
     public class InMemoryMatchService : IMatchService
-    {
+    {        
         private GameHandler _gameHandler = new GameHandler();
 
-        public Task AddEvent(GameEvent gameEvent)
+        public Task AddEventAsync(GameEvent gameEvent)
         {
             _gameHandler.AddEvent(gameEvent);
             return Task.FromResult(0);
         }
 
-        public Task<MatchModel> GetState()
+        public Task<MatchModel> GetStateAsync()
         {
             return Task.FromResult(_gameHandler.CurrentState);
         }
@@ -27,7 +27,7 @@ namespace YoTennis.Services
             return Task.FromResult(0);
         }
 
-        public Task Undo()
+        public Task UndoAsync()
         {
             _gameHandler.UndoLastEvent();
             return Task.FromResult(0);

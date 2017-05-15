@@ -1,8 +1,7 @@
 ﻿namespace YoTennis.Models.Match
 {
-    public class BeginningTiebreakModel
+    public class BeginningTiebreakModel : MatchBaseModel
     {
-        public MatchModel Match;
         public Commands.StartTiebreakCommand Form;
     }
 }

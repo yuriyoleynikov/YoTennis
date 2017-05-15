@@ -1,7 +1,6 @@
 ﻿namespace YoTennis.Models.Match
 {
-    public class CompletedModel
+    public class CompletedModel : MatchBaseModel
     {
-        public MatchModel Match;
     }
 }

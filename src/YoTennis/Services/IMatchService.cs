@@ -8,9 +8,9 @@ namespace YoTennis.Services
 {
     public interface IMatchService
     {
-        Task AddEvent(GameEvent gameEvent);
-        Task<MatchModel> GetState();
+        Task AddEventAsync(GameEvent gameEvent);
+        Task<MatchModel> GetStateAsync();
         Task Reset();
-        Task Undo();
+        Task UndoAsync();
     }
 }

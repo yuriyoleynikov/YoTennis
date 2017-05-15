@@ -1,6 +1,6 @@
 @model DrawCommand
 <div class="test-container">
-    <form asp-action="Draw">
+    <form asp-action="Draw/@ViewBag.MatchId">
         <div id="player1">
             Select @ViewData["FirstPlayerName"]
         </div>

@@ -8,76 +8,86 @@ using YoTennis.Models.Commands;
 using YoTennis.Models;
 using YoTennis.Models.Events;
 using YoTennis.Models.Match;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace YoTennis.Controllers
 {
+    [Authorize]
     public class MatchController : Controller
     {
-        private IMatchService _matchService;
+        private IMatchListService _matchListService;
+        private string UserId => User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-        public MatchController(IMatchService matchService)
+        public MatchController(IMatchListService matchService)
         {
-            _matchService = matchService;
+            _matchListService = matchService;
         }
 
-        public async Task<IActionResult> Restart()
+        public Task<IActionResult> Restart()
         {
-            await _matchService.Reset();
-            return RedirectToAction(nameof(Index));
+            return Create();
         }
 
-        public async Task<IActionResult> Cancel()
+        public async Task<IActionResult> Cancel(string id)
         {
-            await _matchService.Undo();
-            return RedirectToAction(nameof(Index));
+            var matchService = await _matchListService.GetMatchService(UserId, id);
+
+            await matchService.UndoAsync();
+            return RedirectToAction(nameof(Index), new { id });
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return RedirectToAction(nameof(Index));
+            var id = await _matchListService.CreateMatch(UserId);
+            return RedirectToAction(nameof(Index), new { id } );
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string id)
         {
-            var state = await _matchService.GetState();
+            var matchService = await _matchListService.GetMatchService(UserId, id);
+
+            var state = await matchService.GetStateAsync();
 
             if (state.State == Models.MatchState.NotStarted)
-                return View("NotStarted", new NotStartedModel { Match = state });
+                return View("NotStarted", new NotStartedModel { Match = state, Id = id });
 
             if (state.State == Models.MatchState.Drawing)
-                return View("Drawing", new DrawingModel { Match = state });
+                return View("Drawing", new DrawingModel { Match = state, Id = id });
 
             if (state.State == Models.MatchState.BeginningGame)
-                return View("BeginningGame", new BeginningGameModel { Match = state });
+                return View("BeginningGame", new BeginningGameModel { Match = state, Id = id });
 
             if (state.State == Models.MatchState.PlayingGame)
-                return View("PlayingGame", new PlayingGameModel { Match = state });
+                return View("PlayingGame", new PlayingGameModel { Match = state, Id = id });
 
             if (state.State == Models.MatchState.ChangingSides)
-                return View("ChangingSides", new ChangingSidesModel { Match = state });
+                return View("ChangingSides", new ChangingSidesModel { Match = state, Id = id });
 
             if (state.State == Models.MatchState.BeginningTiebreak)
-                return View("BeginningTiebreak", new BeginningTiebreakModel { Match = state });
+                return View("BeginningTiebreak", new BeginningTiebreakModel { Match = state, Id = id });
 
             if (state.State == Models.MatchState.PlayingTiebreak)
-                return View("PlayingTiebreak", new PlayingTiebreakModel { Match = state });
+                return View("PlayingTiebreak", new PlayingTiebreakModel { Match = state, Id = id });
 
             if (state.State == Models.MatchState.ChangingSidesOnTiebreak)
-                return View("ChangingSidesOnTiebreak", new ChangingSidesOnTiebreakModel { Match = state });
+                return View("ChangingSidesOnTiebreak", new ChangingSidesOnTiebreakModel { Match = state, Id = id });
 
             if (state.State == Models.MatchState.Completed)
-                return View("Completed", new CompletedModel { Match = state });
+                return View("Completed", new CompletedModel { Match = state, Id = id });
 
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Start(StartCommand command)
+        public async Task<IActionResult> Start(StartCommand command, string id)
         {
-            if (!ModelState.IsValid)
-                return View("NotStarted", new NotStartedModel { Match = await _matchService.GetState(), Form = command });
+            var matchService = await _matchListService.GetMatchService(UserId, id);
 
-            await _matchService.AddEvent(new StartEvent
+            if (!ModelState.IsValid)
+                return View("NotStarted", new NotStartedModel { Match = await matchService.GetStateAsync(), Form = command });
+
+            await matchService.AddEventAsync(new StartEvent
             {
                 OccuredAt = DateTime.UtcNow,
                 Settings = new MatchSettings
@@ -91,131 +101,151 @@ namespace YoTennis.Controllers
                 FirstPlayer = command.FirstPlayer,
                 SecondPlayer = command.SecondPlayer
             });
-
-            return RedirectToAction(nameof(Index));
+                        
+            return RedirectToAction(nameof(Index), new { id });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Draw(DrawCommand drawCommand)
+        public async Task<IActionResult> Draw(DrawCommand drawCommand, string id)
         {
-            await _matchService.AddEvent(new DrawEvent
+            var matchService = await _matchListService.GetMatchService(UserId, id);
+
+            await matchService.AddEventAsync(new DrawEvent
             {
                 OccuredAt = DateTime.UtcNow,
                 PlayerOnLeft = drawCommand.PlayerOnLeft,
                 PlayerServes = drawCommand.PlayerServes
             });
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { id });
         }
 
         [HttpPost]
-        public async Task<IActionResult> StartGame(StartGameCommand startGameCommand)
+        public async Task<IActionResult> StartGame(StartGameCommand startGameCommand, string id)
         {
-            await _matchService.AddEvent(new StartGameEvent
+            var matchService = await _matchListService.GetMatchService(UserId, id);
+
+            await matchService.AddEventAsync(new StartGameEvent
             {
                 OccuredAt = DateTime.UtcNow
             });
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { id });
         }
 
         [HttpPost]
-        public async Task<IActionResult> ServeFail(ClickCommand serveFailCommand)
+        public async Task<IActionResult> ServeFail(ClickCommand serveFailCommand, string id)
         {
-            await _matchService.AddEvent(new ServeFailEvent
+            var matchService = await _matchListService.GetMatchService(UserId, id);
+
+            await matchService.AddEventAsync(new ServeFailEvent
             {
                 OccuredAt = DateTime.UtcNow,
                 Serve = ServeFailKind.Error,
                 ServeSpeed = serveFailCommand.ServeSpeed
             });
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { id });
         }
 
         [HttpPost]
-        public async Task<IActionResult> NetTouch(ClickCommand serveFailCommand)
+        public async Task<IActionResult> NetTouch(ClickCommand serveFailCommand, string id)
         {
-            await _matchService.AddEvent(new ServeFailEvent
+            var matchService = await _matchListService.GetMatchService(UserId, id);
+
+            await matchService.AddEventAsync(new ServeFailEvent
             {
                 OccuredAt = DateTime.UtcNow,
                 Serve = ServeFailKind.NetTouch,
                 ServeSpeed = serveFailCommand.ServeSpeed
             });
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { id });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Ace(ClickCommand pointCommand)
+        public async Task<IActionResult> Ace(ClickCommand pointCommand, string id)
         {
-            var state = await _matchService.GetState();
+            var matchService = await _matchListService.GetMatchService(UserId, id);
 
-            await _matchService.AddEvent(new PointEvent
+            var state = await matchService.GetStateAsync();
+
+            await matchService.AddEventAsync(new PointEvent
             {
                 OccuredAt = DateTime.UtcNow,
                 PlayerPoint = state.PlayerServes,
                 Kind = PointKind.Ace
             });
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { id });
         }
         [HttpPost]
-        public async Task<IActionResult> PointToFirst(ClickCommand pointCommand)
+        public async Task<IActionResult> PointToFirst(ClickCommand pointCommand, string id)
         {
-            await _matchService.AddEvent(new PointEvent
+            var matchService = await _matchListService.GetMatchService(UserId, id);
+
+            await matchService.AddEventAsync(new PointEvent
             {
                 OccuredAt = DateTime.UtcNow,
                 PlayerPoint = Player.First,
                 Kind = PointKind.Unspecified
             });
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { id });
         }
 
         [HttpPost]
-        public async Task<IActionResult> PointToSecond(ClickCommand pointCommand)
+        public async Task<IActionResult> PointToSecond(ClickCommand pointCommand, string id)
         {
-            await _matchService.AddEvent(new PointEvent
+            var matchService = await _matchListService.GetMatchService(UserId, id);
+
+            await matchService.AddEventAsync(new PointEvent
             {
                 OccuredAt = DateTime.UtcNow,
                 PlayerPoint = Player.Second,
                 Kind = PointKind.Unspecified
             });
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { id });
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeSides(ChangeSidesCommand changeSidesCommand)
+        public async Task<IActionResult> ChangeSides(ChangeSidesCommand changeSidesCommand, string id)
         {
-            await _matchService.AddEvent(new ChangeSidesGameEvent
+            var matchService = await _matchListService.GetMatchService(UserId, id);
+
+            await matchService.AddEventAsync(new ChangeSidesGameEvent
             {
                 OccuredAt = DateTime.UtcNow
             });
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { id });
         }
 
         [HttpPost]
-        public async Task<IActionResult> StartTiebreak(StartTiebreakCommand startTiebreakCommand)
+        public async Task<IActionResult> StartTiebreak(StartTiebreakCommand startTiebreakCommand, string id)
         {
-            await _matchService.AddEvent(new StartTiebreakEvent
+            var matchService = await _matchListService.GetMatchService(UserId, id);
+
+            await matchService.AddEventAsync(new StartTiebreakEvent
             {
                 OccuredAt = DateTime.UtcNow
             });
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { id });
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeSidesOnTiebreak(ChangeSidesOnTiebreakCommand changeSidesOnTiebreakCommand)
+        public async Task<IActionResult> ChangeSidesOnTiebreak(ChangeSidesOnTiebreakCommand changeSidesOnTiebreakCommand, string id)
         {
-            await _matchService.AddEvent(new ChangeSidesOnTiebreakEvent
+            var matchService = await _matchListService.GetMatchService(UserId, id);
+
+            await matchService.AddEventAsync(new ChangeSidesOnTiebreakEvent
             {
                 OccuredAt = DateTime.UtcNow
             });
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { id });
         }        
     }
 }

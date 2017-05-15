@@ -1,8 +1,7 @@
 ﻿namespace YoTennis.Models.Match
 {
-    public class ChangingSidesModel
+    public class ChangingSidesModel : MatchBaseModel
     {
-        public MatchModel Match;
         public Commands.ChangeSidesCommand Form;
     }
 }

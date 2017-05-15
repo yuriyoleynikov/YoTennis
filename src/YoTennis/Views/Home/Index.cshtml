@@ -1,5 +1,74 @@
-﻿@{
+﻿@model ContainerForMatchModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <p><a asp-action="Create" asp-controller="Match" class="btn btn-default btn-lg">Create Match</a></p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Date
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var match in Model.ListMatchModelView)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelMatch => match.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelMatch => match.Date)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Index", "Match", new { id = match.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = match.Id }) |
+                    @Html.ActionLink("Delete", "Delete", "Home", new
+               {
+                   id = match.Id,
+                   returnUrl = Url.Action("Index", "Home",
+                   new
+                   {
+                       count = Model.Count,
+                       skip = Model.Skip
+                   })
+               })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<p>
+    Show -
+    @Html.ActionLink("10", "Index", "Home", new { count = 10, skip = 0 }) |
+    @Html.ActionLink("20", "Index", "Home", new { count = 20, skip = 0 }) |
+    @Html.ActionLink("All", "Index", "Home", new { count = Model.TotalCount != 0 ? Model.TotalCount : 10, skip = 0 })
+</p>
+
+@if (Model.Count != Model.TotalCount)
+{
+    <p>
+        Page
+        @if (Model.Skip != 0)
+        {
+            @Html.ActionLink("<", "Index", "Home", new { count = Model.Count, skip = Model.Skip - Model.Count })
+        }
+        @{
+            int currentPage = Model.Skip == 0 ? 1 : Model.Skip / Model.Count + 1;
+        }
+        @currentPage
+        @if (Model.Skip + Model.Count < Model.TotalCount)
+        {
+            @Html.ActionLink(">", "Index", "Home", new { count = Model.Count, skip = Model.Skip + Model.Count })
+        }
+    </p>
+            }
+<p>@Model.TotalCount Matches in system</p>
+

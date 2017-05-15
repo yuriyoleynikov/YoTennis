@@ -2946,5 +2946,12 @@ namespace YoTennis.Tests.Test
             //myGame.CurrentState.GameTime.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.Completed);
         }
+
+        [Fact]
+        public void Undo_fails_when_no_events()
+        {
+            var myGame = new GameHandler();
+            new Action(() => myGame.UndoLastEvent()).ShouldThrowExactly<InvalidOperationException>();
+        }
     }
 }
