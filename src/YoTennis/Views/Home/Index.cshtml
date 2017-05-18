@@ -15,6 +15,9 @@
             <th>
                 Date
             </th>
+            <th>
+                Score
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -22,10 +25,13 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelMatch => match.Name)
+                    @Html.DisplayFor(modelMatch => match.Players)
                 </td>
                 <td>
                     @Html.DisplayFor(modelMatch => match.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelMatch => match.Score)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Index", "Match", new { id = match.Id }) |
