@@ -73,13 +73,23 @@ namespace YoTennis.Controllers
             {
                 var match = await _matchListService.GetMatchService(UserId, id);
                 var state = await match.GetStateAsync();
-                var score = state.State == MatchState.Completed ? "6-0" : "In progress";
-                score = state.MatchScore.FirstPlayer.ToString();
+
+                string score = "";
+                if (state.Sets != null)
+                    foreach (var s in state.Sets)
+                    {
+                        if (score == "")
+                            score = s.Score.FirstPlayer.ToString() + "-" + s.Score.SecondPlayer.ToString();
+                        else
+                            score += ", " + s.Score.FirstPlayer.ToString() + "-" + s.Score.SecondPlayer.ToString();
+                    }
+
                 listOfMatchModelView.Add(new MatchModelView
                 {
                     Id = id,
                     Players = state.FirstPlayer != null ? state.FirstPlayer + " - " + state.SecondPlayer : "None",
                     Date = state.MatchStartedAt != DateTime.MinValue ? state.MatchStartedAt.ToString() : "None",
+                    Status = state.State.ToString(),
                     Score = score
                 });
             }

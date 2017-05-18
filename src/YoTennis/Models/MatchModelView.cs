@@ -11,5 +11,6 @@ namespace YoTennis.Models
         public string Date { get; set; }
         public string Players { get; set; }
         public string Score { get; set; }
+        public string Status { get; set; }
     }
 }
