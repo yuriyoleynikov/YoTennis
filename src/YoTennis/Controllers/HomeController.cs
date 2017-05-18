@@ -90,7 +90,8 @@ namespace YoTennis.Controllers
                     Players = state.FirstPlayer != null ? state.FirstPlayer + " - " + state.SecondPlayer : "None",
                     Date = state.MatchStartedAt != DateTime.MinValue ? state.MatchStartedAt.ToString() : "None",
                     Status = state.State.ToString(),
-                    Score = score
+                    Score = score,
+                    State = state
                 });
             }
 
