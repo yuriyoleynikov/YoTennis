@@ -15,6 +15,12 @@
             <th>
                 Date
             </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Score
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -22,10 +28,33 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelMatch => match.Name)
+                    @if (match.State.State != MatchState.Completed)
+                    {
+                    @Html.DisplayFor(modelMatch => match.Players)
+                    }
+                    else
+                    {
+                        @if (match.State.MatchScore.FirstPlayer > match.State.MatchScore.SecondPlayer)
+                        {
+                            <div><b>@match.State.FirstPlayer</b> - 
+                            @match.State.SecondPlayer</div>
+                        }
+                        else
+                        {
+                            <div>@match.State.FirstPlayer -
+                            <b>@match.State.SecondPlayer</b></div>
+                        }
+
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelMatch => match.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelMatch => match.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelMatch => match.Score)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Index", "Match", new { id = match.Id }) |

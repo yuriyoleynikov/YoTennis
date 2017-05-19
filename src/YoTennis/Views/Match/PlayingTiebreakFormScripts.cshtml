@@ -19,12 +19,12 @@
     }
     function sendCommand(action) {
         var form = document.getElementById("commandForm");
-        form.action = "/Match/" + action;
+        form.action = "/Match/" + action + "/@ViewBag.MatchId";
         form.submit();
     }
     function setPointCommand(action) {
         var form = document.getElementById("commandForm");
-        form.action = "/Match/" + action;
+        form.action = "/Match/" + action + "/@ViewBag.MatchId";
         document.getElementById("step1").style.display = "none";
         document.getElementById("step2").style.display = "block";
     }

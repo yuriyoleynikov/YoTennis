@@ -8,6 +8,7 @@ using YoTennis.Data;
 using YoTennis.Services;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using System.Text;
 
 namespace YoTennis.Controllers
 {
@@ -56,6 +57,24 @@ namespace YoTennis.Controllers
             return (count, skip);
         }
 
+        public static string Separate(MatchModel state)
+        {
+            StringBuilder score = new StringBuilder();
+            bool isFirst = true;
+
+            if (state.Sets != null)
+                foreach (var s in state.Sets)
+                {
+                    if (isFirst)
+                        isFirst = false;
+                    else
+                        score.Append(", ");
+
+                    score.Append(s.Score.FirstPlayer.ToString()).Append("-").Append(s.Score.SecondPlayer.ToString());
+                }
+            return score.ToString();
+        }
+
         public async Task<IActionResult> Index(int count = 10, int skip = 0)
         {
             var totalCount = await _matchListService.GetMatchCount(UserId);
@@ -73,11 +92,15 @@ namespace YoTennis.Controllers
             {
                 var match = await _matchListService.GetMatchService(UserId, id);
                 var state = await match.GetStateAsync();
+
                 listOfMatchModelView.Add(new MatchModelView
                 {
                     Id = id,
-                    Name = state.FirstPlayer != null ? state.FirstPlayer + " - " + state.SecondPlayer : "None",
-                    Date = state.MatchStartedAt != DateTime.MinValue ? state.MatchStartedAt.ToString() : "None"
+                    Players = state.FirstPlayer != null ? state.FirstPlayer + " - " + state.SecondPlayer : "None",
+                    Date = state.MatchStartedAt != DateTime.MinValue ? state.MatchStartedAt.ToString() : "None",
+                    Status = state.State.ToString(),
+                    Score = Separate(state),
+                    State = state
                 });
             }
 
