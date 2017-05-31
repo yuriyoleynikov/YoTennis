@@ -5,5 +5,31 @@
 }
 
 <h2>Details</h2>
-<h2>MatchStartedAt</h2>
-@Model.MatchStartedAt
+<table>
+    <tr>
+        <th>State</th>
+        <td>@Model.State</td>        
+    </tr>
+    <tr>
+        <th>FirstPlayer</th>
+        <td>@Model.FirstPlayer</td>
+    </tr>
+    <tr>
+        <th>SecondPlayer</th>
+        <td>@Model.SecondPlayer</td>
+    </tr>
+    <tr>
+        <th>MatchStartedAt</th>
+        <td>@Model.MatchStartedAt</td>
+    </tr>
+    <tr>
+        <th>Score</th>
+        @if (Model.State != MatchState.NotStarted && Model.State != MatchState.Drawing)
+        {
+        @foreach (var i in Model.Sets)
+        {
+        <td>@i.Score.FirstPlayer - @i.Score.SecondPlayer</td>
+        }
+        }
+    </tr>
+</table>
