@@ -87,6 +87,8 @@ namespace YoTennis.Controllers
 
             var idsForSelectMatches = await _matchListService.GetMatches(UserId, newCount, newSkip);
 
+            
+
             var listOfMatchModelView = new List<MatchModelView>();
             foreach (var id in idsForSelectMatches)
             {
@@ -100,7 +102,7 @@ namespace YoTennis.Controllers
                     Date = state.MatchStartedAt != DateTime.MinValue ? state.MatchStartedAt.ToString() : "None",
                     Status = state.State.ToString(),
                     Score = Separate(state),
-                    State = state
+                    State = state                    
                 });
             }
 
@@ -109,10 +111,35 @@ namespace YoTennis.Controllers
                 ListMatchModelView = listOfMatchModelView,
                 TotalCount = totalCount,
                 Count = newCount,
-                Skip = newSkip
-            };
+                Skip = newSkip,
+                 FilterPayers = await FilterAsync()
+        };
 
             return View(containerForMatchModel);
+        }
+
+        public async Task<List<string>> FilterAsync()
+        {
+            List<string> FPlayers = new List<string>();
+            var idsForAllMatches = await _matchListService.GetMatches(UserId, await _matchListService.GetMatchCount(UserId), 0);
+            foreach (var id in idsForAllMatches)
+            {
+                var match = await _matchListService.GetMatchService(UserId, id);
+                var state = await match.GetStateAsync();
+                if (state.FirstPlayer != null)
+                {
+                    if (!FPlayers.Contains(state.FirstPlayer))
+                    {
+                        FPlayers.Add(state.FirstPlayer);
+                    }
+                    if (!FPlayers.Contains(state.SecondPlayer))
+                    {
+                        FPlayers.Add(state.SecondPlayer);
+                    }
+                }
+            }
+
+            return FPlayers;
         }
 
         public async Task<IActionResult> Delete(string id, string returnUrl)

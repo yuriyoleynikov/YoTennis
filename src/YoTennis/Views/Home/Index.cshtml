@@ -5,99 +5,123 @@
 }
 
 <p><a asp-action="Create" asp-controller="Match" class="btn btn-default btn-lg">Create Match</a></p>
+<div class="game-commands">
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Players
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Score
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var match in Model.ListMatchModelView)
+            {
+                    <tr>
+                        <td>
+                            @if (match.State.State != MatchState.Completed)
+                            {
+                                @Html.DisplayFor(modelMatch => match.Players)
+                            }
+                            else
+                            {
+                                @if (match.State.MatchScore.FirstPlayer > match.State.MatchScore.SecondPlayer)
+                                {
+                                    <div>
+                                        <b>@match.State.FirstPlayer</b> -
+                                        @match.State.SecondPlayer
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div>
+                                        @match.State.FirstPlayer -
+                                        <b>@match.State.SecondPlayer</b>
+                                    </div>
+                                }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Players
-            </th>
-            <th>
-                Date
-            </th>
-            <th>
-                Status
-            </th>
-            <th>
-                Score
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var match in Model.ListMatchModelView)
-        {
-            <tr>
-                <td>
-                    @if (match.State.State != MatchState.Completed)
-                    {
-                    @Html.DisplayFor(modelMatch => match.Players)
-                    }
-                    else
-                    {
-                        @if (match.State.MatchScore.FirstPlayer > match.State.MatchScore.SecondPlayer)
-                        {
-                            <div><b>@match.State.FirstPlayer</b> - 
-                            @match.State.SecondPlayer</div>
-                        }
-                        else
-                        {
-                            <div>@match.State.FirstPlayer -
-                            <b>@match.State.SecondPlayer</b></div>
-                        }
-
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelMatch => match.Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelMatch => match.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelMatch => match.Score)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Index", "Match", new { id = match.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = match.Id }) |
-                    @Html.ActionLink("Delete", "Delete", "Home", new
-               {
-                   id = match.Id,
-                   returnUrl = Url.Action("Index", "Home",
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelMatch => match.Date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelMatch => match.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelMatch => match.Score)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Index", "Match", new { id = match.Id }) |
+                            @Html.ActionLink("Details", "Details", new { id = match.Id }) |
+                            @Html.ActionLink("Delete", "Delete", "Home", new
+                       {
+                           id = match.Id,
+                           returnUrl = Url.Action("Index", "Home",
                    new
                    {
                        count = Model.Count,
                        skip = Model.Skip
                    })
-               })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<p>
-    Show -
-    @Html.ActionLink("10", "Index", "Home", new { count = 10, skip = 0 }) |
-    @Html.ActionLink("20", "Index", "Home", new { count = 20, skip = 0 }) |
-    @Html.ActionLink("All", "Index", "Home", new { count = Model.TotalCount != 0 ? Model.TotalCount : 10, skip = 0 })
-</p>
+                       })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-@if (Model.Count != Model.TotalCount)
-{
-    <p>
-        Page
-        @if (Model.Skip != 0)
-        {
-            @Html.ActionLink("<", "Index", "Home", new { count = Model.Count, skip = Model.Skip - Model.Count })
-        }
-        @{
-            int currentPage = Model.Skip == 0 ? 1 : Model.Skip / Model.Count + 1;
-        }
-        @currentPage
-        @if (Model.Skip + Model.Count < Model.TotalCount)
-        {
-            @Html.ActionLink(">", "Index", "Home", new { count = Model.Count, skip = Model.Skip + Model.Count })
-        }
-    </p>
+    <div class="my-margin-left">
+        <h6>
+            <p>Filter</p>
+            <p>Players:</p>
+            @foreach (var player in Model.FilterPayers)
+            {
+                <p>- @player</p>
             }
-<p>@Model.TotalCount Matches in system</p>
+            <p>Beginning with:</p>
+            <p>Finishing before:</p>
+        </h6>
+    </div>
+
+</div>
+<div>
+    <p>
+        Show -
+        @Html.ActionLink("10", "Index", "Home", new { count = 10, skip = 0 }) |
+        @Html.ActionLink("20", "Index", "Home", new { count = 20, skip = 0 }) |
+        @Html.ActionLink("All", "Index", "Home", new { count = Model.TotalCount != 0 ? Model.TotalCount : 10, skip = 0 })
+    </p>
+
+    @if (Model.Count != Model.TotalCount)
+    {
+        <p>
+            Page
+            @if (Model.Skip != 0)
+                {
+                @Html.ActionLink("<", "Index", "Home", new { count = Model.Count, skip = Model.Skip - Model.Count })
+            }
+            @{
+                int currentPage = Model.Skip == 0 ? 1 : Model.Skip / Model.Count + 1;
+            }
+            @currentPage
+            @if (Model.Skip + Model.Count < Model.TotalCount)
+                {
+                @Html.ActionLink(">", "Index", "Home", new { count = Model.Count, skip = Model.Skip + Model.Count })
+            }
+        </p>
+                }
+    <p>@Model.TotalCount Matches in system</p>
+</div>
+
 

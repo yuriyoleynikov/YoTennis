@@ -11,5 +11,7 @@ namespace YoTennis.Models
         public int TotalCount { get; set; }
         public int Count { get; set; }
         public int Skip { get; set; }
+
+        public List<string> FilterPayers { get; set; }
     }
 }
