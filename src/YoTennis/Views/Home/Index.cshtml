@@ -82,16 +82,16 @@
     </div>
 
     <div class="my-margin-left">
-        <h6>
-            <p>Filter</p>
-            <p>Players:</p>
+        <p>Filter</p>
+        <p>Players:</p>
+        <ul>
             @foreach (var player in Model.FilterPayers)
             {
-                <p>- @player</p>
+                <li>@Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player })</li>
             }
-            <p>Beginning with:</p>
-            <p>Finishing before:</p>
-        </h6>
+        </ul>
+        <p>Beginning with:</p>
+        <p>Finishing before:</p>
     </div>
 
 </div>

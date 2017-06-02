@@ -53,7 +53,7 @@ namespace YoTennis.Services
 
         public async Task<IEnumerable<string>> GetMatches3(string userId, int count, int skip, IEnumerable<string> filterPlayer)
         {
-            if (filterPlayer == Enumerable.Empty<string>())
+            if (!filterPlayer.Any())
             {
                 var matchIds = await _context.Matches.Where(match => match.UserId == userId)
                 .Select(match => match.Id).Skip(skip).Take(count).ToArrayAsync();

@@ -75,7 +75,7 @@ namespace YoTennis.Controllers
             return score.ToString();
         }
 
-        public async Task<IActionResult> Index(int count = 10, int skip = 0)
+        public async Task<IActionResult> Index(int count = 10, int skip = 0, string player = null)
         {
             var totalCount = await _matchListService.GetMatchCount(UserId);
             var (newCount, newSkip) = CorrectPagination(totalCount, count, skip);
@@ -85,7 +85,8 @@ namespace YoTennis.Controllers
                 return RedirectToAction(nameof(Index), new { count = newCount, skip = newSkip });
             }
 
-            var idsForSelectMatches = await _matchListService.GetMatches(UserId, newCount, newSkip);
+            var idsForSelectMatches = await _matchListService.GetMatches3(UserId, newCount, newSkip, 
+                player == null ? Enumerable.Empty<string>() : Enumerable.Repeat(player, 1));
 
             
 
