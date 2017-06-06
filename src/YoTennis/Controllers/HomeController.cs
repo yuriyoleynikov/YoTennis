@@ -17,9 +17,7 @@ namespace YoTennis.Controllers
     {
         private IMatchListService _matchListService;
         private string UserId => User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-        private List<string> _filterForPlayers = new List<string>();
-
+        
         public HomeController(IMatchListService matchListService)
         {
             _matchListService = matchListService;
@@ -77,7 +75,7 @@ namespace YoTennis.Controllers
             return score.ToString();
         }
 
-        public async Task<IActionResult> Index(int count = 10, int skip = 0, string player = null)
+        public async Task<IActionResult> Index(int count = 10, int skip = 0, IEnumerable<string> player = null)
         {
             var totalCount = await _matchListService.GetMatchCount(UserId);
             var (newCount, newSkip) = CorrectPagination(totalCount, count, skip);
@@ -86,10 +84,10 @@ namespace YoTennis.Controllers
             {
                 return RedirectToAction(nameof(Index), new { count = newCount, skip = newSkip });
             }
-            if (player != null)
-                _filterForPlayers.Add(player);
 
-            var idsForSelectMatches = await _matchListService.GetMatches3(UserId, newCount, newSkip, _filterForPlayers);            
+            player = player ?? Enumerable.Empty<string>();
+
+            var idsForSelectMatches = await _matchListService.GetMatches3(UserId, newCount, newSkip, player);
 
             var listOfMatchModelView = new List<MatchModelView>();
             foreach (var id in idsForSelectMatches)
@@ -114,7 +112,8 @@ namespace YoTennis.Controllers
                 TotalCount = totalCount,
                 Count = newCount,
                 Skip = newSkip,
-                FilterPayers = await FilterAsync()
+                FilterPayers = await FilterAsync(),
+                SelectedPlayers = player
         };
 
             return View(containerForMatchModel);

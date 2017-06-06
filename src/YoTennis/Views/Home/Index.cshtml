@@ -83,11 +83,21 @@
 
     <div class="my-margin-left">
         <p>Filter</p>
-        <p>Players:</p>
-        <ul>
+        <p>Players:</p>        
+        <ul>            
             @foreach (var player in Model.FilterPayers)
             {
-                <li>@Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player })</li>
+                var selectedPlayers = Model.SelectedPlayers.ToList();
+                if (selectedPlayers.Contains(player))
+                {
+                    selectedPlayers.Remove(player);
+                }
+                else
+                {
+                    selectedPlayers.Add(player);
+                }
+                var marker = Model.SelectedPlayers.Any() && !Model.SelectedPlayers.Contains(player) ? "-" : "+";
+                <li>@marker @Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player = selectedPlayers })</li>
             }
         </ul>
         <p>Beginning with:</p>
