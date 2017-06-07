@@ -88,7 +88,7 @@ namespace YoTennis.Controllers
             player = player ?? Enumerable.Empty<string>();
             state = state ?? Enumerable.Empty<MatchState>();
 
-            var idsForSelectMatches = await _matchListService.GetMatches3(UserId, newCount, newSkip, player);
+            var idsForSelectMatches = await _matchListService.GetMatches3(UserId, newCount, newSkip, player, state);
 
             var listOfMatchModelView = new List<MatchModelView>();
             foreach (var id in idsForSelectMatches)
