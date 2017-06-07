@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YoTennis.Data;
+using YoTennis.Models;
 
 namespace YoTennis.Services
 {
@@ -42,7 +43,7 @@ namespace YoTennis.Services
 
         public Task<int> GetMatchCount(string userId) =>
             _context.Matches.Where(match => match.UserId == userId).CountAsync();
-        
+
         public async Task<IEnumerable<string>> GetMatches(string userId, int count, int skip)
         {
             var matchIds = await _context.Matches.Where(match => match.UserId == userId)
@@ -51,34 +52,24 @@ namespace YoTennis.Services
             return matchIds.Select(matchId => matchId.ToString());
         }
 
-        public async Task<IEnumerable<string>> GetMatches3(string userId, int count, int skip, IEnumerable<string> filterPlayer)
+        public async Task<IEnumerable<string>> GetMatches3(string userId, int count, int skip, IEnumerable<string> filterPlayer,
+            IEnumerable<MatchState> filterState)
         {
-            if (!filterPlayer.Any())
+            var matchIds = await _context.Matches.Where(match => match.UserId == userId)
+            .Select(match => match.Id).ToArrayAsync();
+
+            var matchIds2 = new List<string>();
+
+            foreach (var guid in matchIds)
             {
-                var matchIds = await _context.Matches.Where(match => match.UserId == userId)
-                .Select(match => match.Id).Skip(skip).Take(count).ToArrayAsync();
-
-                return matchIds.Select(matchId => matchId.ToString());
-            }
-            else
-            {
-                var matchIds = await _context.Matches.Where(match => match.UserId == userId)
-                .Select(match => match.Id).ToArrayAsync();
-
-                var matchIds2 = new List<string>();
-
-                foreach (var guid in matchIds)
-                {
-                    var match_ = await GetMatchService(userId, guid.ToString());
-                    var state = await match_.GetStateAsync();
-                    if (filterPlayer.Contains(state.FirstPlayer) || filterPlayer.Contains(state.SecondPlayer))
-                    {
+                var match_ = await GetMatchService(userId, guid.ToString());
+                var state = await match_.GetStateAsync();
+                if (filterPlayer.Contains(state.FirstPlayer) || filterPlayer.Contains(state.SecondPlayer) || !filterPlayer.Any())
+                    if (!filterState.Any() || filterState.Contains(state.State))
                         matchIds2.Add(guid.ToString());
-                    }
-                }
-
-                return matchIds2.Skip(skip).Take(count).Select(matchId => matchId.ToString());
             }
+
+            return matchIds2.Skip(skip).Take(count).Select(matchId => matchId.ToString());
         }
 
         public async Task<IMatchService> GetMatchService(string userId, string matchId) =>

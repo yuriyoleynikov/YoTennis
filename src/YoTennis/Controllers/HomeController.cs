@@ -75,7 +75,7 @@ namespace YoTennis.Controllers
             return score.ToString();
         }
 
-        public async Task<IActionResult> Index(int count = 10, int skip = 0, IEnumerable<string> player = null)
+        public async Task<IActionResult> Index(int count = 10, int skip = 0, IEnumerable<string> player = null, IEnumerable<MatchState> state = null)
         {
             var totalCount = await _matchListService.GetMatchCount(UserId);
             var (newCount, newSkip) = CorrectPagination(totalCount, count, skip);
@@ -86,6 +86,7 @@ namespace YoTennis.Controllers
             }
 
             player = player ?? Enumerable.Empty<string>();
+            state = state ?? Enumerable.Empty<MatchState>();
 
             var idsForSelectMatches = await _matchListService.GetMatches3(UserId, newCount, newSkip, player);
 
@@ -93,16 +94,16 @@ namespace YoTennis.Controllers
             foreach (var id in idsForSelectMatches)
             {
                 var match = await _matchListService.GetMatchService(UserId, id);
-                var state = await match.GetStateAsync();
+                var cur_state = await match.GetStateAsync();
 
                 listOfMatchModelView.Add(new MatchModelView
                 {
                     Id = id,
-                    Players = state.FirstPlayer != null ? state.FirstPlayer + " - " + state.SecondPlayer : "None",
-                    Date = state.MatchStartedAt != DateTime.MinValue ? state.MatchStartedAt.ToString() : "None",
-                    Status = state.State.ToString(),
-                    Score = Separate(state),
-                    State = state                    
+                    Players = cur_state.FirstPlayer != null ? cur_state.FirstPlayer + " - " + cur_state.SecondPlayer : "None",
+                    Date = cur_state.MatchStartedAt != DateTime.MinValue ? cur_state.MatchStartedAt.ToString() : "None",
+                    Status = cur_state.State.ToString(),
+                    Score = Separate(cur_state),
+                    State = cur_state
                 });
             }
 
@@ -113,8 +114,9 @@ namespace YoTennis.Controllers
                 Count = newCount,
                 Skip = newSkip,
                 FilterPayers = await FilterAsync(),
-                SelectedPlayers = player
-        };
+                SelectedPlayers = player,                
+                SelectedState = state
+            };
 
             return View(containerForMatchModel);
         }

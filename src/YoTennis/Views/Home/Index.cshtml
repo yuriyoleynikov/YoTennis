@@ -26,7 +26,7 @@
             </thead>
             <tbody>
                 @foreach (var match in Model.ListMatchModelView)
-            {
+                {
                     <tr>
                         <td>
                             @if (match.State.State != MatchState.Completed)
@@ -68,11 +68,11 @@
                        {
                            id = match.Id,
                            returnUrl = Url.Action("Index", "Home",
-                   new
-                   {
-                       count = Model.Count,
-                       skip = Model.Skip
-                   })
+new
+{
+    count = Model.Count,
+    skip = Model.Skip
+})
                        })
                         </td>
                     </tr>
@@ -83,8 +83,19 @@
 
     <div class="my-margin-left">
         <p>Filter</p>
-        <p>Players:</p>        
-        <ul>            
+        <p>Players:</p>
+        <ul>
+            @if (Model.SelectedPlayers.Any())
+            {
+                if (Model.SelectedPlayers.Count() == 1)
+                {
+                    <li>@Html.ActionLink("Clear", "Index", "Home", new { count = Model.Count, skip = 0 })</li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink("Clear all", "Index", "Home", new { count = Model.Count, skip = 0 })</li>
+                }
+            }
             @foreach (var player in Model.FilterPayers)
             {
                 var selectedPlayers = Model.SelectedPlayers.ToList();
@@ -96,8 +107,62 @@
                 {
                     selectedPlayers.Add(player);
                 }
-                var marker = Model.SelectedPlayers.Any() && !Model.SelectedPlayers.Contains(player) ? "-" : "+";
-                <li>@marker @Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player = selectedPlayers })</li>
+
+                if (!Model.SelectedPlayers.Any())
+                {
+                    <li>@Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player = selectedPlayers })</li>
+                }
+                else
+                {
+                    if (Model.SelectedPlayers.Contains(player))
+                    {
+                        <li>@player (@Html.ActionLink("Remove", "Index", "Home", new { count = Model.Count, skip = 0, player = selectedPlayers }))</li>
+                    }
+                    else
+                    {
+                        <li>
+                            @Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player = player })
+                            (@Html.ActionLink("Add", "Index", "Home", new { count = Model.Count, skip = 0, player = selectedPlayers }))
+                        </li>
+                    }
+                }
+            }
+        </ul>
+        <p>Current Status:</p>
+        <ul>
+            @foreach (var state in Model.FilterState)
+            {
+                var selectedState = Model.SelectedState.ToList();
+                if (selectedState.Contains(state))
+                {
+                    selectedState.Remove(state);
+                }
+                else
+                {
+                    selectedState.Add(state);
+                }
+
+                if (!Model.SelectedState.Any())
+                {
+                    <li>
+                        @Html.ActionLink(state.ToString(), "Index", "Home",
+                            new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = selectedState })
+                    </li>
+                }
+                else
+                {
+                    if (Model.SelectedState.Contains(state))
+                    {
+                        <li>@state.ToString() 
+                            (@Html.ActionLink("Remove", "Index", "Home",
+                           new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = selectedState }))</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(state.ToString(), "Index", "Home",
+                           new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = state })</li>
+                    }
+                }
             }
         </ul>
         <p>Beginning with:</p>
@@ -108,9 +173,9 @@
 <div>
     <p>
         Show -
-        @Html.ActionLink("10", "Index", "Home", new { count = 10, skip = 0 }) |
-        @Html.ActionLink("20", "Index", "Home", new { count = 20, skip = 0 }) |
-        @Html.ActionLink("All", "Index", "Home", new { count = Model.TotalCount != 0 ? Model.TotalCount : 10, skip = 0 })
+        @Html.ActionLink("10", "Index", "Home", new { count = 10, skip = 0, player = Model.SelectedPlayers }) |
+        @Html.ActionLink("20", "Index", "Home", new { count = 20, skip = 0, player = Model.SelectedPlayers }) |
+        @Html.ActionLink("All", "Index", "Home", new { count = Model.TotalCount != 0 ? Model.TotalCount : 10, skip = 0, player = Model.SelectedPlayers })
     </p>
 
     @if (Model.Count != Model.TotalCount)
@@ -119,7 +184,7 @@
             Page
             @if (Model.Skip != 0)
                 {
-                @Html.ActionLink("<", "Index", "Home", new { count = Model.Count, skip = Model.Skip - Model.Count })
+                @Html.ActionLink("<", "Index", "Home", new { count = Model.Count, skip = Model.Skip - Model.Count, player = Model.SelectedPlayers })
             }
             @{
                 int currentPage = Model.Skip == 0 ? 1 : Model.Skip / Model.Count + 1;
@@ -127,7 +192,7 @@
             @currentPage
             @if (Model.Skip + Model.Count < Model.TotalCount)
                 {
-                @Html.ActionLink(">", "Index", "Home", new { count = Model.Count, skip = Model.Skip + Model.Count })
+                @Html.ActionLink(">", "Index", "Home", new { count = Model.Count, skip = Model.Skip + Model.Count, player = Model.SelectedPlayers })
             }
         </p>
                 }
