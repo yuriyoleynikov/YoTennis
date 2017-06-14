@@ -49,7 +49,6 @@
                                         <b>@match.State.SecondPlayer</b>
                                     </div>
                                 }
-
                             }
                         </td>
                         <td>
@@ -67,12 +66,8 @@
                             @Html.ActionLink("Delete", "Delete", "Home", new
                        {
                            id = match.Id,
-                           returnUrl = Url.Action("Index", "Home",
-new
-{
-    count = Model.Count,
-    skip = Model.Skip
-})
+                           returnUrl = Url.Action("Index", "Home", 
+                           new {count = Model.Count, skip = Model.Skip, player = Model.SelectedPlayers, state = Model.SelectedState })
                        })
                         </td>
                     </tr>
@@ -83,19 +78,14 @@ new
 
     <div class="my-margin-left">
         <p>Filter</p>
+
+        @if (Model.SelectedPlayers.Any() || Model.SelectedState.Any())
+        {
+            <p>@Html.ActionLink("Clear", "Index", "Home", new { count = Model.Count, skip = 0 })</p>
+        }
+        
         <p>Players:</p>
-        <ul>
-            @if (Model.SelectedPlayers.Any())
-            {
-                if (Model.SelectedPlayers.Count() == 1)
-                {
-                    <li>@Html.ActionLink("Clear", "Index", "Home", new { count = Model.Count, skip = 0 })</li>
-                }
-                else
-                {
-                    <li>@Html.ActionLink("Clear all", "Index", "Home", new { count = Model.Count, skip = 0 })</li>
-                }
-            }
+        <ul>            
             @foreach (var player in Model.FilterPayers)
             {
                 var selectedPlayers = Model.SelectedPlayers.ToList();
@@ -108,21 +98,21 @@ new
                     selectedPlayers.Add(player);
                 }
 
-                if (!Model.SelectedPlayers.Any())
+                if (!Model.SelectedPlayers.Any() && !Model.SelectedState.Any())
                 {
-                    <li>@Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player = selectedPlayers })</li>
+                    <li>@Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player = selectedPlayers, state = Model.SelectedState })</li>
                 }
                 else
                 {
                     if (Model.SelectedPlayers.Contains(player))
                     {
-                        <li>@player (@Html.ActionLink("Remove", "Index", "Home", new { count = Model.Count, skip = 0, player = selectedPlayers }))</li>
+                        <li>@player (@Html.ActionLink("Remove", "Index", "Home", new { count = Model.Count, skip = 0, player = selectedPlayers, state = Model.SelectedState }))</li>
                     }
                     else
                     {
                         <li>
-                            @Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player = player })
-                            (@Html.ActionLink("Add", "Index", "Home", new { count = Model.Count, skip = 0, player = selectedPlayers }))
+                            @Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player = player, state = Model.SelectedState })
+                            (@Html.ActionLink("Add", "Index", "Home", new { count = Model.Count, skip = 0, player = selectedPlayers, state = Model.SelectedState }))
                         </li>
                     }
                 }
@@ -142,7 +132,7 @@ new
                     selectedState.Add(state);
                 }
 
-                if (!Model.SelectedState.Any())
+                if (!Model.SelectedPlayers.Any() && !Model.SelectedState.Any())
                 {
                     <li>
                         @Html.ActionLink(state.ToString(), "Index", "Home",
@@ -153,14 +143,29 @@ new
                 {
                     if (Model.SelectedState.Contains(state))
                     {
-                        <li>@state.ToString() 
+                        <li>
+                            @state.ToString()
                             (@Html.ActionLink("Remove", "Index", "Home",
-                           new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = selectedState }))</li>
+                           new { count = Model.Count, skip = 0, player = Model.SelectedPlayers}))
+                        </li>
                     }
                     else
                     {
+                        if (Model.SelectedPlayers.Any())
+                        {
                         <li>@Html.ActionLink(state.ToString(), "Index", "Home",
-                           new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = state })</li>
+                            new { count = Model.Count, skip = 0, state = state })
+                            (@Html.ActionLink("Add", "Index", "Home",
+                                new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = state }))
+                        </li>
+                        }
+                        else
+                        {
+                            <li>
+                                @Html.ActionLink(state.ToString(), "Index", "Home",
+                                new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = state })
+                            </li>
+                        }
                     }
                 }
             }
@@ -173,9 +178,15 @@ new
 <div>
     <p>
         Show -
-        @Html.ActionLink("10", "Index", "Home", new { count = 10, skip = 0, player = Model.SelectedPlayers }) |
-        @Html.ActionLink("20", "Index", "Home", new { count = 20, skip = 0, player = Model.SelectedPlayers }) |
-        @Html.ActionLink("All", "Index", "Home", new { count = Model.TotalCount != 0 ? Model.TotalCount : 10, skip = 0, player = Model.SelectedPlayers })
+        @Html.ActionLink("10", "Index", "Home", new { count = 10, skip = 0, player = Model.SelectedPlayers, state = Model.SelectedState }) |
+        @Html.ActionLink("20", "Index", "Home", new { count = 20, skip = 0, player = Model.SelectedPlayers, state = Model.SelectedState }) |
+        @Html.ActionLink("All", "Index", "Home", new
+   {
+       count = Model.TotalCount != 0 ? Model.TotalCount : 10,
+       skip = 0,
+       player = Model.SelectedPlayers,
+       state = Model.SelectedState
+   })
     </p>
 
     @if (Model.Count != Model.TotalCount)
@@ -184,7 +195,13 @@ new
             Page
             @if (Model.Skip != 0)
                 {
-                @Html.ActionLink("<", "Index", "Home", new { count = Model.Count, skip = Model.Skip - Model.Count, player = Model.SelectedPlayers })
+                @Html.ActionLink("<", "Index", "Home", new
+           {
+               count = Model.Count,
+               skip = Model.Skip - Model.Count,
+               player = Model.SelectedPlayers,
+               state = Model.SelectedState
+           })
             }
             @{
                 int currentPage = Model.Skip == 0 ? 1 : Model.Skip / Model.Count + 1;
@@ -192,11 +209,15 @@ new
             @currentPage
             @if (Model.Skip + Model.Count < Model.TotalCount)
                 {
-                @Html.ActionLink(">", "Index", "Home", new { count = Model.Count, skip = Model.Skip + Model.Count, player = Model.SelectedPlayers })
+                @Html.ActionLink(">", "Index", "Home", new
+           {
+               count = Model.Count,
+               skip = Model.Skip + Model.Count,
+               player = Model.SelectedPlayers,
+               state = Model.SelectedState
+           })
             }
         </p>
                 }
     <p>@Model.TotalCount Matches in system</p>
 </div>
-
-
