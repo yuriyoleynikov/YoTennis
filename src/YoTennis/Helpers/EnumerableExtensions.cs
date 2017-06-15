@@ -9,20 +9,23 @@ namespace YoTennis.Helpers
     {
         public static IEnumerable<T> WithElement<T>(this IEnumerable<T> source, T element)
         {
-            foreach (T t in source)
-                yield return t;
-
-            yield return element;
-            yield break;
-        }
-
-        public static IEnumerable<T> WithoutElement<T>(this IEnumerable<T> source, T element)
-        {
-            foreach (T t in source)
-                if (!element.Equals(t))
+            if (source != null)
+                foreach (T t in source)
                     yield return t;
 
-            yield break;
+            yield return element;
+        }
+
+        public static IEnumerable<T> WithoutElement<T>(this IEnumerable<T> source, T element, IEqualityComparer<T> comparer = null)
+        {
+            if (source != null)
+            {
+                if (comparer == null)
+                    comparer = EqualityComparer<T>.Default;
+                foreach (T t in source)
+                    if (!comparer.Equals(element, t))
+                        yield return t;
+            }
         }
     }
 }

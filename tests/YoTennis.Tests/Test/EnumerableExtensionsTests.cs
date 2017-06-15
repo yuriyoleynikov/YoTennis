@@ -13,49 +13,183 @@ namespace YoTennis.Tests.Test
         [Fact]
         public void Test_WithElement_String()
         {
-            IEnumerable<string> sequence = new List<string> { "one", "two" };
-            sequence.WithElement("three");
-            sequence.Should().BeEquivalentTo(new List<string> { "one", "two", "three" });
+            var sequence = new[] { "one", "two" };
+            var result = sequence.WithElement("three");
+            result.Should().BeEquivalentTo(new[] { "one", "two", "three" });
         }
 
         [Fact]
         public void Test_WithElement_Int()
         {
-            IEnumerable<int> sequence = new List<int> { 1, 2 };
-            sequence.WithElement(3);
-            sequence.Should().BeEquivalentTo(new List<int> { 1, 2, 3 });
+            var sequence = new[] { 1, 2 };
+            var result = sequence.WithElement(3);
+            result.Should().BeEquivalentTo(new[] { 1, 2, 3 });
         }
 
         [Fact]
         public void Test_WithoutElement_String()
         {
-            IEnumerable<string> sequence = new List<string> { "one", "two" };
-            sequence.WithoutElement("two");
-            sequence.Should().BeEquivalentTo(new List<string> { "one" });
+            var sequence = new[] { "one", "two" };
+            var result = sequence.WithoutElement("two");
+            result.Should().BeEquivalentTo(new[] { "one" });
         }
 
         [Fact]
         public void Test_WithoutElement_Int()
         {
-            IEnumerable<int> sequence = new List<int> { 1, 2 };
-            sequence.WithoutElement(2);
-            sequence.Should().BeEquivalentTo(new List<int> { 1 });
+            var sequence = new[] { 1, 2 };
+            var result = sequence.WithoutElement(2);
+            result.Should().BeEquivalentTo(new[] { 1 });
         }
 
         [Fact]
         public void Test_Null_WithElement_String()
         {
             IEnumerable<string> sequence = null;
-            sequence.WithElement("one");
-            sequence.Should().BeEquivalentTo(new List<string> { "one" });
+            var result = sequence.WithElement("one");
+            result.Should().BeEquivalentTo(new[] { "one" });
         }
 
         [Fact]
         public void Test_Null_WithElement_Int()
         {
+            IEnumerable<int> sequence = null;
+            var result = sequence.WithElement(1);
+            result.Should().BeEquivalentTo(new[] { 1 });
+        }
+
+        [Fact]
+        public void Test_Null_WithoutElement_String()
+        {
             IEnumerable<string> sequence = null;
-            sequence.WithElement(1);
-            sequence.Should().BeEquivalentTo(new List<int> { 1 });
+            var result = sequence.WithoutElement("one");
+            result.Should().BeEquivalentTo(new string[] { });
+        }
+
+        [Fact]
+        public void Test_Null_WithoutElement_Int()
+        {
+            IEnumerable<int> sequence = null;
+            var result = sequence.WithoutElement(1);
+            result.Should().BeEquivalentTo(new int[] { });
+        }
+
+        [Fact]
+        public void Test_WithElement_String_WithNull()
+        {
+            var sequence = new[] { null, "two" };
+            var result = sequence.WithElement("three");
+            result.Should().BeEquivalentTo(new[] { null, "two", "three" });
+        }
+
+        [Fact]
+        public void Test_WithoutElement_String_WithNull_WithCompare()
+        {
+            var forCompare = StringComparer.OrdinalIgnoreCase;
+            var sequence = new[] { null, "two", "three" };
+            var result = sequence.WithoutElement("tWo", forCompare);
+            result.Should().BeEquivalentTo(new string[] { null, "three" });
+        }
+
+        [Fact]
+        public void Test_WithoutElement_String_WithNull_WithCompare2()
+        {
+            var forFirstCompare = new FirstEqualityComparer();
+            var sequence = new[] { null, "two", "three" };
+            var result = sequence.WithoutElement("tWo", forFirstCompare);
+            result.Should().BeEquivalentTo(new string[] { null });
+        }
+
+        [Fact]
+        public void Test_WithoutElement_String_WithCompare()
+        {
+            var forFirstCompare = new FirstEqualityComparer();
+            var sequence = new[] { "one", "two", "three" };
+            var result = sequence.WithoutElement("five", forFirstCompare);
+            result.Should().BeEquivalentTo(new[] { "one", "two", "three" });
+        }
+
+        [Fact]
+        public void Test_WithoutElement_Int_WithCompare3()
+        {
+            var IEComparer = new IntEqualityComparer();
+            var sequence = new[] { 11, 22, 33 };
+            var result = sequence.WithoutElement(20, IEComparer);
+            result.Should().BeEquivalentTo(new[] { 11, 33 });
+        }
+
+        [Fact]
+        public void Test_WithoutElement_Int_WithCompare()
+        {
+            var IEComparer = new IntEqualityComparer();
+            var sequence = new[] { 11, 22, 33 };
+            var result = sequence.WithoutElement(44, IEComparer);
+            result.Should().BeEquivalentTo(new[] { 11, 22, 33 });
+        }
+
+        [Fact]
+        public void Test_WithoutElement_Int_WithCompare4()
+        {
+            var IEComparer2 = new IntDigitEqualityComparer();
+            var sequence = new[] { 1, 11, 111, 1111 };
+            var result = sequence.WithoutElement(888, IEComparer2);
+            result.Should().BeEquivalentTo(new[] { 1, 11, 1111 });
+        }
+
+        [Fact]
+        public void Test_WithoutElement_Int_WithCompare5()
+        {
+            var IEComparer2 = new IntDigitEqualityComparer();
+            var sequence = new[] { 1, 11, 111, 1111 };
+            var result = sequence.WithoutElement(88888, IEComparer2);
+            result.Should().BeEquivalentTo(new[] { 1, 11, 111, 1111 });
+        }
+
+        class FirstEqualityComparer : IEqualityComparer<string>
+        {
+            public bool Equals(string x, string y)
+            {
+                if (x == null)
+                    return y == null;
+                if (y == null)
+                    return false;
+                if (x.Length == 0)
+                    return y.Length == 0;
+                if (y.Length == 0)
+                    return false;
+                return x[0] == y[0];
+            }
+
+            public int GetHashCode(string obj)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        class IntEqualityComparer : IEqualityComparer<int>
+        {
+            public bool Equals(int x, int y)
+            {
+                return x / 10 == y / 10;
+            }
+
+            public int GetHashCode(int obj)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        class IntDigitEqualityComparer : IEqualityComparer<int>
+        {
+            public bool Equals(int x, int y)
+            {
+                return x.ToString().Length == y.ToString().Length;
+            }
+
+            public int GetHashCode(int obj)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
