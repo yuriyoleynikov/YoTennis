@@ -192,16 +192,20 @@ namespace YoTennis.Tests.Test
         {
             public bool Equals(int x, int y)
             {
-                for (;;)
+                if (x > -10 && x < 10 && y > -10 && y < 10)
+                    return true;
+
+                while (true)
                 {
+                    x = x / 10;
+                    y = y / 10;
+
                     if (x == 0 || y == 0)
                     {
                         if (x == y)
                             return true;
                         return false;
                     }
-                    x = x / 10;
-                    y = y / 10;
                 }
             }
 
