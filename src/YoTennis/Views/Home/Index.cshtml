@@ -1,4 +1,5 @@
 ﻿@model ContainerForMatchModel
+@using YoTennis.Helpers;
 
 @{
     ViewData["Title"] = "Home Page";
@@ -66,8 +67,8 @@
                             @Html.ActionLink("Delete", "Delete", "Home", new
                        {
                            id = match.Id,
-                           returnUrl = Url.Action("Index", "Home", 
-                           new {count = Model.Count, skip = Model.Skip, player = Model.SelectedPlayers, state = Model.SelectedState })
+                           returnUrl = Url.Action("Index", "Home",
+                           new { count = Model.Count, skip = Model.Skip, player = Model.SelectedPlayers, state = Model.SelectedState })
                        })
                         </td>
                     </tr>
@@ -83,36 +84,26 @@
         {
             <p>@Html.ActionLink("Clear", "Index", "Home", new { count = Model.Count, skip = 0 })</p>
         }
-        
+
         <p>Players:</p>
-        <ul>            
+        <ul>
             @foreach (var player in Model.FilterPayers)
             {
-                var selectedPlayers = Model.SelectedPlayers.ToList();
-                if (selectedPlayers.Contains(player))
-                {
-                    selectedPlayers.Remove(player);
-                }
-                else
-                {
-                    selectedPlayers.Add(player);
-                }
-
                 if (!Model.SelectedPlayers.Any() && !Model.SelectedState.Any())
                 {
-                    <li>@Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player = selectedPlayers, state = Model.SelectedState })</li>
+                    <li>@Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player = Model.SelectedPlayers.WithElement(player)})</li>
                 }
                 else
                 {
                     if (Model.SelectedPlayers.Contains(player))
                     {
-                        <li>@player (@Html.ActionLink("Remove", "Index", "Home", new { count = Model.Count, skip = 0, player = selectedPlayers, state = Model.SelectedState }))</li>
+                        <li>@player (@Html.ActionLink("Remove", "Index", "Home", new { count = Model.Count, skip = 0, player = Model.SelectedPlayers.WithoutElement(player), state = Model.SelectedState }))</li>
                     }
                     else
                     {
                         <li>
-                            @Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player = player, state = Model.SelectedState })
-                            (@Html.ActionLink("Add", "Index", "Home", new { count = Model.Count, skip = 0, player = selectedPlayers, state = Model.SelectedState }))
+                            @Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player = player })
+                            (@Html.ActionLink("Add", "Index", "Home", new { count = Model.Count, skip = 0, player = Model.SelectedPlayers.WithElement(player), state = Model.SelectedState }))
                         </li>
                     }
                 }
@@ -122,21 +113,11 @@
         <ul>
             @foreach (var state in Model.FilterState)
             {
-                var selectedState = Model.SelectedState.ToList();
-                if (selectedState.Contains(state))
-                {
-                    selectedState.Remove(state);
-                }
-                else
-                {
-                    selectedState.Add(state);
-                }
-
                 if (!Model.SelectedPlayers.Any() && !Model.SelectedState.Any())
                 {
                     <li>
                         @Html.ActionLink(state.ToString(), "Index", "Home",
-                            new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = selectedState })
+                            new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = Model.SelectedState.WithElement(state) })
                     </li>
                 }
                 else
@@ -146,14 +127,15 @@
                         <li>
                             @state.ToString()
                             (@Html.ActionLink("Remove", "Index", "Home",
-                           new { count = Model.Count, skip = 0, player = Model.SelectedPlayers}))
+                           new { count = Model.Count, skip = 0, player = Model.SelectedPlayers }))
                         </li>
                     }
                     else
                     {
                         if (Model.SelectedPlayers.Any())
                         {
-                        <li>@Html.ActionLink(state.ToString(), "Index", "Home",
+                            <li>
+                                @Html.ActionLink(state.ToString(), "Index", "Home",
                             new { count = Model.Count, skip = 0, state = state })
                             (@Html.ActionLink("Add", "Index", "Home",
                                 new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = state }))
