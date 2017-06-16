@@ -94,7 +94,7 @@ namespace YoTennis.Tests.Test
         [Fact]
         public void Test_WithoutElement_String_WithNull_WithCompare2()
         {
-            var forFirstCompare = new FirstEqualityComparer();
+            var forFirstCompare = new FirstCharEqualityComparer();
             var sequence = new[] { null, "two", "three" };
             var result = sequence.WithoutElement("tWo", forFirstCompare);
             result.Should().BeEquivalentTo(new string[] { null });
@@ -103,7 +103,7 @@ namespace YoTennis.Tests.Test
         [Fact]
         public void Test_WithoutElement_String_WithCompare()
         {
-            var forFirstCompare = new FirstEqualityComparer();
+            var forFirstCompare = new FirstCharEqualityComparer();
             var sequence = new[] { "one", "two", "three" };
             var result = sequence.WithoutElement("five", forFirstCompare);
             result.Should().BeEquivalentTo(new[] { "one", "two", "three" });
@@ -112,40 +112,49 @@ namespace YoTennis.Tests.Test
         [Fact]
         public void Test_WithoutElement_Int_WithCompare3()
         {
-            var IEComparer = new IntEqualityComparer();
+            var compare = new IntEqualityComparer();
             var sequence = new[] { 11, 22, 33 };
-            var result = sequence.WithoutElement(20, IEComparer);
+            var result = sequence.WithoutElement(20, compare);
             result.Should().BeEquivalentTo(new[] { 11, 33 });
         }
 
         [Fact]
         public void Test_WithoutElement_Int_WithCompare()
         {
-            var IEComparer = new IntEqualityComparer();
+            var compare = new IntEqualityComparer();
             var sequence = new[] { 11, 22, 33 };
-            var result = sequence.WithoutElement(44, IEComparer);
+            var result = sequence.WithoutElement(44, compare);
             result.Should().BeEquivalentTo(new[] { 11, 22, 33 });
         }
 
         [Fact]
         public void Test_WithoutElement_Int_WithCompare4()
         {
-            var IEComparer2 = new IntDigitEqualityComparer();
+            var compare = new IntDigitEqualityComparer();
             var sequence = new[] { 1, 11, 111, 1111 };
-            var result = sequence.WithoutElement(888, IEComparer2);
+            var result = sequence.WithoutElement(888, compare);
             result.Should().BeEquivalentTo(new[] { 1, 11, 1111 });
         }
 
         [Fact]
         public void Test_WithoutElement_Int_WithCompare5()
         {
-            var IEComparer2 = new IntDigitEqualityComparer();
+            var compare = new IntDigitEqualityComparer();
             var sequence = new[] { 1, 11, 111, 1111 };
-            var result = sequence.WithoutElement(88888, IEComparer2);
+            var result = sequence.WithoutElement(88888, compare);
             result.Should().BeEquivalentTo(new[] { 1, 11, 111, 1111 });
         }
 
-        class FirstEqualityComparer : IEqualityComparer<string>
+        [Fact]
+        public void Test_WithoutElement_Int_WithCompare6()
+        {
+            var compare = new IntDigitEqualityComparer();
+            var sequence = new[] { 1, -11, 111, 1111 };
+            var result = sequence.WithoutElement(22, compare);
+            result.Should().BeEquivalentTo(new[] { 1, 111, 1111 });
+        }
+
+        class FirstCharEqualityComparer : IEqualityComparer<string>
         {
             public bool Equals(string x, string y)
             {
@@ -183,7 +192,17 @@ namespace YoTennis.Tests.Test
         {
             public bool Equals(int x, int y)
             {
-                return x.ToString().Length == y.ToString().Length;
+                for (;;)
+                {
+                    if (x == 0 || y == 0)
+                    {
+                        if (x == y)
+                            return true;
+                        return false;
+                    }
+                    x = x / 10;
+                    y = y / 10;
+                }
             }
 
             public int GetHashCode(int obj)
