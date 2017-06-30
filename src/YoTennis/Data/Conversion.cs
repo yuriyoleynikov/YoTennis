@@ -23,7 +23,7 @@ namespace YoTennis.Data
                 matchInfo.MatchStartedAt = model.MatchStartedAt;
 
             if (model.State != MatchState.NotStarted && model.State != MatchState.Drawing)
-                matchInfo.MatchScore = ForScoreExtensions.Separate(model);
+                matchInfo.MatchScore = MatchScoreExtensions.ToSeparatedScoreString(model);
 
             if (model.State == MatchState.Completed)
                 matchInfo.Winner = model.MatchScore.FirstPlayer > model.MatchScore.SecondPlayer ? Player.First : Player.Second;

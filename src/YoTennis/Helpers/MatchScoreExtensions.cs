@@ -7,9 +7,9 @@ using YoTennis.Models;
 
 namespace YoTennis.Helpers
 {
-    public static class ForScoreExtensions
+    public static class MatchScoreExtensions
     {
-        public static string Separate(MatchModel state)
+        public static string ToSeparatedScoreString(MatchModel state)
         {
             StringBuilder score = new StringBuilder();
             bool isFirst = true;
