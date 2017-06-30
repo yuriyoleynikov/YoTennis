@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+using YoTennis.Data;
 using YoTennis.Models;
 using YoTennis.Models.Events;
 
@@ -22,6 +23,15 @@ namespace YoTennis.Tests.Test
             var myGame = new GameHandler();
 
             myGame.CurrentState.State.Should().Be(MatchState.NotStarted);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.NotStarted);
+            matchInfo.MatchStartedAt.Should().Be(DateTime.MinValue);
+            matchInfo.FirstPlayer.Should().Be(null);
+            matchInfo.SecondPlayer.Should().Be(null);
+            matchInfo.MatchScore.Should().Be(null);
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -46,6 +56,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.MatchSettings.SetsForWin.Should().Be(3);
             myGame.CurrentState.MatchSettings.TiebreakFinal.Should().Be(false);
             myGame.CurrentState.State.Should().Be(MatchState.Drawing);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.Drawing);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be(null);
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -86,6 +105,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_matchDate);
             myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.BeginningGame);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("0-0");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -127,6 +155,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
             myGame.CurrentState.State.Should().Be(MatchState.PlayingGame);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.PlayingGame);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("0-0");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -206,6 +243,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
             myGame.CurrentState.State.Should().Be(MatchState.PlayingGame);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.PlayingGame);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("0-0");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -256,6 +302,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
             myGame.CurrentState.State.Should().Be(MatchState.ChangingSides);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.ChangingSides);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("0-1");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -308,6 +363,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
             myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.BeginningGame);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("0-1");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -361,6 +425,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate2);
             myGame.CurrentState.State.Should().Be(MatchState.PlayingGame);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.PlayingGame);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("0-1");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -423,6 +496,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate2);
             myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.BeginningGame);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("0-2");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -466,6 +548,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate);
             myGame.CurrentState.State.Should().Be(MatchState.PlayingGame);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.PlayingGame);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("0-0");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -539,6 +630,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.ChangingSides);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.ChangingSides);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("0-3");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -619,6 +719,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.BeginningGame);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("0-5");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -737,6 +846,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.BeginningGame);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("5-5");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -846,6 +964,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.BeginningGame);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("6-5");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -964,6 +1091,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.BeginningTiebreak);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.BeginningTiebreak);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("6-6");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -1084,6 +1220,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.PlayingTiebreak);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.PlayingTiebreak);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("6-6");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -1216,6 +1361,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Left);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.PlayingTiebreak);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.PlayingTiebreak);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("6-6");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -1348,6 +1502,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.PlayingTiebreak);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.PlayingTiebreak);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("6-6");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -1480,6 +1643,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Left);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.PlayingTiebreak);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.PlayingTiebreak);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("6-6");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -1612,6 +1784,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.ChangingSidesOnTiebreak);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.ChangingSidesOnTiebreak);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("6-6");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -1744,6 +1925,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.PlayingTiebreak);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.PlayingTiebreak);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("6-6");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -1887,6 +2077,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.ChangingSidesOnTiebreak);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.ChangingSidesOnTiebreak);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("6-6");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -2039,6 +2238,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Left);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.PlayingTiebreak);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.PlayingTiebreak);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("6-6");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -2193,6 +2401,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.ChangingSides);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.ChangingSides);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("7-6, 0-0");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -2348,6 +2565,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.BeginningGame);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("7-6, 0-0");
+            matchInfo.Winner.Should().Be(null);
         }
 
 
@@ -2442,6 +2668,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.BeginningGame);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("0-6, 0-0");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -2545,6 +2780,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.ChangingSides);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.ChangingSides);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("1-6, 0-0");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -2649,6 +2893,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.BeginningGame);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("1-6, 0-0");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -2766,6 +3019,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.ChangingSides);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.ChangingSides);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("1-6, 0-1");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -2850,6 +3112,15 @@ namespace YoTennis.Tests.Test
             myGame.CurrentState.ServePosition.Should().Be(ServePosition.Right);
             myGame.CurrentState.GameStratedAt.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.BeginningGame);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.BeginningGame);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("0-6, 0-5");
+            matchInfo.Winner.Should().Be(null);
         }
 
         [Fact]
@@ -2945,6 +3216,15 @@ namespace YoTennis.Tests.Test
             //myGame.CurrentState.ServePositionOnTheCenterLine.Should().Be(ServePositionOnTheCenterLine.Right);
             //myGame.CurrentState.GameTime.Should().Be(_gameDate3);
             myGame.CurrentState.State.Should().Be(MatchState.Completed);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.Completed);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("0-6, 0-6");
+            matchInfo.Winner.Should().Be(Player.Second);
         }
 
         [Fact]

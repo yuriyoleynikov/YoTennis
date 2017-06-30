@@ -9,6 +9,7 @@ using YoTennis.Services;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using System.Text;
+using YoTennis.Helpers;
 
 namespace YoTennis.Controllers
 {
@@ -57,23 +58,7 @@ namespace YoTennis.Controllers
             return (count, skip);
         }
 
-        public static string Separate(MatchModel state)
-        {
-            StringBuilder score = new StringBuilder();
-            bool isFirst = true;
-
-            if (state.Sets != null)
-                foreach (var s in state.Sets)
-                {
-                    if (isFirst)
-                        isFirst = false;
-                    else
-                        score.Append(", ");
-
-                    score.Append(s.Score.FirstPlayer.ToString()).Append("-").Append(s.Score.SecondPlayer.ToString());
-                }
-            return score.ToString();
-        }
+        
 
         public async Task<IActionResult> Index(int count = 10, int skip = 0, IEnumerable<string> player = null, IEnumerable<MatchState> state = null)
         {
@@ -102,7 +87,7 @@ namespace YoTennis.Controllers
                     Players = cur_state.FirstPlayer != null ? cur_state.FirstPlayer + " - " + cur_state.SecondPlayer : "None",
                     Date = cur_state.MatchStartedAt != DateTime.MinValue ? cur_state.MatchStartedAt.ToString() : "None",
                     Status = cur_state.State.ToString(),
-                    Score = Separate(cur_state),
+                    Score = ForScoreExtensions.Separate(cur_state),
                     State = cur_state
                 });
             }
