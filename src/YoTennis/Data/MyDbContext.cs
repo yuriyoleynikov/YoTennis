@@ -16,9 +16,11 @@ namespace YoTennis.Data
         {
             base.OnModelCreating(builder);
             builder.Entity<MatchEvent>().HasKey(matchEvent=> new { matchEvent.MatchId, matchEvent.Version });
+            builder.Entity<MatchInfo>().HasKey(matchInfo => matchInfo.MatchId );
         }
 
         public DbSet<Match> Matches { get; set; }
         public DbSet<MatchEvent> MatchEvents { get; set; }
+        public DbSet<MatchInfo> MatchInfos { get; set; }
     }
 }
