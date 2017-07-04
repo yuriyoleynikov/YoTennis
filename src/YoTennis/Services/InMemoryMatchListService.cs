@@ -64,5 +64,10 @@ namespace YoTennis.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<IEnumerable<string>> GetPlayersAsync(string userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -89,7 +89,7 @@ namespace YoTennis.Services
 
             var players = new List<string>();
 
-            foreach (var state in await _context.MatchInfos.Where(matchInfo => matchIds.Contains(matchInfo.MatchId)).ToArrayAsync())            
+            foreach (var state in await _context.MatchInfos.Where(matchInfo => matchIds.Contains(matchInfo.MatchId)).ToArrayAsync())
                 if (state.FirstPlayer != null)
                 {
                     if (!players.Contains(state.FirstPlayer))
@@ -103,11 +103,23 @@ namespace YoTennis.Services
 
         public async Task RebuildMatchInfosAsync()
         {
+            var exceptions = new List<Exception>();
+
             foreach (var match in await _context.Matches.ToArrayAsync())
             {
                 var currentMatch = new DatabaseMatchService(_context, match.Id);
-                await currentMatch.RebuildMatchInfoAsync();
+                try
+                {
+                    await currentMatch.RebuildMatchInfoAsync();
+                }
+                catch (InvalidOperationException ex)
+                {
+                    exceptions.Add(new Exception("Error during rebuilding MatchInfo of match#" + match.Id, ex) { Data = { ["MatchId"] = match.Id } });
+                }
             }
+
+            if (exceptions.Count > 0)
+                throw new AggregateException(exceptions);
         }
     }
 }
