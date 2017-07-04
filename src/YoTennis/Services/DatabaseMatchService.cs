@@ -22,23 +22,31 @@ namespace YoTennis.Services
 
         public async Task AddEventAsync(GameEvent gameEvent)
         {
-            var _gameHandler = await LoadGameHandler();
+            var gameHandler = await LoadGameHandler();
 
-            var version = _gameHandler.Events.Count;
+            var version = gameHandler.Events.Count;
+
+            gameHandler.AddEvent(gameEvent);
 
             _context.MatchEvents.Add(
                 new MatchEvent
                 {
-                    Event = JsonConvert.SerializeObject(gameEvent, 
+                    Event = JsonConvert.SerializeObject(gameEvent,
                     new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects }),
                     MatchId = _matchId,
                     Version = version
                 });
 
+            var matchInfo = gameHandler.CurrentState.ToMatchInfo();
+            matchInfo.MatchId = _matchId;
+
+            if (await _context.MatchInfos.AnyAsync(x => x.MatchId == _matchId))
+                _context.Attach(matchInfo).State = EntityState.Modified;
+            else
+                _context.MatchInfos.Add(matchInfo);
+
             await _context.SaveChangesAsync();
         }
-
-        
 
         public async Task<MatchModel> GetStateAsync()
         {
@@ -49,7 +57,7 @@ namespace YoTennis.Services
 
         private async Task<GameHandler> LoadGameHandler()
         {
-            GameHandler _gameHandler = new GameHandler();            
+            GameHandler _gameHandler = new GameHandler();
 
             foreach (var matchEvent in await _context.MatchEvents.Where(matchEvent => matchEvent.MatchId == _matchId).OrderBy(matchEvent => matchEvent.Version).ToArrayAsync())
                 _gameHandler.AddEvent(JsonConvert.DeserializeObject<GameEvent>(matchEvent.Event, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects }));
@@ -74,8 +82,28 @@ namespace YoTennis.Services
             if (lastMatchEvent != null)
             {
                 _context.MatchEvents.Remove(lastMatchEvent);
+                var gameHandler = await LoadGameHandler();
+                var matchInfo = gameHandler.CurrentState.ToMatchInfo();
+
+                if (await _context.MatchInfos.AnyAsync(x => x.MatchId == _matchId))
+                    _context.Attach(matchInfo).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task RebuildMatchInfoAsync()
+        {
+            var gameHandler = await LoadGameHandler();
+            
+            var matchInfo = gameHandler.CurrentState.ToMatchInfo();
+            matchInfo.MatchId = _matchId;
+
+            if (await _context.MatchInfos.AnyAsync(x => x.MatchId == _matchId))
+                _context.Attach(matchInfo).State = EntityState.Modified;
+            else
+                _context.MatchInfos.Add(matchInfo);
+
+            await _context.SaveChangesAsync();
         }
     }
 }

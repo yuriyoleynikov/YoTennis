@@ -22,6 +22,7 @@ namespace YoTennis.Services
             var guid = Guid.NewGuid();
 
             _context.Matches.Add(new Match { Id = guid, UserId = userId });
+            _context.MatchInfos.Add(new MatchInfo { MatchId = guid });
             await _context.SaveChangesAsync();
 
             return guid.ToString();
@@ -34,10 +35,16 @@ namespace YoTennis.Services
                     .SingleOrDefaultAsync()
                 : null;
 
-            if (matchToRemove == null)
+            var matchInfoToRemove = Guid.TryParse(matchId, out var guidInfo)
+                ? await _context.MatchInfos.Where(match => match.MatchId == guidInfo)
+                    .SingleOrDefaultAsync()
+                : null;
+
+            if (matchToRemove == null || matchInfoToRemove == null)
                 throw new KeyNotFoundException("Match not found.");
 
             _context.Matches.Remove(matchToRemove);
+            _context.MatchInfos.Remove(matchInfoToRemove);
             await _context.SaveChangesAsync();
         }
 
@@ -52,29 +59,55 @@ namespace YoTennis.Services
             return matchIds.Select(matchId => matchId.ToString());
         }
 
-        public async Task<IEnumerable<string>> GetMatches3(string userId, int count, int skip, IEnumerable<string> filterPlayer,
+        public async Task<IEnumerable<string>> GetMatchesWithFilter(string userId, int count, int skip, IEnumerable<string> filterPlayer,
             IEnumerable<MatchState> filterState)
         {
             var matchIds = await _context.Matches.Where(match => match.UserId == userId)
             .Select(match => match.Id).ToArrayAsync();
 
-            var matchIds2 = new List<string>();
+            var resultIds = new List<string>();
 
-            foreach (var guid in matchIds)
-            {
-                var match_ = await GetMatchService(userId, guid.ToString());
-                var state = await match_.GetStateAsync();
-                if (filterPlayer.Contains(state.FirstPlayer) || filterPlayer.Contains(state.SecondPlayer) || !filterPlayer.Any())
-                    if (!filterState.Any() || filterState.Contains(state.State))
-                        matchIds2.Add(guid.ToString());
-            }
+            resultIds = await _context.MatchInfos
+                .Where(matchInfo => matchIds.Contains(matchInfo.MatchId))
+                .Where(matchInfo => filterPlayer.Contains(matchInfo.FirstPlayer) || filterPlayer.Contains(matchInfo.SecondPlayer) || !filterPlayer.Any())
+                .Where(matchInfo => !filterState.Any() || filterState.Contains(matchInfo.State))
+                .Select(sate => sate.MatchId.ToString())
+                .ToListAsync();
 
-            return matchIds2.Skip(skip).Take(count).Select(matchId => matchId.ToString());
+            return resultIds.Skip(skip).Take(count);
         }
 
         public async Task<IMatchService> GetMatchService(string userId, string matchId) =>
             (Guid.TryParse(matchId, out var guid) && await _context.Matches.Where(match => match.UserId == userId && match.Id == guid).AnyAsync())
             ? new DatabaseMatchService(_context, guid)
             : throw new KeyNotFoundException("Match not found.");
+
+        public async Task<IEnumerable<string>> GetPlayersAsync(string userId)
+        {
+            var matchIds = await _context.Matches.Where(match => match.UserId == userId)
+            .Select(match => match.Id).ToArrayAsync();
+
+            var players = new List<string>();
+
+            foreach (var state in await _context.MatchInfos.Where(matchInfo => matchIds.Contains(matchInfo.MatchId)).ToArrayAsync())            
+                if (state.FirstPlayer != null)
+                {
+                    if (!players.Contains(state.FirstPlayer))
+                        players.Add(state.FirstPlayer);
+                    if (!players.Contains(state.SecondPlayer))
+                        players.Add(state.SecondPlayer);
+                }
+
+            return players;
+        }
+
+        public async Task RebuildMatchInfosAsync()
+        {
+            foreach (var match in await _context.Matches.ToArrayAsync())
+            {
+                var currentMatch = new DatabaseMatchService(_context, match.Id);
+                await currentMatch.RebuildMatchInfoAsync();
+            }
+        }
     }
 }

@@ -54,8 +54,13 @@ namespace YoTennis.Services
         public Task<int> GetMatchCount(string userId) =>
             Task.FromResult(_users.TryGetValue(userId, out var matches) ? matches.Count : 0);
 
-        public Task<IEnumerable<string>> GetMatches3(string userId, int count, int skip, IEnumerable<string> filterPlayer,
+        public Task<IEnumerable<string>> GetMatchesWithFilter(string userId, int count, int skip, IEnumerable<string> filterPlayer,
             IEnumerable<MatchState> filterState)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RebuildMatchInfosAsync()
         {
             throw new NotImplementedException();
         }
