@@ -9,6 +9,7 @@ using YoTennis.Services;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using System.Text;
+using YoTennis.Helpers;
 
 namespace YoTennis.Controllers
 {
@@ -17,7 +18,7 @@ namespace YoTennis.Controllers
     {
         private IMatchListService _matchListService;
         private string UserId => User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
+        
         public HomeController(IMatchListService matchListService)
         {
             _matchListService = matchListService;
@@ -56,27 +57,9 @@ namespace YoTennis.Controllers
 
             return (count, skip);
         }
-
-        public static string Separate(MatchModel state)
-        {
-            StringBuilder score = new StringBuilder();
-            bool isFirst = true;
-
-            if (state.Sets != null)
-                foreach (var s in state.Sets)
-                {
-                    if (isFirst)
-                        isFirst = false;
-                    else
-                        score.Append(", ");
-
-                    score.Append(s.Score.FirstPlayer.ToString()).Append("-").Append(s.Score.SecondPlayer.ToString());
-                }
-            return score.ToString();
-        }
-
-        public async Task<IActionResult> Index(int count = 10, int skip = 0)
-        {
+        
+        public async Task<IActionResult> Index(int count = 10, int skip = 0, IEnumerable<string> player = null, IEnumerable<MatchState> state = null)
+        {            
             var totalCount = await _matchListService.GetMatchCount(UserId);
             var (newCount, newSkip) = CorrectPagination(totalCount, count, skip);
 
@@ -85,22 +68,25 @@ namespace YoTennis.Controllers
                 return RedirectToAction(nameof(Index), new { count = newCount, skip = newSkip });
             }
 
-            var idsForSelectMatches = await _matchListService.GetMatches(UserId, newCount, newSkip);
+            player = player ?? Enumerable.Empty<string>();
+            state = state ?? Enumerable.Empty<MatchState>();
+
+            var idsForSelectMatches = await _matchListService.GetMatchesWithFilter(UserId, newCount, newSkip, player, state);
 
             var listOfMatchModelView = new List<MatchModelView>();
             foreach (var id in idsForSelectMatches)
             {
                 var match = await _matchListService.GetMatchService(UserId, id);
-                var state = await match.GetStateAsync();
+                var currentState = await match.GetStateAsync();
 
                 listOfMatchModelView.Add(new MatchModelView
                 {
                     Id = id,
-                    Players = state.FirstPlayer != null ? state.FirstPlayer + " - " + state.SecondPlayer : "None",
-                    Date = state.MatchStartedAt != DateTime.MinValue ? state.MatchStartedAt.ToString() : "None",
-                    Status = state.State.ToString(),
-                    Score = Separate(state),
-                    State = state
+                    Players = currentState.FirstPlayer != null ? currentState.FirstPlayer + " - " + currentState.SecondPlayer : "None",
+                    Date = currentState.MatchStartedAt != DateTime.MinValue ? currentState.MatchStartedAt.ToString() : "None",
+                    Status = currentState.State.ToString(),
+                    Score = MatchScoreExtensions.ToSeparatedScoreString(currentState),
+                    State = currentState
                 });
             }
 
@@ -109,10 +95,38 @@ namespace YoTennis.Controllers
                 ListMatchModelView = listOfMatchModelView,
                 TotalCount = totalCount,
                 Count = newCount,
-                Skip = newSkip
+                Skip = newSkip,
+                FilterPayers = (await _matchListService.GetPlayersAsync(UserId)).ToList(),
+                SelectedPlayers = player,                
+                SelectedState = state
             };
 
             return View(containerForMatchModel);
+        }
+
+        public async Task<List<string>> FilterAsync()
+        {
+            List<string> FPlayers = new List<string>();
+            var idsForAllMatches = await _matchListService.GetMatches(UserId, await _matchListService.GetMatchCount(UserId), 0);            
+
+            foreach (var id in idsForAllMatches)
+            {
+                var match = await _matchListService.GetMatchService(UserId, id);
+                var state = await match.GetStateAsync();
+                if (state.FirstPlayer != null)
+                {
+                    if (!FPlayers.Contains(state.FirstPlayer))
+                    {
+                        FPlayers.Add(state.FirstPlayer);
+                    }
+                    if (!FPlayers.Contains(state.SecondPlayer))
+                    {
+                        FPlayers.Add(state.SecondPlayer);
+                    }
+                }
+            }
+
+            return FPlayers;
         }
 
         public async Task<IActionResult> Delete(string id, string returnUrl)

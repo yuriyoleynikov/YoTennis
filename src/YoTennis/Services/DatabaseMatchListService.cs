@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YoTennis.Data;
+using YoTennis.Models;
 
 namespace YoTennis.Services
 {
@@ -21,6 +22,7 @@ namespace YoTennis.Services
             var guid = Guid.NewGuid();
 
             _context.Matches.Add(new Match { Id = guid, UserId = userId });
+            _context.MatchInfos.Add(new MatchInfo { MatchId = guid });
             await _context.SaveChangesAsync();
 
             return guid.ToString();
@@ -33,16 +35,22 @@ namespace YoTennis.Services
                     .SingleOrDefaultAsync()
                 : null;
 
-            if (matchToRemove == null)
+            var matchInfoToRemove = Guid.TryParse(matchId, out var guidInfo)
+                ? await _context.MatchInfos.Where(match => match.MatchId == guidInfo)
+                    .SingleOrDefaultAsync()
+                : null;
+
+            if (matchToRemove == null || matchInfoToRemove == null)
                 throw new KeyNotFoundException("Match not found.");
 
             _context.Matches.Remove(matchToRemove);
+            _context.MatchInfos.Remove(matchInfoToRemove);
             await _context.SaveChangesAsync();
         }
 
         public Task<int> GetMatchCount(string userId) =>
             _context.Matches.Where(match => match.UserId == userId).CountAsync();
-        
+
         public async Task<IEnumerable<string>> GetMatches(string userId, int count, int skip)
         {
             var matchIds = await _context.Matches.Where(match => match.UserId == userId)
@@ -51,9 +59,67 @@ namespace YoTennis.Services
             return matchIds.Select(matchId => matchId.ToString());
         }
 
+        public async Task<IEnumerable<string>> GetMatchesWithFilter(string userId, int count, int skip, IEnumerable<string> filterPlayer,
+            IEnumerable<MatchState> filterState)
+        {
+            var matchIds = await _context.Matches.Where(match => match.UserId == userId)
+            .Select(match => match.Id).ToArrayAsync();
+
+            var resultIds = new List<string>();
+
+            resultIds = await _context.MatchInfos
+                .Where(matchInfo => matchIds.Contains(matchInfo.MatchId))
+                .Where(matchInfo => filterPlayer.Contains(matchInfo.FirstPlayer) || filterPlayer.Contains(matchInfo.SecondPlayer) || !filterPlayer.Any())
+                .Where(matchInfo => !filterState.Any() || filterState.Contains(matchInfo.State))
+                .Select(sate => sate.MatchId.ToString())
+                .ToListAsync();
+
+            return resultIds.Skip(skip).Take(count);
+        }
+
         public async Task<IMatchService> GetMatchService(string userId, string matchId) =>
             (Guid.TryParse(matchId, out var guid) && await _context.Matches.Where(match => match.UserId == userId && match.Id == guid).AnyAsync())
             ? new DatabaseMatchService(_context, guid)
             : throw new KeyNotFoundException("Match not found.");
+
+        public async Task<IEnumerable<string>> GetPlayersAsync(string userId)
+        {
+            var matchIds = await _context.Matches.Where(match => match.UserId == userId)
+            .Select(match => match.Id).ToArrayAsync();
+
+            var players = new List<string>();
+
+            foreach (var state in await _context.MatchInfos.Where(matchInfo => matchIds.Contains(matchInfo.MatchId)).ToArrayAsync())
+                if (state.FirstPlayer != null)
+                {
+                    if (!players.Contains(state.FirstPlayer))
+                        players.Add(state.FirstPlayer);
+                    if (!players.Contains(state.SecondPlayer))
+                        players.Add(state.SecondPlayer);
+                }
+
+            return players;
+        }
+
+        public async Task RebuildMatchInfosAsync()
+        {
+            var exceptions = new List<Exception>();
+
+            foreach (var match in await _context.Matches.ToArrayAsync())
+            {
+                var currentMatch = new DatabaseMatchService(_context, match.Id);
+                try
+                {
+                    await currentMatch.RebuildMatchInfoAsync();
+                }
+                catch (InvalidOperationException ex)
+                {
+                    exceptions.Add(new Exception("Error during rebuilding MatchInfo of match#" + match.Id, ex) { Data = { ["MatchId"] = match.Id } });
+                }
+            }
+
+            if (exceptions.Count > 0)
+                throw new AggregateException(exceptions);
+        }
     }
 }

@@ -1,103 +1,205 @@
 ﻿@model ContainerForMatchModel
+@using YoTennis.Helpers;
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <p><a asp-action="Create" asp-controller="Match" class="btn btn-default btn-lg">Create Match</a></p>
+<div class="game-commands">
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Players
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Score
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var match in Model.ListMatchModelView)
+                {
+                    <tr>
+                        <td>
+                            @if (match.State.State != MatchState.Completed)
+                            {
+                                @Html.DisplayFor(modelMatch => match.Players)
+                            }
+                            else
+                            {
+                                @if (match.State.MatchScore.FirstPlayer > match.State.MatchScore.SecondPlayer)
+                                {
+                                    <div>
+                                        <b>@match.State.FirstPlayer</b> -
+                                        @match.State.SecondPlayer
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div>
+                                        @match.State.FirstPlayer -
+                                        <b>@match.State.SecondPlayer</b>
+                                    </div>
+                                }
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelMatch => match.Date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelMatch => match.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelMatch => match.Score)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Index", "Match", new { id = match.Id }) |
+                            @Html.ActionLink("Details", "Details", new { id = match.Id }) |
+                            @Html.ActionLink("Delete", "Delete", "Home", new
+                       {
+                           id = match.Id,
+                           returnUrl = Url.Action("Index", "Home",
+                           new { count = Model.Count, skip = Model.Skip, player = Model.SelectedPlayers, state = Model.SelectedState })
+                       })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Players
-            </th>
-            <th>
-                Date
-            </th>
-            <th>
-                Status
-            </th>
-            <th>
-                Score
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var match in Model.ListMatchModelView)
+    <div class="my-margin-left">
+        <p>Filter</p>
+
+        @if (Model.SelectedPlayers.Any() || Model.SelectedState.Any())
         {
-            <tr>
-                <td>
-                    @if (match.State.State != MatchState.Completed)
+            <p>@Html.ActionLink("Clear", "Index", "Home", new { count = Model.Count, skip = 0 })</p>
+        }
+
+        <p>Players:</p>
+        <ul>
+            @foreach (var player in Model.FilterPayers)
+            {
+                if (!Model.SelectedPlayers.Any() && !Model.SelectedState.Any())
+                {
+                    <li>@Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player = Model.SelectedPlayers.WithElement(player)})</li>
+                }
+                else
+                {
+                    if (Model.SelectedPlayers.Contains(player))
                     {
-                    @Html.DisplayFor(modelMatch => match.Players)
+                        <li>@player (@Html.ActionLink("Remove", "Index", "Home", new { count = Model.Count, skip = 0, player = Model.SelectedPlayers.WithoutElement(player), state = Model.SelectedState }))</li>
                     }
                     else
                     {
-                        @if (match.State.MatchScore.FirstPlayer > match.State.MatchScore.SecondPlayer)
+                        <li>
+                            @Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player = player })
+                            (@Html.ActionLink("Add", "Index", "Home", new { count = Model.Count, skip = 0, player = Model.SelectedPlayers.WithElement(player), state = Model.SelectedState }))
+                        </li>
+                    }
+                }
+            }
+        </ul>
+        <p>Current Status:</p>
+        <ul>
+            @foreach (var state in Model.FilterState)
+            {
+                if (!Model.SelectedPlayers.Any() && !Model.SelectedState.Any())
+                {
+                    <li>
+                        @Html.ActionLink(state.ToString(), "Index", "Home",
+                            new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = Model.SelectedState.WithElement(state) })
+                    </li>
+                }
+                else
+                {
+                    if (Model.SelectedState.Contains(state))
+                    {
+                        <li>
+                            @state.ToString()
+                            (@Html.ActionLink("Remove", "Index", "Home",
+                           new { count = Model.Count, skip = 0, player = Model.SelectedPlayers }))
+                        </li>
+                    }
+                    else
+                    {
+                        if (Model.SelectedPlayers.Any())
                         {
-                            <div><b>@match.State.FirstPlayer</b> - 
-                            @match.State.SecondPlayer</div>
+                            <li>
+                                @Html.ActionLink(state.ToString(), "Index", "Home",
+                            new { count = Model.Count, skip = 0, state = state })
+                            (@Html.ActionLink("Add", "Index", "Home",
+                                new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = state }))
+                        </li>
                         }
                         else
                         {
-                            <div>@match.State.FirstPlayer -
-                            <b>@match.State.SecondPlayer</b></div>
+                            <li>
+                                @Html.ActionLink(state.ToString(), "Index", "Home",
+                                new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = state })
+                            </li>
                         }
-
                     }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelMatch => match.Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelMatch => match.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelMatch => match.Score)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Index", "Match", new { id = match.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = match.Id }) |
-                    @Html.ActionLink("Delete", "Delete", "Home", new
-               {
-                   id = match.Id,
-                   returnUrl = Url.Action("Index", "Home",
-                   new
-                   {
-                       count = Model.Count,
-                       skip = Model.Skip
-                   })
-               })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<p>
-    Show -
-    @Html.ActionLink("10", "Index", "Home", new { count = 10, skip = 0 }) |
-    @Html.ActionLink("20", "Index", "Home", new { count = 20, skip = 0 }) |
-    @Html.ActionLink("All", "Index", "Home", new { count = Model.TotalCount != 0 ? Model.TotalCount : 10, skip = 0 })
-</p>
-
-@if (Model.Count != Model.TotalCount)
-{
-    <p>
-        Page
-        @if (Model.Skip != 0)
-        {
-            @Html.ActionLink("<", "Index", "Home", new { count = Model.Count, skip = Model.Skip - Model.Count })
-        }
-        @{
-            int currentPage = Model.Skip == 0 ? 1 : Model.Skip / Model.Count + 1;
-        }
-        @currentPage
-        @if (Model.Skip + Model.Count < Model.TotalCount)
-        {
-            @Html.ActionLink(">", "Index", "Home", new { count = Model.Count, skip = Model.Skip + Model.Count })
-        }
-    </p>
+                }
             }
-<p>@Model.TotalCount Matches in system</p>
+        </ul>
+        <p>Beginning with:</p>
+        <p>Finishing before:</p>
+    </div>
 
+</div>
+<div>
+    <p>
+        Show -
+        @Html.ActionLink("10", "Index", "Home", new { count = 10, skip = 0, player = Model.SelectedPlayers, state = Model.SelectedState }) |
+        @Html.ActionLink("20", "Index", "Home", new { count = 20, skip = 0, player = Model.SelectedPlayers, state = Model.SelectedState }) |
+        @Html.ActionLink("All", "Index", "Home", new
+   {
+       count = Model.TotalCount != 0 ? Model.TotalCount : 10,
+       skip = 0,
+       player = Model.SelectedPlayers,
+       state = Model.SelectedState
+   })
+    </p>
+
+    @if (Model.Count != Model.TotalCount)
+    {
+        <p>
+            Page
+            @if (Model.Skip != 0)
+                {
+                @Html.ActionLink("<", "Index", "Home", new
+           {
+               count = Model.Count,
+               skip = Model.Skip - Model.Count,
+               player = Model.SelectedPlayers,
+               state = Model.SelectedState
+           })
+            }
+            @{
+                int currentPage = Model.Skip == 0 ? 1 : Model.Skip / Model.Count + 1;
+            }
+            @currentPage
+            @if (Model.Skip + Model.Count < Model.TotalCount)
+                {
+                @Html.ActionLink(">", "Index", "Home", new
+           {
+               count = Model.Count,
+               skip = Model.Skip + Model.Count,
+               player = Model.SelectedPlayers,
+               state = Model.SelectedState
+           })
+            }
+        </p>
+                }
+    <p>@Model.TotalCount Matches in system</p>
+</div>

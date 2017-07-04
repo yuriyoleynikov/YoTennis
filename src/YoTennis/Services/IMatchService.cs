@@ -12,5 +12,6 @@ namespace YoTennis.Services
         Task<MatchModel> GetStateAsync();
         Task Reset();
         Task UndoAsync();
+        Task RebuildMatchInfoAsync();
     }
 }
