@@ -57,11 +57,9 @@ namespace YoTennis.Controllers
 
             return (count, skip);
         }
-
         
-
         public async Task<IActionResult> Index(int count = 10, int skip = 0, IEnumerable<string> player = null, IEnumerable<MatchState> state = null)
-        {
+        {            
             var totalCount = await _matchListService.GetMatchCount(UserId);
             var (newCount, newSkip) = CorrectPagination(totalCount, count, skip);
 
@@ -73,22 +71,22 @@ namespace YoTennis.Controllers
             player = player ?? Enumerable.Empty<string>();
             state = state ?? Enumerable.Empty<MatchState>();
 
-            var idsForSelectMatches = await _matchListService.GetMatches3(UserId, newCount, newSkip, player, state);
+            var idsForSelectMatches = await _matchListService.GetMatchesWithFilter(UserId, newCount, newSkip, player, state);
 
             var listOfMatchModelView = new List<MatchModelView>();
             foreach (var id in idsForSelectMatches)
             {
                 var match = await _matchListService.GetMatchService(UserId, id);
-                var cur_state = await match.GetStateAsync();
+                var currentState = await match.GetStateAsync();
 
                 listOfMatchModelView.Add(new MatchModelView
                 {
                     Id = id,
-                    Players = cur_state.FirstPlayer != null ? cur_state.FirstPlayer + " - " + cur_state.SecondPlayer : "None",
-                    Date = cur_state.MatchStartedAt != DateTime.MinValue ? cur_state.MatchStartedAt.ToString() : "None",
-                    Status = cur_state.State.ToString(),
-                    Score = MatchScoreExtensions.ToSeparatedScoreString(cur_state),
-                    State = cur_state
+                    Players = currentState.FirstPlayer != null ? currentState.FirstPlayer + " - " + currentState.SecondPlayer : "None",
+                    Date = currentState.MatchStartedAt != DateTime.MinValue ? currentState.MatchStartedAt.ToString() : "None",
+                    Status = currentState.State.ToString(),
+                    Score = MatchScoreExtensions.ToSeparatedScoreString(currentState),
+                    State = currentState
                 });
             }
 
@@ -98,7 +96,7 @@ namespace YoTennis.Controllers
                 TotalCount = totalCount,
                 Count = newCount,
                 Skip = newSkip,
-                FilterPayers = await FilterAsync(),
+                FilterPayers = (await _matchListService.GetPlayersAsync(UserId)).ToList(),
                 SelectedPlayers = player,                
                 SelectedState = state
             };
@@ -109,7 +107,8 @@ namespace YoTennis.Controllers
         public async Task<List<string>> FilterAsync()
         {
             List<string> FPlayers = new List<string>();
-            var idsForAllMatches = await _matchListService.GetMatches(UserId, await _matchListService.GetMatchCount(UserId), 0);
+            var idsForAllMatches = await _matchListService.GetMatches(UserId, await _matchListService.GetMatchCount(UserId), 0);            
+
             foreach (var id in idsForAllMatches)
             {
                 var match = await _matchListService.GetMatchService(UserId, id);
