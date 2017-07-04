@@ -11,14 +11,13 @@ namespace YoTennis.Data
     {
         public static MatchInfo ToMatchInfo(this MatchModel model)
         {
-            var matchInfo = new MatchInfo();
+            var matchInfo = new MatchInfo()
+            {
+                FirstPlayer = model.FirstPlayer,
+                SecondPlayer = model.SecondPlayer,
+                State = model.State
+            };
 
-            //matchInfo.MatchId;
-
-            matchInfo.FirstPlayer = model.FirstPlayer;
-            matchInfo.SecondPlayer = model.SecondPlayer;
-            matchInfo.State = model.State;
-                        
             if (model.State != MatchState.NotStarted)
                 matchInfo.MatchStartedAt = model.MatchStartedAt;
 
