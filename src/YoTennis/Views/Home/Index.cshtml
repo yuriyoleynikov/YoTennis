@@ -12,19 +12,56 @@
             <thead>
                 <tr>
                     <th>
-                        Players
+                        Players @Html.ActionLink("↓", "Index", "Home", new
+                           {
+                               count = Model.Count,
+                               skip = Model.Skip,
+                               player = Model.SelectedPlayers,
+                               state = Model.SelectedState
+                           }) @Html.ActionLink("↑", "Index", "Home", new
+                         {
+                             count = Model.Count,
+                             skip = Model.Skip,
+                             player = Model.SelectedPlayers,
+                             state = Model.SelectedState
+                         })
                     </th>
                     <th>
-                        Date
+                        Date @Html.ActionLink("↓", "Index", "Home", new
+                        {
+                            count = Model.Count,
+                            skip = Model.Skip,
+                            player = Model.SelectedPlayers,
+                            state = Model.SelectedState
+                        }) @Html.ActionLink("↑", "Index", "Home", new
+                      {
+                          count = Model.Count,
+                          skip = Model.Skip,
+                          player = Model.SelectedPlayers,
+                          state = Model.SelectedState
+                      })
                     </th>
                     <th>
-                        Status
+                        Status @Html.ActionLink("↓", "Index", "Home", new
+                          {
+                              count = Model.Count,
+                              skip = Model.Skip,
+                              player = Model.SelectedPlayers,
+                              state = Model.SelectedState
+                          }) @Html.ActionLink("↑", "Index", "Home", new
+                        {
+                            count = Model.Count,
+                            skip = Model.Skip,
+                            player = Model.SelectedPlayers,
+                            state = Model.SelectedState
+                        })
                     </th>
                     <th>
                         Score
                     </th>
                 </tr>
             </thead>
+
             <tbody>
                 @foreach (var match in Model.ListMatchModelView)
                 {
