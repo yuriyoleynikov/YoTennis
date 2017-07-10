@@ -51,6 +51,13 @@ namespace YoTennis.Services
         public Task<int> GetMatchCount(string userId) =>
             _context.Matches.Where(match => match.UserId == userId).CountAsync();
 
+        public async Task<int> GetMatchCountWithFilter(string userId, IEnumerable<string> filterPlayer, IEnumerable<MatchState> filterState) =>
+            await _context.MatchInfos
+                .Where(matchInfo => matchInfo.UserId == userId)
+                .ByPlayers(filterPlayer)
+                .ByState(filterState)
+                .CountAsync();
+
         public async Task<IEnumerable<MatchInfoModel>> GetMatchesInfosAsync(string userId)
         {
             var matchInfos = await _context.MatchInfos
@@ -100,18 +107,20 @@ namespace YoTennis.Services
 
         public async Task<IEnumerable<string>> GetPlayers(string userId)
         {
-            var players = new List<string>();
+            var firstPlayers = await _context.MatchInfos
+                .Where(matchInfo => matchInfo.UserId == userId)
+                .Where(matchInfo => matchInfo.FirstPlayer != null)
+                .Select(matchInfo => matchInfo.FirstPlayer)
+                .Distinct()
+                .ToArrayAsync();
+            var secondPlayers = await _context.MatchInfos
+                .Where(matchInfo => matchInfo.UserId == userId)
+                .Where(matchInfo => matchInfo.SecondPlayer != null)
+                .Select(matchInfo => matchInfo.SecondPlayer)
+                .Distinct()
+                .ToArrayAsync();
 
-            foreach (var state in await _context.MatchInfos.Where(matchInfo => matchInfo.UserId == userId).ToArrayAsync())
-                if (state.FirstPlayer != null)
-                {
-                    if (!players.Contains(state.FirstPlayer))
-                        players.Add(state.FirstPlayer);
-                    if (!players.Contains(state.SecondPlayer))
-                        players.Add(state.SecondPlayer);
-                }
-
-            return players;
+            return new HashSet<string>(firstPlayers.Concat(secondPlayers)).OrderBy(player => player);
         }
 
         public async Task RebuildMatchInfosAsync()

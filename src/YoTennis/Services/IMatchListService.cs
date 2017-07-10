@@ -16,5 +16,6 @@ namespace YoTennis.Services
         Task<IEnumerable<string>> GetPlayers(string userId);
         Task<IEnumerable<MatchInfoModel>> GetMatchesWithFilterAndSort(string userId, int count,
             int skip, IEnumerable<string> filterPlayer, IEnumerable<MatchState> filterState, Sort sort);
+        Task<int> GetMatchCountWithFilter(string userId, IEnumerable<string> filterPlayer, IEnumerable<MatchState> filterState);
     }
 }

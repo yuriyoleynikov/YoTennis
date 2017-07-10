@@ -89,5 +89,10 @@ namespace YoTennis.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<int> GetMatchCountWithFilter(string userId, IEnumerable<string> filterPlayer, IEnumerable<MatchState> filterState)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
