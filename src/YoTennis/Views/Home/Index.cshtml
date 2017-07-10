@@ -5,56 +5,112 @@
     ViewData["Title"] = "Home Page";
 }
 
-<p><a asp-action="Create" asp-controller="Match" class="btn btn-default btn-lg">Create Match</a></p>
+<p>@Html.ActionLink("Create Match", "Create", "Match")</p>
+
 <div class="game-commands">
     <div>
         <table class="table">
             <thead>
                 <tr>
                     <th>
-                        Players @Html.ActionLink("↓", "Index", "Home", new
-                           {
-                               count = Model.Count,
-                               skip = Model.Skip,
-                               player = Model.SelectedPlayers,
-                               state = Model.SelectedState
-                           }) @Html.ActionLink("↑", "Index", "Home", new
-                         {
-                             count = Model.Count,
-                             skip = Model.Skip,
-                             player = Model.SelectedPlayers,
-                             state = Model.SelectedState
-                         })
+                        Players
+                        @if (Model.Sort != Sort.PlayerNameDescending)
+                        {
+                            @Html.ActionLink("↓", "Index", "Home", new
+                       {
+                           count = Model.Count,
+                           skip = Model.Skip,
+                           player = Model.SelectedPlayers,
+                           state = Model.SelectedState,
+                           sort = Sort.PlayerNameDescending
+                       })
+                        }
+                        else
+                        {
+                            <b>↓</b>
+                        }
+
+                        @if (Model.Sort != Sort.PlayerNameAscending)
+                        {
+                            @Html.ActionLink("↑", "Index", "Home", new
+                       {
+                           count = Model.Count,
+                           skip = Model.Skip,
+                           player = Model.SelectedPlayers,
+                           state = Model.SelectedState,
+                           sort = Sort.PlayerNameAscending
+                       })
+                        }
+                        else
+                        {
+                            <b>↑</b>
+                        }
                     </th>
                     <th>
-                        Date @Html.ActionLink("↓", "Index", "Home", new
+                        Date @if (Model.Sort != Sort.DateDescending)
                         {
-                            count = Model.Count,
-                            skip = Model.Skip,
-                            player = Model.SelectedPlayers,
-                            state = Model.SelectedState
-                        }) @Html.ActionLink("↑", "Index", "Home", new
-                      {
-                          count = Model.Count,
-                          skip = Model.Skip,
-                          player = Model.SelectedPlayers,
-                          state = Model.SelectedState
-                      })
+                            @Html.ActionLink("↓", "Index", "Home", new
+                       {
+                           count = Model.Count,
+                           skip = Model.Skip,
+                           player = Model.SelectedPlayers,
+                           state = Model.SelectedState,
+                           sort = Sort.DateDescending
+                       })
+                        }
+                        else
+                        {
+                            <b>↓</b>
+                        }
+
+                        @if (Model.Sort != Sort.DateAscending)
+                        {
+                            @Html.ActionLink("↑", "Index", "Home", new
+                       {
+                           count = Model.Count,
+                           skip = Model.Skip,
+                           player = Model.SelectedPlayers,
+                           state = Model.SelectedState,
+                           sort = Sort.DateAscending
+                       })
+                        }
+                        else
+                        {
+                            <b>↑</b>
+                        }
                     </th>
                     <th>
-                        Status @Html.ActionLink("↓", "Index", "Home", new
-                          {
-                              count = Model.Count,
-                              skip = Model.Skip,
-                              player = Model.SelectedPlayers,
-                              state = Model.SelectedState
-                          }) @Html.ActionLink("↑", "Index", "Home", new
+                        State @if (Model.Sort != Sort.StateDescending)
                         {
-                            count = Model.Count,
-                            skip = Model.Skip,
-                            player = Model.SelectedPlayers,
-                            state = Model.SelectedState
-                        })
+                            @Html.ActionLink("↓", "Index", "Home", new
+                       {
+                           count = Model.Count,
+                           skip = Model.Skip,
+                           player = Model.SelectedPlayers,
+                           state = Model.SelectedState,
+                           sort = Sort.StateDescending
+                       })
+                        }
+                        else
+                        {
+                            <b>↓</b>
+                        }
+
+                        @if (Model.Sort != Sort.StateAscending)
+                        {
+                            @Html.ActionLink("↑", "Index", "Home", new
+                       {
+                           count = Model.Count,
+                           skip = Model.Skip,
+                           player = Model.SelectedPlayers,
+                           state = Model.SelectedState,
+                           sort = Sort.StateAscending
+                       })
+                        }
+                        else
+                        {
+                            <b>↑</b>
+                        }
                     </th>
                     <th>
                         Score
@@ -67,27 +123,7 @@
                 {
                     <tr>
                         <td>
-                            @if (match.State.State != MatchState.Completed)
-                            {
-                                @Html.DisplayFor(modelMatch => match.Players)
-                            }
-                            else
-                            {
-                                @if (match.State.MatchScore.FirstPlayer > match.State.MatchScore.SecondPlayer)
-                                {
-                                    <div>
-                                        <b>@match.State.FirstPlayer</b> -
-                                        @match.State.SecondPlayer
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div>
-                                        @match.State.FirstPlayer -
-                                        <b>@match.State.SecondPlayer</b>
-                                    </div>
-                                }
-                            }
+                            @Html.DisplayFor(modelMatch => match.Players)
                         </td>
                         <td>
                             @Html.DisplayFor(modelMatch => match.Date)
@@ -105,7 +141,14 @@
                        {
                            id = match.Id,
                            returnUrl = Url.Action("Index", "Home",
-                           new { count = Model.Count, skip = Model.Skip, player = Model.SelectedPlayers, state = Model.SelectedState })
+                           new
+                           {
+                               count = Model.Count,
+                               skip = Model.Skip,
+                               player = Model.SelectedPlayers,
+                               state = Model.SelectedState,
+                               sort = Model.Sort
+                           })
                        })
                         </td>
                     </tr>
@@ -128,19 +171,45 @@
             {
                 if (!Model.SelectedPlayers.Any() && !Model.SelectedState.Any())
                 {
-                    <li>@Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player = Model.SelectedPlayers.WithElement(player)})</li>
+                    <li>@Html.ActionLink(player, "Index", "Home", new
+                   {
+                       count = Model.Count,
+                       skip = 0,
+                       player = Model.SelectedPlayers.WithElement(player),
+                       sort = Model.Sort
+                   })</li>
                 }
                 else
                 {
                     if (Model.SelectedPlayers.Contains(player))
                     {
-                        <li>@player (@Html.ActionLink("Remove", "Index", "Home", new { count = Model.Count, skip = 0, player = Model.SelectedPlayers.WithoutElement(player), state = Model.SelectedState }))</li>
+                        <li>@player (@Html.ActionLink("Remove", "Index", "Home", new
+                                {
+                                    count = Model.Count,
+                                    skip = 0,
+                                    player = Model.SelectedPlayers.WithoutElement(player),
+                                    state = Model.SelectedState,
+                                    sort = Model.Sort
+                                }))</li>
                     }
                     else
                     {
                         <li>
-                            @Html.ActionLink(player, "Index", "Home", new { count = Model.Count, skip = 0, player = player })
-                            (@Html.ActionLink("Add", "Index", "Home", new { count = Model.Count, skip = 0, player = Model.SelectedPlayers.WithElement(player), state = Model.SelectedState }))
+                            @Html.ActionLink(player, "Index", "Home", new
+                       {
+                           count = Model.Count,
+                           skip = 0,
+                           player = player,
+                           sort = Model.Sort
+                       })
+                            (@Html.ActionLink("Add", "Index", "Home", new
+                        {
+                            count = Model.Count,
+                            skip = 0,
+                            player = Model.SelectedPlayers.WithElement(player),
+                            state = Model.SelectedState,
+                            sort = Model.Sort
+                        }))
                         </li>
                     }
                 }
@@ -154,7 +223,14 @@
                 {
                     <li>
                         @Html.ActionLink(state.ToString(), "Index", "Home",
-                            new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = Model.SelectedState.WithElement(state) })
+                            new
+                            {
+                                count = Model.Count,
+                                skip = 0,
+                                player = Model.SelectedPlayers,
+                                state = Model.SelectedState.WithElement(state),
+                                sort = Model.Sort
+                            })
                     </li>
                 }
                 else
@@ -164,7 +240,13 @@
                         <li>
                             @state.ToString()
                             (@Html.ActionLink("Remove", "Index", "Home",
-                           new { count = Model.Count, skip = 0, player = Model.SelectedPlayers }))
+                           new
+                           {
+                               count = Model.Count,
+                               skip = 0,
+                               player = Model.SelectedPlayers,
+                               sort = Model.Sort
+                           }))
                         </li>
                     }
                     else
@@ -173,16 +255,22 @@
                         {
                             <li>
                                 @Html.ActionLink(state.ToString(), "Index", "Home",
-                            new { count = Model.Count, skip = 0, state = state })
-                            (@Html.ActionLink("Add", "Index", "Home",
-                                new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = state }))
-                        </li>
+                            new { count = Model.Count, skip = 0, state = state,
+                                sort = Model.Sort
+                            })
+                                (@Html.ActionLink("Add", "Index", "Home",
+                                new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = state,
+                                    sort = Model.Sort
+                                }))
+                            </li>
                         }
                         else
                         {
                             <li>
                                 @Html.ActionLink(state.ToString(), "Index", "Home",
-                                new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = state })
+                                new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = state,
+                                    sort = Model.Sort
+                                })
                             </li>
                         }
                     }
@@ -197,14 +285,27 @@
 <div>
     <p>
         Show -
-        @Html.ActionLink("10", "Index", "Home", new { count = 10, skip = 0, player = Model.SelectedPlayers, state = Model.SelectedState }) |
-        @Html.ActionLink("20", "Index", "Home", new { count = 20, skip = 0, player = Model.SelectedPlayers, state = Model.SelectedState }) |
+        @Html.ActionLink("10", "Index", "Home", new {
+       count = 10,
+       skip = 0,
+       player = Model.SelectedPlayers,
+       state = Model.SelectedState,
+       sort = Model.Sort
+   }) |
+        @Html.ActionLink("20", "Index", "Home", new {
+       count = 20,
+       skip = 0,
+       player = Model.SelectedPlayers,
+       state = Model.SelectedState,
+       sort = Model.Sort
+   }) |
         @Html.ActionLink("All", "Index", "Home", new
    {
        count = Model.TotalCount != 0 ? Model.TotalCount : 10,
        skip = 0,
        player = Model.SelectedPlayers,
-       state = Model.SelectedState
+       state = Model.SelectedState,
+       sort = Model.Sort
    })
     </p>
 
@@ -219,7 +320,8 @@
                count = Model.Count,
                skip = Model.Skip - Model.Count,
                player = Model.SelectedPlayers,
-               state = Model.SelectedState
+               state = Model.SelectedState,
+               sort = Model.Sort
            })
             }
             @{
@@ -233,7 +335,8 @@
                count = Model.Count,
                skip = Model.Skip + Model.Count,
                player = Model.SelectedPlayers,
-               state = Model.SelectedState
+               state = Model.SelectedState,
+               sort = Model.Sort
            })
             }
         </p>
