@@ -14,7 +14,7 @@ namespace YoTennis.Tests.Test
     {
         public abstract IMatchListService GetMatchListService();
 
-        [Fact]
+        /*[Fact]
         public async Task CreateMatch_Check()
         {
             IMatchListService matchListService = GetMatchListService();
@@ -138,6 +138,6 @@ namespace YoTennis.Tests.Test
             var matchId = matchIds.SingleOrDefault();
             new Func<Task>(() => matchListService.GetMatchService("otherUser", "otherId"))
                 .ShouldThrow<KeyNotFoundException>();
-        }
+        }*/
     }
 }
