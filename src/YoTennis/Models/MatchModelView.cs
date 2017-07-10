@@ -12,6 +12,5 @@ namespace YoTennis.Models
         public string Players { get; set; }
         public string Score { get; set; }
         public string Status { get; set; }
-        public MatchModel State { get; set; }
     }
 }

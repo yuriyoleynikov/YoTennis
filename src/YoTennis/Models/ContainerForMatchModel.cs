@@ -15,5 +15,6 @@ namespace YoTennis.Models
         public IEnumerable<string> SelectedPlayers { get; set; }
         public List<MatchState> FilterState { get; set; } = new List<MatchState>() { MatchState.NotStarted, MatchState.Drawing, MatchState.Completed };
         public IEnumerable<MatchState> SelectedState { get; set; }
+        public Sort Sort { get; set; }
     }
 }
