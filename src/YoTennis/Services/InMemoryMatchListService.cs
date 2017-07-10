@@ -65,7 +65,27 @@ namespace YoTennis.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<string>> GetPlayersAsync(string userId)
+        public Task<IEnumerable<string>> GetPlayers(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<MatchInfoModel>> GetMatchesInfosAsync(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<MatchInfoModel>> GetMatchesInfosWithFilterAndSort(string userId, int count, int skip, IEnumerable<string> filterPlayer, IEnumerable<MatchState> filterState, Sort sort)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<MatchInfoModel>> GetMatchesWithFilter2(string userId, int count, int skip, IEnumerable<string> filterPlayer, IEnumerable<MatchState> filterState)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<MatchInfoModel>> GetMatchesWithFilterAndSort(string userId, int count, int skip, IEnumerable<string> filterPlayer, IEnumerable<MatchState> filterState, Sort sort)
         {
             throw new NotImplementedException();
         }

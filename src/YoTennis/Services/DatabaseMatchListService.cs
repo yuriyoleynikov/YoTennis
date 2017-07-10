@@ -22,7 +22,7 @@ namespace YoTennis.Services
             var guid = Guid.NewGuid();
 
             _context.Matches.Add(new Match { Id = guid, UserId = userId });
-            _context.MatchInfos.Add(new MatchInfo { MatchId = guid });
+            _context.MatchInfos.Add(new MatchInfo { MatchId = guid, UserId = userId });
             await _context.SaveChangesAsync();
 
             return guid.ToString();
@@ -51,45 +51,58 @@ namespace YoTennis.Services
         public Task<int> GetMatchCount(string userId) =>
             _context.Matches.Where(match => match.UserId == userId).CountAsync();
 
-        public async Task<IEnumerable<string>> GetMatches(string userId, int count, int skip)
+        public async Task<IEnumerable<MatchInfoModel>> GetMatchesInfosAsync(string userId)
         {
-            var matchIds = await _context.Matches.Where(match => match.UserId == userId)
-                .Select(match => match.Id).Skip(skip).Take(count).ToArrayAsync();
+            var matchInfos = await _context.MatchInfos
+                .Where(matchInfo => matchInfo.UserId == userId)
+                .Select(matchInfo => new MatchInfoModel
+                {
+                    MatchId = matchInfo.MatchId.ToString(),
+                    FirstPlayer = matchInfo.FirstPlayer,
+                    SecondPlayer = matchInfo.SecondPlayer,
+                    MatchStartedAt = matchInfo.MatchStartedAt,
+                    MatchScore = matchInfo.MatchScore,
+                    State = matchInfo.State,
+                    Winner = matchInfo.Winner
+                })
+            .ToArrayAsync();
 
-            return matchIds.Select(matchId => matchId.ToString());
+            return matchInfos;
         }
 
-        public async Task<IEnumerable<string>> GetMatchesWithFilter(string userId, int count, int skip, IEnumerable<string> filterPlayer,
-            IEnumerable<MatchState> filterState)
+        public async Task<IEnumerable<MatchInfoModel>> GetMatchesWithFilterAndSort(string userId, int count, int skip,
+            IEnumerable<string> filterPlayer, IEnumerable<MatchState> filterState, Sort sort)
         {
-            var matchIds = await _context.Matches.Where(match => match.UserId == userId)
-            .Select(match => match.Id).ToArrayAsync();
+            var result = await _context.MatchInfos
+                .Where(matchInfo => matchInfo.UserId == userId)
+                .ByPlayers(filterPlayer)
+                .ByState(filterState)
+                .BySort(sort)
+                .Skip(skip)
+                .Take(count).ToArrayAsync();
 
-            var resultIds = new List<string>();
-
-            resultIds = await _context.MatchInfos
-                .Where(matchInfo => matchIds.Contains(matchInfo.MatchId))
-                .Where(matchInfo => filterPlayer.Contains(matchInfo.FirstPlayer) || filterPlayer.Contains(matchInfo.SecondPlayer) || !filterPlayer.Any())
-                .Where(matchInfo => !filterState.Any() || filterState.Contains(matchInfo.State))
-                .Select(sate => sate.MatchId.ToString())
-                .ToListAsync();
-
-            return resultIds.Skip(skip).Take(count);
+            return result.Select(matchInfo => new MatchInfoModel
+            {
+                MatchId = matchInfo.MatchId.ToString(),
+                Winner = matchInfo.Winner,
+                FirstPlayer = matchInfo.FirstPlayer,
+                SecondPlayer = matchInfo.SecondPlayer,
+                MatchStartedAt = matchInfo.MatchStartedAt,
+                State = matchInfo.State,
+                MatchScore = matchInfo.MatchScore
+            });
         }
 
         public async Task<IMatchService> GetMatchService(string userId, string matchId) =>
             (Guid.TryParse(matchId, out var guid) && await _context.Matches.Where(match => match.UserId == userId && match.Id == guid).AnyAsync())
-            ? new DatabaseMatchService(_context, guid)
+            ? new DatabaseMatchService(_context, guid, userId)
             : throw new KeyNotFoundException("Match not found.");
 
-        public async Task<IEnumerable<string>> GetPlayersAsync(string userId)
+        public async Task<IEnumerable<string>> GetPlayers(string userId)
         {
-            var matchIds = await _context.Matches.Where(match => match.UserId == userId)
-            .Select(match => match.Id).ToArrayAsync();
-
             var players = new List<string>();
 
-            foreach (var state in await _context.MatchInfos.Where(matchInfo => matchIds.Contains(matchInfo.MatchId)).ToArrayAsync())
+            foreach (var state in await _context.MatchInfos.Where(matchInfo => matchInfo.UserId == userId).ToArrayAsync())
                 if (state.FirstPlayer != null)
                 {
                     if (!players.Contains(state.FirstPlayer))
@@ -107,7 +120,7 @@ namespace YoTennis.Services
 
             foreach (var match in await _context.Matches.ToArrayAsync())
             {
-                var currentMatch = new DatabaseMatchService(_context, match.Id);
+                var currentMatch = new DatabaseMatchService(_context, match.Id, match.UserId);
                 try
                 {
                     await currentMatch.RebuildMatchInfoAsync();
