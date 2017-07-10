@@ -15,9 +15,9 @@ namespace YoTennis.Data
             {
                 FirstPlayer = model.FirstPlayer,
                 SecondPlayer = model.SecondPlayer,
-                State = model.State
+                State = model.State                 
             };
-
+            
             if (model.State != MatchState.NotStarted)
                 matchInfo.MatchStartedAt = model.MatchStartedAt;
 

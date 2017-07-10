@@ -15,8 +15,9 @@ namespace YoTennis.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<MatchEvent>().HasKey(matchEvent=> new { matchEvent.MatchId, matchEvent.Version });
-            builder.Entity<MatchInfo>().HasKey(matchInfo => matchInfo.MatchId );
+            builder.Entity<MatchEvent>().HasKey(matchEvent => new { matchEvent.MatchId, matchEvent.Version });
+            builder.Entity<MatchInfo>().HasKey(matchInfo => matchInfo.MatchId);
+            //builder.Entity<MatchInfo>().HasIndex(matchInfo => matchInfo.UserId);
         }
 
         public DbSet<Match> Matches { get; set; }
