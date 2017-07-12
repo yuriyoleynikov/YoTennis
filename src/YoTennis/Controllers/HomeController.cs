@@ -71,9 +71,7 @@ namespace YoTennis.Controllers
             var (newCount, newSkip) = CorrectPagination(totalCount, count, skip);
 
             if (count != newCount || skip != newSkip)
-            {
                 return RedirectToAction(nameof(Index), new { count = newCount, skip = newSkip });
-            }
 
             var matchInfoModels = await _matchListService.GetMatchesWithFilterAndSort(UserId, count, skip, player, state, sort);
             

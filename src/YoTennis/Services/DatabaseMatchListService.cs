@@ -106,21 +106,27 @@ namespace YoTennis.Services
             : throw new KeyNotFoundException("Match not found.");
 
         public async Task<IEnumerable<string>> GetPlayers(string userId)
-        {
-            var firstPlayers = await _context.MatchInfos
+        {   
+            var firstPlayersStats = await _context.MatchInfos
                 .Where(matchInfo => matchInfo.UserId == userId)
                 .Where(matchInfo => matchInfo.FirstPlayer != null)
                 .Select(matchInfo => matchInfo.FirstPlayer)
-                .Distinct()
-                .ToArrayAsync();
-            var secondPlayers = await _context.MatchInfos
+                .GroupBy(player => player, (player, group) => new { Name = player, Count = group.Count() })
+                .ToAsyncEnumerable()
+                .ToDictionary(x=>x.Name, x=>x.Count);
+
+            var secondPlayersStats = await _context.MatchInfos
                 .Where(matchInfo => matchInfo.UserId == userId)
                 .Where(matchInfo => matchInfo.SecondPlayer != null)
                 .Select(matchInfo => matchInfo.SecondPlayer)
-                .Distinct()
-                .ToArrayAsync();
+                .GroupBy(player => player, (player, group) => new { Name = player, Count = group.Count() })
+                .ToAsyncEnumerable()
+                .ToDictionary(x => x.Name, x => x.Count);
+            
+            foreach (var p1 in firstPlayersStats)
+                secondPlayersStats[p1.Key] = p1.Value + (secondPlayersStats.TryGetValue(p1.Key, out var value) ? value: 0);
 
-            return new HashSet<string>(firstPlayers.Concat(secondPlayers)).OrderBy(player => player);
+            return secondPlayersStats.OrderByDescending(player => player.Value).Select(player => player.Key);
         }
 
         public async Task RebuildMatchInfosAsync()
