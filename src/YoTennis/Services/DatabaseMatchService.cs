@@ -13,11 +13,13 @@ namespace YoTennis.Services
     {
         private readonly MyDbContext _context;
         private Guid _matchId;
+        private string _userId;
 
-        public DatabaseMatchService(MyDbContext context, Guid matchId)
+        public DatabaseMatchService(MyDbContext context, Guid matchId, string userId)
         {
             _context = context;
             _matchId = matchId;
+            _userId = userId;
         }
 
         public async Task AddEventAsync(GameEvent gameEvent)
@@ -39,6 +41,7 @@ namespace YoTennis.Services
 
             var matchInfo = gameHandler.CurrentState.ToMatchInfo();
             matchInfo.MatchId = _matchId;
+            matchInfo.UserId = _userId;
 
             if (await _context.MatchInfos.AnyAsync(x => x.MatchId == _matchId))
                 _context.Attach(matchInfo).State = EntityState.Modified;
@@ -83,7 +86,11 @@ namespace YoTennis.Services
             {
                 _context.MatchEvents.Remove(lastMatchEvent);
                 var gameHandler = await LoadGameHandler();
+
                 var matchInfo = gameHandler.CurrentState.ToMatchInfo();
+
+                matchInfo.MatchId = _matchId;
+                matchInfo.UserId = _userId;
 
                 if (await _context.MatchInfos.AnyAsync(x => x.MatchId == _matchId))
                     _context.Attach(matchInfo).State = EntityState.Modified;
@@ -97,6 +104,7 @@ namespace YoTennis.Services
             
             var matchInfo = gameHandler.CurrentState.ToMatchInfo();
             matchInfo.MatchId = _matchId;
+            matchInfo.UserId = _userId;
 
             if (await _context.MatchInfos.AnyAsync(x => x.MatchId == _matchId))
                 _context.Attach(matchInfo).State = EntityState.Modified;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YoTennis.Data;
 using YoTennis.Models;
 
 namespace YoTennis.Services
@@ -60,14 +61,63 @@ namespace YoTennis.Services
             throw new NotImplementedException();
         }
 
-        public Task RebuildMatchInfosAsync()
+        public Task RebuildMatchInfos()
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<string>> GetPlayersAsync(string userId)
+        public async Task<IEnumerable<string>> GetPlayers(string userId)
         {
-            throw new NotImplementedException();
+            if (_users.TryGetValue(userId, out var matches))
+            {
+                var result = new List<string>();
+
+                foreach (var match in matches)
+                {
+                    var matchState = await match.Value.GetStateAsync();
+                    if (matchState.FirstPlayer != null && !result.Contains(matchState.FirstPlayer))
+                        result.Add(matchState.FirstPlayer);
+                    if (matchState.SecondPlayer != null && !result.Contains(matchState.SecondPlayer))
+                        result.Add(matchState.SecondPlayer);
+                }
+            }
+
+            return await Task.FromResult(Enumerable.Empty<string>());
+        }
+
+        public async Task<IEnumerable<MatchInfoModel>> GetMatches(string userId, int count, int skip,
+            IEnumerable<string> filterPlayer = null, IEnumerable<MatchState> filterState = null, Sort sort = Sort.None)
+        {
+            var result = new List<MatchInfoModel>();
+
+            if (_users.TryGetValue(userId, out var matches))
+            {
+                foreach (var match in matches.Skip(skip).Take(count))
+                {
+                    var matchState = await match.Value.GetStateAsync();
+                    var matchInfo = matchState.ToMatchInfo();
+                    result.Add(new MatchInfoModel
+                    {
+                        MatchId = match.Key,
+                        FirstPlayer = matchState.FirstPlayer,
+                        MatchScore = matchInfo.MatchScore,
+                        MatchStartedAt = matchInfo.MatchStartedAt,
+                        SecondPlayer = matchState.SecondPlayer,
+                        State = matchState.State,
+                        Winner = matchInfo.Winner
+                    });
+                }
+            }
+            return result;
+        }
+
+        public Task<int> GetMatchCount(string userId, IEnumerable<string> filterPlayer = null, IEnumerable<MatchState> filterState = null)
+        {
+            if (_users.TryGetValue(userId, out var matches))
+            {
+                return Task.FromResult(matches.Count());
+            }
+            return Task.FromResult(0);
         }
     }
 }
