@@ -66,14 +66,14 @@ namespace YoTennis.Controllers
             player = player ?? Enumerable.Empty<string>();
             state = state ?? Enumerable.Empty<MatchState>();
 
-            var totalCount = await _matchListService.GetMatchCountWithFilter(UserId, player, state);
+            var totalCount = await _matchListService.GetMatchCount(UserId, player, state);
 
             var (newCount, newSkip) = CorrectPagination(totalCount, count, skip);
 
             if (count != newCount || skip != newSkip)
                 return RedirectToAction(nameof(Index), new { count = newCount, skip = newSkip });
 
-            var matchInfoModels = await _matchListService.GetMatchesWithFilterAndSort(UserId, count, skip, player, state, sort);
+            var matchInfoModels = await _matchListService.GetMatches(UserId, count, skip, player, state, sort);
             
             var containerForMatchModel = new ContainerForMatchModel
             {

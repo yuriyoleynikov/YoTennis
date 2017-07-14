@@ -47,18 +47,15 @@ namespace YoTennis.Services
             _context.MatchInfos.Remove(matchInfoToRemove);
             await _context.SaveChangesAsync();
         }
-
-        public Task<int> GetMatchCount(string userId) =>
-            _context.Matches.Where(match => match.UserId == userId).CountAsync();
-
-        public async Task<int> GetMatchCountWithFilter(string userId, IEnumerable<string> filterPlayer, IEnumerable<MatchState> filterState) =>
+        
+        public async Task<int> GetMatchCount(string userId, IEnumerable<string> filterPlayer = null, IEnumerable<MatchState> filterState = null) =>
             await _context.MatchInfos
                 .Where(matchInfo => matchInfo.UserId == userId)
                 .ByPlayers(filterPlayer)
                 .ByState(filterState)
                 .CountAsync();
 
-        public async Task<IEnumerable<MatchInfoModel>> GetMatchesInfosAsync(string userId)
+        public async Task<IEnumerable<MatchInfoModel>> GetMatchesInfos(string userId)
         {
             var matchInfos = await _context.MatchInfos
                 .Where(matchInfo => matchInfo.UserId == userId)
@@ -77,7 +74,7 @@ namespace YoTennis.Services
             return matchInfos;
         }
 
-        public async Task<IEnumerable<MatchInfoModel>> GetMatchesWithFilterAndSort(string userId, int count, int skip,
+        public async Task<IEnumerable<MatchInfoModel>> GetMatches(string userId, int count, int skip,
             IEnumerable<string> filterPlayer, IEnumerable<MatchState> filterState, Sort sort)
         {
             var result = await _context.MatchInfos
@@ -129,7 +126,7 @@ namespace YoTennis.Services
             return secondPlayersStats.OrderByDescending(player => player.Value).Select(player => player.Key);
         }
 
-        public async Task RebuildMatchInfosAsync()
+        public async Task RebuildMatchInfos()
         {
             var exceptions = new List<Exception>();
 
