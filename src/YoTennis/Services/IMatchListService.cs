@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YoTennis.Models;
+using YoTennis.Models.Stats;
 
 namespace YoTennis.Services
 {
     public interface IMatchListService
     {
         Task<string> CreateMatch(string userId);
+        Task<PlayersStatsMatchModel> GetPlayersMatchStats(string userId, string matchId);
         Task DeleteMatch(string userId, string matchId);
         Task RebuildMatchInfos();
         Task<IMatchService> GetMatchService(string userId, string matchId);

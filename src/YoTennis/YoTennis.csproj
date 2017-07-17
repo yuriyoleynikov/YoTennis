@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <Folder Include="Match\Models\" />
+    <Folder Include="Views\Stats\" />
   </ItemGroup>
 
 </Project>

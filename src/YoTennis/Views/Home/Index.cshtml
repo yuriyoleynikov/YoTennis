@@ -137,6 +137,7 @@
                         <td>
                             @Html.ActionLink("Edit", "Index", "Match", new { id = match.Id }) |
                             @Html.ActionLink("Details", "Details", new { id = match.Id }) |
+                            @Html.ActionLink("Stats", "Index", "Stats", new { id = match.Id }) |
                             @Html.ActionLink("Delete", "Delete", "Home", new
                        {
                            id = match.Id,
@@ -149,7 +150,7 @@
                                state = Model.SelectedState,
                                sort = Model.Sort
                            })
-                       })
+                       }) 
                         </td>
                     </tr>
                 }
