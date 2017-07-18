@@ -10,6 +10,7 @@ namespace YoTennis.Models
     {
         public List<GameEvent> Events { get; private set; } = new List<GameEvent>();
         public MatchModel CurrentState { get; private set; } = new MatchModel();
+        public PlayersStatsMatchModel PlayersStats { get; private set; } = new PlayersStatsMatchModel();
 
         private void AddPoint(Player wonPlayer)
         {
@@ -213,7 +214,64 @@ namespace YoTennis.Models
         }
 
         private void On(PointEvent gameEvent)
-        {
+        {/*
+            if (gameEvent.Kind == PointKind.Ace)
+            {
+                if (gameEvent.PlayerPoint == Player.First)
+                    PlayersStats.FirstPlayer = PlayersStats.FirstPlayer + 1;
+                else
+                    PlayersStats.SecondPlayer.Ace += 1;
+            }
+            else if (gameEvent.Kind == PointKind.Backhand)
+            {
+                if (gameEvent.PlayerPoint == Player.First)
+                    PlayersStats.FirstPlayer.Backhand += 1;
+                else
+                    PlayersStats.SecondPlayer.Backhand += 1;
+            }
+            else if (gameEvent.Kind == PointKind.DoubleFaults)
+            {
+                if (gameEvent.PlayerPoint == Player.Second)
+                    PlayersStats.FirstPlayer.DoubleFaults += 1;
+                else
+                    PlayersStats.SecondPlayer.DoubleFaults += 1;
+            }
+            else if (gameEvent.Kind == PointKind.Error)
+            {
+                if (gameEvent.PlayerPoint == Player.Second)
+                    PlayersStats.FirstPlayer.Error += 1;
+                else
+                    PlayersStats.SecondPlayer.Error += 1;
+            }
+            else if (gameEvent.Kind == PointKind.Forehand)
+            {
+                if (gameEvent.PlayerPoint == Player.First)
+                    PlayersStats.FirstPlayer.Forehand += 1;
+                else
+                    PlayersStats.SecondPlayer.Forehand += 1;
+            }
+            else if (gameEvent.Kind == PointKind.NetPoint)
+            {
+                if (gameEvent.PlayerPoint == Player.First)
+                    PlayersStats.FirstPlayer.NetPoint += 1;
+                else
+                    PlayersStats.SecondPlayer.NetPoint += 1;
+            }
+            else if (gameEvent.Kind == PointKind.UnforcedError)
+            {
+                if (gameEvent.PlayerPoint == Player.Second)
+                    PlayersStats.FirstPlayer.UnforcedError += 1;
+                else
+                    PlayersStats.SecondPlayer.UnforcedError += 1;
+            }
+            else if (gameEvent.Kind == PointKind.Unspecified)
+            {
+                if (gameEvent.PlayerPoint == Player.First)
+                    PlayersStats.FirstPlayer.Unspecified += 1;
+                else
+                    PlayersStats.SecondPlayer.Unspecified += 1;
+            }*/
+
             AddPoint(gameEvent.PlayerPoint);
         }
 

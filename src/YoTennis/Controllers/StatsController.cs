@@ -19,11 +19,19 @@ namespace YoTennis.Controllers
         {
             _matchListService = matchListService;
         }
-
+                
         public async Task<IActionResult> Index(string id)
         {
-            var view = await _matchListService.GetPlayersMatchStats(UserId, id);
-            return View(view);
+            try
+            {
+                var match = await _matchListService.GetMatchService(UserId, id);
+                var playersMatchStats = await match.GetPlayersMatchStats();
+                return View(playersMatchStats);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
     }
 }

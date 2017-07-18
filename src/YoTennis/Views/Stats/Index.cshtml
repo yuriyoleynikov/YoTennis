@@ -1,5 +1,5 @@
 @model  PlayersStatsMatchModel
-@using YoTennis.Models.Stats;
+@using YoTennis.Models;
 
 @{
     ViewData["Title"] = "Stats";
@@ -8,36 +8,33 @@
 <h2>Stats</h2>
 <table>
     <tr>
-        <th>FirstPlayer.FirstServe</th>
-        <td>@Model.FirstPlayer.FirstServe</td>
+        <th></th>
+        <th>Player1</th>
+        <th>Player2</th>
     </tr>
     <tr>
-        <th>FirstPlayer.FirstServeSuccessful</th>
-        <td>@Model.FirstPlayer.FirstServeSuccessful</td>
+        <th>TotalPoints</th>
+        <td>@Model.FirstPlayer.TotalPoints</td>
+        <td>@Model.SecondPlayer.TotalPoints</td>
     </tr>
     <tr>
-        <th>FirstPlayer.SecondServe</th>
-        <td>@Model.FirstPlayer.SecondServe</td>
+        <th>Aces</th>
+        <td>@Model.FirstPlayer.Ace</td>
+        <td>@Model.SecondPlayer.Ace</td>
     </tr>
     <tr>
-        <th>FirstPlayer.SecondServeSuccessful</th>
+        <th>Double Faults</th>
+        <td>@Model.FirstPlayer.DoubleFaults</td>
+        <td>@Model.SecondPlayer.DoubleFaults</td>
+    </tr>
+    <tr>
+        <th>Unforced Error</th>
+        <td>@Model.FirstPlayer.UnforcedError</td>
+        <td>@Model.SecondPlayer.UnforcedError</td>
+    </tr>
+    <tr>
+        <th>Second Serve Successful</th>
         <td>@Model.FirstPlayer.SecondServeSuccessful</td>
-    </tr>
-
-    <tr>
-        <th>SecondPlayer.FirstServe</th>
-        <td>@Model.SecondPlayer.FirstServe</td>
-    </tr>
-    <tr>
-        <th>SecondPlayer.FirstServeSuccessful</th>
-        <td>@Model.SecondPlayer.FirstServeSuccessful</td>
-    </tr>
-    <tr>
-        <th>SecondPlayer.SecondServe</th>
-        <td>@Model.SecondPlayer.SecondServe</td>
-    </tr>
-    <tr>
-        <th>SecondPlayer.SecondServeSuccessful</th>
         <td>@Model.SecondPlayer.SecondServeSuccessful</td>
     </tr>
 </table>

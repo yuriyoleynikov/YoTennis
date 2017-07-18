@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using YoTennis.Data;
 using YoTennis.Models;
-using YoTennis.Models.Stats;
 
 namespace YoTennis.Services
 {
@@ -147,35 +146,6 @@ namespace YoTennis.Services
 
             if (exceptions.Count > 0)
                 throw new AggregateException(exceptions);
-        }
-
-        public async Task<PlayersStatsMatchModel> GetPlayersMatchStats(string userId, string matchId)
-        {
-            if (!(Guid.TryParse(matchId, out var guid)) || !(await _context.Matches.Where(match => match.UserId == userId && match.Id == guid).AnyAsync()))
-                throw new KeyNotFoundException("Match not found.");
-
-            var result = new PlayersStatsMatchModel();
-
-            result.FirstPlayer.FirstServe = 0;
-            result.FirstPlayer.FirstServeSuccessful = 0;
-            result.FirstPlayer.SecondServe = 0;
-            result.FirstPlayer.SecondServeSuccessful = 0;
-
-            result.SecondPlayer.FirstServe = 0;
-            result.SecondPlayer.FirstServeSuccessful = 0;
-            result.SecondPlayer.SecondServe = 0;
-            result.SecondPlayer.SecondServeSuccessful = 0;
-
-            foreach (var matchEvent in 
-                (await _context.MatchEvents.Where(matchEvent => matchEvent.MatchId == guid)
-                .OrderByDescending(matchEvent=> matchEvent.Version).ToArrayAsync()))
-            {
-                var evnt = JsonConvert.DeserializeObject<GameEvent>(matchEvent.Event, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects });
-                
-                //?
-            }
-
-            return result;
-        }
+        }                
     }
 }

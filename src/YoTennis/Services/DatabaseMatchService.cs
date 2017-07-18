@@ -113,5 +113,12 @@ namespace YoTennis.Services
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task<PlayersStatsMatchModel> GetPlayersMatchStats()
+        {
+            var _gameHandler = await LoadGameHandler();
+
+            return _gameHandler.PlayersStats;
+        }
     }
 }

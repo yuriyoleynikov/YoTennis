@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using YoTennis.Data;
 using YoTennis.Models;
-using YoTennis.Models.Stats;
 
 namespace YoTennis.Services
 {
@@ -119,11 +118,6 @@ namespace YoTennis.Services
                 return Task.FromResult(matches.Count());
             }
             return Task.FromResult(0);
-        }
-
-        public Task<PlayersStatsMatchModel> GetPlayersMatchStats(string userId, string matchId)
-        {
-            throw new NotImplementedException();
-        }
+        }        
     }
 }

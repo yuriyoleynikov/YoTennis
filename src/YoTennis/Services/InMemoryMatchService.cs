@@ -16,6 +16,11 @@ namespace YoTennis.Services
             return Task.FromResult(0);
         }
 
+        public Task<PlayersStatsMatchModel> GetPlayersMatchStats()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<MatchModel> GetStateAsync()
         {
             return Task.FromResult(_gameHandler.CurrentState);
