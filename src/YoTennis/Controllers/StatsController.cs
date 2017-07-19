@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using YoTennis.Services;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using YoTennis.Models;
 
 namespace YoTennis.Controllers
 {
@@ -19,14 +20,23 @@ namespace YoTennis.Controllers
         {
             _matchListService = matchListService;
         }
-                
+
         public async Task<IActionResult> Index(string id)
         {
             try
             {
                 var match = await _matchListService.GetMatchService(UserId, id);
                 var playersMatchStats = await match.GetPlayersMatchStats();
-                return View(playersMatchStats);
+                var matchState = await match.GetStateAsync();
+
+                var playersStatsMatchView = new PlayersStatsMatchView
+                {
+                    FirstPlayerName = matchState.FirstPlayer ?? "First Player",
+                    SecondPlayerName = matchState.SecondPlayer ?? "Second Player",
+                    PlayersStatsMatchModel = playersMatchStats
+                };
+
+                return View(playersStatsMatchView);
             }
             catch (KeyNotFoundException)
             {
