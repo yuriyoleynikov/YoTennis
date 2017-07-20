@@ -531,7 +531,7 @@ namespace YoTennis.Tests.Test
             myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
 
             myGame.AddEvent(new ServeFailEvent { Serve = ServeFailKind.Error });
-            
+
             myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
             myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
             myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
@@ -3232,6 +3232,2017 @@ namespace YoTennis.Tests.Test
         {
             var myGame = new GameHandler();
             new Action(() => myGame.UndoLastEvent()).ShouldThrowExactly<InvalidOperationException>();
+        }
+
+
+        //New test for Stat
+
+        [Fact]
+        public void Check_Stat_NoEvent()
+        {
+            var myGame = new GameHandler();
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Check_Stat_StartEvent()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Check_Stat_DrawEvent()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_StartGameEvent()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_Ace()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Ace
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_Backhand()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Backhand
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_Error()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Error
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_Forehand()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Forehand
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_NetPoint()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.NetPoint
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_UnforcedError()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.UnforcedError
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_Unspecified()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Unspecified
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_ServeFailEvent_PointEvent_Ace()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new ServeFailEvent
+            {
+                OccuredAt = _gameDate2,
+                Serve = ServeFailKind.Error,
+                ServeSpeed = ServeSpeed.Unspecified
+            });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Ace
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(1);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_ServeFailEvent_PointEvent_Backhand()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+            myGame.AddEvent(new ServeFailEvent
+            {
+                OccuredAt = _gameDate2,
+                Serve = ServeFailKind.Error,
+                ServeSpeed = ServeSpeed.Unspecified
+            });
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Backhand
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(1);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_ServeFailEvent_PointEvent_Error()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+            myGame.AddEvent(new ServeFailEvent
+            {
+                OccuredAt = _gameDate2,
+                Serve = ServeFailKind.Error,
+                ServeSpeed = ServeSpeed.Unspecified
+            });
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Error
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(1);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_ServeFailEvent_PointEvent_Forehand()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+            myGame.AddEvent(new ServeFailEvent
+            {
+                OccuredAt = _gameDate2,
+                Serve = ServeFailKind.Error,
+                ServeSpeed = ServeSpeed.Unspecified
+            });
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Forehand
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(1);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_ServeFailEvent_PointEvent_NetPoint()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+            myGame.AddEvent(new ServeFailEvent
+            {
+                OccuredAt = _gameDate2,
+                Serve = ServeFailKind.Error,
+                ServeSpeed = ServeSpeed.Unspecified
+            });
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.NetPoint
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(1);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_ServeFailEvent_PointEvent_UnforcedError()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+            myGame.AddEvent(new ServeFailEvent
+            {
+                OccuredAt = _gameDate2,
+                Serve = ServeFailKind.Error,
+                ServeSpeed = ServeSpeed.Unspecified
+            });
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.UnforcedError
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(1);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_ServeFailEvent_PointEvent_Unspecified()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+            myGame.AddEvent(new ServeFailEvent
+            {
+                OccuredAt = _gameDate2,
+                Serve = ServeFailKind.Error,
+                ServeSpeed = ServeSpeed.Unspecified
+            });
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Unspecified
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(1);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_ServeFailEvent_DoubleFaults()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+            myGame.AddEvent(new ServeFailEvent
+            {
+                OccuredAt = _gameDate2,
+                Serve = ServeFailKind.Error,
+                ServeSpeed = ServeSpeed.Unspecified
+            });
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.First,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.DoubleFaults
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_ServeFailEvent_ServeFailEvent()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.Second
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+            myGame.AddEvent(new ServeFailEvent
+            {
+                OccuredAt = _gameDate2,
+                Serve = ServeFailKind.Error,
+                ServeSpeed = ServeSpeed.Unspecified
+            });
+            myGame.AddEvent(new ServeFailEvent
+            {
+                OccuredAt = _gameDate3,
+                Serve = ServeFailKind.Error,
+                ServeSpeed = ServeSpeed.Unspecified
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+        
+        [Fact]
+        public void Cheсk_Stat_PointEvent_Ace2()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.First
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.First,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Ace
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_Backhand2()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.First
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.First,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Backhand
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_Error2()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.First
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.First,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Error
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_Forehand2()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.First
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.First,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Forehand
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_NetPoint2()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.First
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.First,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.NetPoint
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_UnforcedError2()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.First
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.First,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.UnforcedError
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_Unspecified2()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.First
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.First,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Unspecified
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+        
+        [Fact]
+        public void Cheсk_Stat_PointEvent_Backhand3()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.First
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Backhand
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_Error3()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.First
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Error
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_Forehand3()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.First
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Forehand
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_NetPoint3()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.First
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.NetPoint
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_UnforcedError3()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.First
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.UnforcedError
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
+        }
+
+        [Fact]
+        public void Cheсk_Stat_PointEvent_Unspecified3()
+        {
+            var myGame = new GameHandler();
+            myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            });
+            myGame.AddEvent(new DrawEvent
+            {
+                OccuredAt = _matchDate,
+                PlayerOnLeft = Player.First,
+                PlayerServes = Player.First
+            });
+            myGame.AddEvent(new StartGameEvent { OccuredAt = _gameDate });
+
+            myGame.AddEvent(new PointEvent
+            {
+                PlayerPoint = Player.Second,
+                ServeSpeed = ServeSpeed.Unspecified,
+                Kind = PointKind.Unspecified
+            });
+
+            myGame.PlayersStats.FirstPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.FirstServe.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.FirstServeSuccessful.Should().Be(1);
+            myGame.PlayersStats.FirstPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.TotalPoints.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.FirstPlayer.WonOnSecondServe.Should().Be(0);
+
+            myGame.PlayersStats.SecondPlayer.Ace.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Backhand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.DoubleFaults.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Error.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.FirstServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.Forehand.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.NetPoint.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.SecondServeSuccessful.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.TotalPoints.Should().Be(1);
+            myGame.PlayersStats.SecondPlayer.UnforcedError.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
+            myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
         }
     }
 }

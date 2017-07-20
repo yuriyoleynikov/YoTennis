@@ -30,11 +30,11 @@ namespace YoTennis.Models
             if (gameEvent.PlayerPoint == Player.Second && gameEvent.Kind == PointKind.UnforcedError)
                 FirstPlayer.UnforcedError++;
 
-            if (state.PlayerServes == Player.First)
+            if (!state.SecondServe && state.PlayerServes == Player.First)
                 FirstPlayer.FirstServe++;
-            if (state.PlayerServes == Player.First && gameEvent.PlayerPoint == Player.First)
+            if (!state.SecondServe && state.PlayerServes == Player.First && gameEvent.PlayerPoint == Player.First)
                 FirstPlayer.WonOnFirstServe++;
-            if (state.PlayerServes == Player.First && gameEvent.Kind != PointKind.DoubleFaults)
+            if (!state.SecondServe && state.PlayerServes == Player.First && gameEvent.Kind != PointKind.DoubleFaults)
                 FirstPlayer.FirstServeSuccessful++;
 
             if (state.SecondServe && state.PlayerServes == Player.First)
@@ -62,11 +62,11 @@ namespace YoTennis.Models
             if (gameEvent.PlayerPoint == Player.First && gameEvent.Kind == PointKind.UnforcedError)
                 SecondPlayer.UnforcedError++;
 
-            if (state.PlayerServes == Player.Second)
+            if (!state.SecondServe && state.PlayerServes == Player.Second)
                 SecondPlayer.FirstServe++;
-            if (state.PlayerServes == Player.Second && gameEvent.PlayerPoint == Player.Second)
+            if (!state.SecondServe && state.PlayerServes == Player.Second && gameEvent.PlayerPoint == Player.Second)
                 SecondPlayer.WonOnFirstServe++;
-            if (state.PlayerServes == Player.Second && gameEvent.Kind != PointKind.DoubleFaults)
+            if (!state.SecondServe && state.PlayerServes == Player.Second && gameEvent.Kind != PointKind.DoubleFaults)
                 SecondPlayer.FirstServeSuccessful++;
 
             if (state.SecondServe && state.PlayerServes == Player.Second)
