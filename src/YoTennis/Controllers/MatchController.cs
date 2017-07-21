@@ -188,7 +188,7 @@ namespace YoTennis.Controllers
             {
                 OccuredAt = DateTime.UtcNow,
                 PlayerPoint = Player.First,
-                Kind = PointKind.Unspecified
+                Kind = pointCommand.Kind
             });
 
             return RedirectToAction(nameof(Index), new { id });
@@ -203,7 +203,7 @@ namespace YoTennis.Controllers
             {
                 OccuredAt = DateTime.UtcNow,
                 PlayerPoint = Player.Second,
-                Kind = PointKind.Unspecified
+                Kind = pointCommand.Kind
             });
 
             return RedirectToAction(nameof(Index), new { id });
