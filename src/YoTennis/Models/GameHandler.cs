@@ -196,7 +196,7 @@ namespace YoTennis.Models
 
         private void On(ServeFailEvent gameEvent)
         {
-            PlayersStats.StatsEntry(gameEvent, CurrentState);
+            AddPointStats(gameEvent);
 
             if (gameEvent.Serve == ServeFailKind.Error)
                 if (!CurrentState.SecondServe)
@@ -209,16 +209,106 @@ namespace YoTennis.Models
                         player = Player.Second;
                     else
                         player = Player.First;
-                    
+
                     AddPoint(player);
                 }
         }
 
         private void On(PointEvent gameEvent)
         {
-            PlayersStats.StatsEntry(gameEvent, CurrentState);
+            AddPointStats(gameEvent);
 
             AddPoint(gameEvent.PlayerPoint);
+        }
+
+        private void AddPointStats(ServeFailEvent gameEvent)
+        {
+            var (playerServes, playerReceiving) = CurrentState.PlayerServes == Player.First
+                ? (PlayersStats.FirstPlayer, PlayersStats.SecondPlayer)
+                : (PlayersStats.SecondPlayer, PlayersStats.FirstPlayer);
+
+            if (gameEvent.Serve == ServeFailKind.Error)
+            {
+                if (!CurrentState.SecondServe)
+                    playerServes.FirstServe++;
+                else
+                {
+                    playerServes.SecondServe++;
+                    playerServes.DoubleFaults++;
+                    playerReceiving.TotalPoints++;
+                }
+            }
+        }
+
+        private void AddPointStats(PointEvent gameEvent)
+        {
+            var (wonPlayer, lostPlayer) = gameEvent.PlayerPoint == Player.First
+                ? (PlayersStats.FirstPlayer, PlayersStats.SecondPlayer)
+                : (PlayersStats.SecondPlayer, PlayersStats.FirstPlayer);
+
+            var playerServes = CurrentState.PlayerServes == Player.First
+                            ? PlayersStats.FirstPlayer
+                            : PlayersStats.SecondPlayer;
+
+            wonPlayer.TotalPoints++;
+
+            switch (gameEvent.Kind)
+            {
+                case PointKind.Ace:
+                    wonPlayer.Ace++;
+                    break;
+
+                case PointKind.Error:
+                    lostPlayer.Error++;
+                    break;
+
+                case PointKind.Backhand:
+                    wonPlayer.Backhand++;
+                    break;
+
+                case PointKind.DoubleFaults:
+                    lostPlayer.DoubleFaults++;
+                    break;
+
+                case PointKind.Forehand:
+                    wonPlayer.Forehand++;
+                    break;
+
+                case PointKind.NetPoint:
+                    wonPlayer.NetPoint++;
+                    break;
+
+                case PointKind.UnforcedError:
+                    lostPlayer.UnforcedError++;
+                    break;
+
+                case PointKind.Unspecified:
+                    break;
+
+                default:
+                    break;
+            }
+
+            if (!CurrentState.SecondServe)
+            {
+                playerServes.FirstServe++;
+
+                if (gameEvent.PlayerPoint == CurrentState.PlayerServes)
+                    playerServes.WonOnFirstServe++;
+
+                if (gameEvent.Kind != PointKind.DoubleFaults)
+                    playerServes.FirstServeSuccessful++;
+            }
+            else
+            {
+                playerServes.SecondServe++;
+
+                if (gameEvent.PlayerPoint == CurrentState.PlayerServes)
+                    playerServes.WonOnSecondServe++;
+
+                if (gameEvent.Kind != PointKind.DoubleFaults)
+                    playerServes.SecondServeSuccessful++;
+            }
         }
 
         private void On(StartTiebreakEvent gameEvent)
