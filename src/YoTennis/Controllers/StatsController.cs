@@ -36,9 +36,9 @@ namespace YoTennis.Controllers
             }));
         }
 
-        public async Task<IActionResult> PlayerStats(string player)
+        public async Task<IActionResult> PlayerStats(string id)
         {
-            var playerStatsModel = await _statsService.GetPlayerStatsModel(UserId, player);
+            var playerStatsModel = await _statsService.GetPlayerStatsModel(UserId, id);
 
             return View(new PlayerStatsModelView
             {
