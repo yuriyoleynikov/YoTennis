@@ -13,35 +13,42 @@ namespace YoTennis.Controllers
     [Authorize]
     public class StatsController : Controller
     {
-        private IMatchListService _matchListService;
+        private IStatsService _statsService;
         private string UserId => User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-        public StatsController(IMatchListService matchListService)
+        public StatsController(IStatsService statsService)
         {
-            _matchListService = matchListService;
+            _statsService = statsService;
         }
 
-        public async Task<IActionResult> Index(string id)
+        public async Task<IActionResult> PlayersStats()
         {
-            try
-            {
-                var match = await _matchListService.GetMatchService(UserId, id);
-                var playersMatchStats = await match.GetPlayersMatchStats();
-                var matchState = await match.GetStateAsync();
+            var playersStatsModelList = await _statsService.GetPlayersStatsModel(UserId);
 
-                var playersStatsMatchView = new PlayersStatsMatchView
-                {
-                    FirstPlayerName = matchState.FirstPlayer ?? "First Player",
-                    SecondPlayerName = matchState.SecondPlayer ?? "Second Player",
-                    PlayersStatsMatchModel = playersMatchStats
-                };
-
-                return View(playersStatsMatchView);
-            }
-            catch (KeyNotFoundException)
+            return View(playersStatsModelList.Select(model => new PlayerStatsModelView
             {
-                return NotFound();
-            }
+                Player = model.Player,
+                Matches = model.Matches,
+                Completed = model.Completed,
+                Won = model.Won,
+                Lost = model.Lost,
+                AggregatedMatchStats = model.AggregatedMatchStats
+            }));
+        }
+
+        public async Task<IActionResult> PlayerStats(string player)
+        {
+            var playerStatsModel = await _statsService.GetPlayerStatsModel(UserId, player);
+
+            return View(new PlayerStatsModelView
+            {
+                Player = playerStatsModel.Player,
+                Matches = playerStatsModel.Matches,
+                Completed = playerStatsModel.Completed,
+                Won = playerStatsModel.Won,
+                Lost = playerStatsModel.Lost,
+                AggregatedMatchStats = playerStatsModel.AggregatedMatchStats
+            });
         }
     }
 }
