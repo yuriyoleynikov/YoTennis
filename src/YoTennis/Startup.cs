@@ -53,8 +53,11 @@ namespace YoTennis
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();            
+            services.AddTransient<ISmsSender, AuthMessageSender>();
+
             services.AddScoped<IMatchListService, DatabaseMatchListService>();
+            services.AddScoped<IStatsService, DynamicStatsService>();
+
             //services.AddSingleton<IMatchListService, InMemoryMatchListService>();
         }
 
