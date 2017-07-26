@@ -1,0 +1,78 @@
+﻿@model PlayerStatsModelView
+
+@{
+    ViewData["Title"] = "Player Stats";
+}
+
+<h2>@Model.Player Stats</h2>
+
+<table>
+    <tr>
+        <th>Matches</th>
+        <td>@Model.Matches</td>
+    </tr>
+
+    <tr>
+        <th>Completed</th>
+        <td>@Model.Completed</td>
+    </tr>
+
+    <tr>
+        <th>Won</th>
+        <td>@Model.Won</td>
+    </tr>
+
+    <tr>
+        <th>Lost</th>
+        <td>@Model.Lost</td>
+    </tr>
+
+    <tr>
+        <th style="padding-right: 250px">Total Points</th>
+        <td style="padding-right: 250px">@Model.AggregatedMatchStats.TotalPoints</td>
+    </tr>
+
+    <tr>
+        <th>Aces</th>
+        <td>@Model.AggregatedMatchStats.Ace</td>        
+    </tr>
+
+    <tr>
+        <th>Double Faults</th>
+        <td>@Model.AggregatedMatchStats.DoubleFaults</td>        
+    </tr>
+
+    <tr>
+        <th>Error</th>
+        <td>@Model.AggregatedMatchStats.Error</td>
+    </tr>
+
+    <tr>
+        <th>Unforced Error</th>
+        <td>@Model.AggregatedMatchStats.UnforcedError</td>
+    </tr>
+
+    <tr>
+        <th>First Serve</th>
+        <td>
+            @{
+                var FirstPlayerServe = Model.AggregatedMatchStats.FirstServe != 0 ?
+                    Math.Truncate(((double)Model.AggregatedMatchStats.FirstServeSuccessful / Model.AggregatedMatchStats.FirstServe * 100)).ToString() + "%" :
+                    "none";
+            }
+            @FirstPlayerServe
+        </td>
+    </tr>
+
+    <tr>
+        <th>Second Serve</th>
+        <td>
+            @{
+                var FirstPlayerServe2 = Model.AggregatedMatchStats.SecondServe != 0 ?
+                    Math.Truncate(((double)Model.AggregatedMatchStats.SecondServeSuccessful / Model.AggregatedMatchStats.SecondServe * 100)).ToString() + "%" :
+                    "none";
+            }
+            @FirstPlayerServe2
+        </td>
+    </tr>
+</table>

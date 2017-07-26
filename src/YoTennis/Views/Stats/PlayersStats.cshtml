@@ -1,0 +1,45 @@
+﻿@model IEnumerable<PlayerStatsModelView>
+
+@{
+    ViewData["Title"] = "Players Stats";
+}
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Players</th>
+                <th>Matches</th>
+                <th>Completed</th>
+                <th>Won</th>
+                <th>Lost</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var match in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelMatch => match.Player)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelMatch => match.Matches)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelMatch => match.Completed)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelMatch => match.Won)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelMatch => match.Lost)
+                    </td>
+                    <td>                        
+                        @Html.ActionLink("Player stats", "PlayerStats", "Stats", new { id = match.Player })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

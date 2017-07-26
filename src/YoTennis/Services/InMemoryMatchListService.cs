@@ -118,6 +118,6 @@ namespace YoTennis.Services
                 return Task.FromResult(matches.Count());
             }
             return Task.FromResult(0);
-        }
+        }        
     }
 }

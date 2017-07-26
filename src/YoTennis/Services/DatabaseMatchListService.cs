@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -145,6 +146,6 @@ namespace YoTennis.Services
 
             if (exceptions.Count > 0)
                 throw new AggregateException(exceptions);
-        }
+        }                
     }
 }

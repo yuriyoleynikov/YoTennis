@@ -1,0 +1,79 @@
+@model  PlayersStatsMatchView
+@using YoTennis.Models;
+
+@{
+    ViewData["Title"] = "Stats";
+}
+
+<h2>Stats</h2>
+<table>
+    <tr>
+        <th style="padding-right: 250px">&nbsp;</th>
+        <th style="padding-right: 50px">@Model.FirstPlayerName</th>
+        <th style="padding-right: 50px">@Model.SecondPlayerName</th>
+    </tr>
+    <tr>
+        <th>Total Points</th>
+        <td>@Model.PlayersStatsMatchModel.FirstPlayer.TotalPoints</td>
+        <td>@Model.PlayersStatsMatchModel.SecondPlayer.TotalPoints</td>
+    </tr>
+    <tr>
+        <th>Aces</th>
+        <td>@Model.PlayersStatsMatchModel.FirstPlayer.Ace</td>
+        <td>@Model.PlayersStatsMatchModel.SecondPlayer.Ace</td>
+    </tr>
+    <tr>
+        <th>Double Faults</th>
+        <td>@Model.PlayersStatsMatchModel.FirstPlayer.DoubleFaults</td>
+        <td>@Model.PlayersStatsMatchModel.SecondPlayer.DoubleFaults</td>
+    </tr>
+    <tr>
+        <th>Error</th>
+        <td>@Model.PlayersStatsMatchModel.FirstPlayer.Error</td>
+        <td>@Model.PlayersStatsMatchModel.SecondPlayer.Error</td>
+    </tr>
+    <tr>
+        <th>Unforced Error</th>
+        <td>@Model.PlayersStatsMatchModel.FirstPlayer.UnforcedError</td>
+        <td>@Model.PlayersStatsMatchModel.SecondPlayer.UnforcedError</td>
+    </tr>
+    <tr>
+        <th>First Serve</th>
+        <td>
+            @{
+                var FirstPlayerServe = Model.PlayersStatsMatchModel.FirstPlayer.FirstServe != 0 ?
+                    Math.Truncate(((double)Model.PlayersStatsMatchModel.FirstPlayer.FirstServeSuccessful / Model.PlayersStatsMatchModel.FirstPlayer.FirstServe * 100)).ToString() + "%" :
+                    "none";
+            }
+            @FirstPlayerServe
+        </td>
+        <td>
+            @{
+                var SecondPlayerServe = Model.PlayersStatsMatchModel.SecondPlayer.FirstServe != 0 ?
+                    Math.Truncate(((double)Model.PlayersStatsMatchModel.SecondPlayer.FirstServeSuccessful / Model.PlayersStatsMatchModel.SecondPlayer.FirstServe * 100)).ToString() + "%" :
+                    "none";
+            }
+            @SecondPlayerServe
+        </td>
+    </tr>    
+    <tr>
+        <th>Second Serve</th>
+        <td>
+            @{
+                var FirstPlayerServe2 = Model.PlayersStatsMatchModel.FirstPlayer.SecondServe != 0 ?
+                    Math.Truncate(((double)Model.PlayersStatsMatchModel.FirstPlayer.SecondServeSuccessful / Model.PlayersStatsMatchModel.FirstPlayer.SecondServe * 100)).ToString() + "%" :
+                    "none";
+            }
+            @FirstPlayerServe2
+        </td>
+        <td>
+            @{
+                var SecondPlayerServe2 = Model.PlayersStatsMatchModel.SecondPlayer.SecondServe != 0 ?
+                    Math.Truncate(((double)Model.PlayersStatsMatchModel.SecondPlayer.SecondServeSuccessful / Model.PlayersStatsMatchModel.SecondPlayer.SecondServe * 100)).ToString() + "%" :
+                    "none";
+            }
+            @SecondPlayerServe2
+        </td>
+    </tr>
+</table>
+

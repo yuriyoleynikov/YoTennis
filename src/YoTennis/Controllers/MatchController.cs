@@ -79,6 +79,29 @@ namespace YoTennis.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Stats(string id)
+        {
+            try
+            {
+                var match = await _matchListService.GetMatchService(UserId, id);
+                var playersMatchStats = await match.GetPlayersMatchStats();
+                var matchState = await match.GetStateAsync();
+
+                var playersStatsMatchView = new PlayersStatsMatchView
+                {
+                    FirstPlayerName = matchState.FirstPlayer ?? "First Player",
+                    SecondPlayerName = matchState.SecondPlayer ?? "Second Player",
+                    PlayersStatsMatchModel = playersMatchStats
+                };
+
+                return View(playersStatsMatchView);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> Start(StartCommand command, string id)
         {
@@ -188,7 +211,7 @@ namespace YoTennis.Controllers
             {
                 OccuredAt = DateTime.UtcNow,
                 PlayerPoint = Player.First,
-                Kind = PointKind.Unspecified
+                Kind = pointCommand.Kind
             });
 
             return RedirectToAction(nameof(Index), new { id });
@@ -203,7 +226,7 @@ namespace YoTennis.Controllers
             {
                 OccuredAt = DateTime.UtcNow,
                 PlayerPoint = Player.Second,
-                Kind = PointKind.Unspecified
+                Kind = pointCommand.Kind
             });
 
             return RedirectToAction(nameof(Index), new { id });

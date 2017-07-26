@@ -10,6 +10,7 @@ namespace YoTennis.Services
     {
         Task AddEventAsync(GameEvent gameEvent);
         Task<MatchModel> GetStateAsync();
+        Task<PlayersStatsMatchModel> GetPlayersMatchStats();
         Task Reset();
         Task UndoAsync();
         Task RebuildMatchInfoAsync();
