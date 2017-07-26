@@ -55,6 +55,7 @@ namespace YoTennis.Models
         BeginningTiebreak,
         PlayingTiebreak,
         ChangingSidesOnTiebreak,
+        CompletedAndNotFinished,
         Completed
     }
 
