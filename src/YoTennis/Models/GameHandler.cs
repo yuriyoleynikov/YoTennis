@@ -330,8 +330,9 @@ namespace YoTennis.Models
 
         }
 
-        private void On(CancelGameEvent gameEvent)
+        private void On(StopGameEvent gameEvent)
         {
+            CurrentState.State = MatchState.CompletedAndNotFinished;            
         }
     }
 }
