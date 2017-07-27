@@ -28,7 +28,7 @@ namespace YoTennis.Controllers
         {
             return Create();
         }
-                
+        
         public async Task<IActionResult> Cancel(string id)
         {
             var matchService = await _matchListService.GetMatchService(UserId, id);
@@ -274,11 +274,11 @@ namespace YoTennis.Controllers
             return RedirectToAction(nameof(Index), new { id });
         }
 
-        public async Task<IActionResult> CompletedAndNotFinished(StopGameCommand stopGameCommand, string id)
+        public async Task<IActionResult> Stop(StopGameCommand stopGameCommand, string id)
         {
             var matchService = await _matchListService.GetMatchService(UserId, id);
 
-            await matchService.AddEventAsync(new StopGameEvent
+            await matchService.AddEventAsync(new StopEvent
             {
                 OccuredAt = DateTime.UtcNow
             });

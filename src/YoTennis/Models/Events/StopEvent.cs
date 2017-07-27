@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace YoTennis.Models.Events
 {
-    public class StopGameEvent : GameEvent
+    public class StopEvent : GameEvent
     {
         //dont know
     }
