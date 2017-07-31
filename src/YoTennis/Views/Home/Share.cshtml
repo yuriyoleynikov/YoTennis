@@ -1,0 +1,10 @@
+﻿@model MatchShareViewModel
+
+@{
+    ViewData["Title"] = "Share";
+}
+
+<h2>Share</h2>
+<p>
+    @Html.ActionLink("Shared", "Shared", "Match", new { matchId = Model.MatchId, date = Model.Date, hash = Model.SHA })
+</p>

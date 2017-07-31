@@ -10,6 +10,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using System.Text;
 using YoTennis.Helpers;
+using System.Security.Cryptography;
 
 namespace YoTennis.Controllers
 {
@@ -74,7 +75,7 @@ namespace YoTennis.Controllers
                 return RedirectToAction(nameof(Index), new { count = newCount, skip = newSkip });
 
             var matchInfoModels = await _matchListService.GetMatches(UserId, count, skip, player, state, sort);
-            
+
             var containerForMatchModel = new ContainerForMatchModel
             {
                 ListMatchModelView = matchInfoModels.Select(matchInfo => new MatchModelView
@@ -119,7 +120,27 @@ namespace YoTennis.Controllers
             {
                 var match = await _matchListService.GetMatchService(UserId, id);
                 var matchState = await match.GetStateAsync();
-                return View(matchState);
+                var matchDetailsViewModel = new MatchDetailsViewModel
+                {
+                    Id = id,
+                    MatchModel = matchState
+                };
+
+                return View(matchDetailsViewModel);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        public async Task<IActionResult> Share(string id)
+        {
+            try
+            {
+                var matchSHA = SHA.GenerateSHA256String(id + DateTime.UtcNow.ToString() + UserId);
+
+                return View(new MatchShareViewModel { MatchId = id, Date = DateTime.UtcNow.ToString(), SHA = matchSHA });
             }
             catch (KeyNotFoundException)
             {
@@ -144,6 +165,6 @@ namespace YoTennis.Controllers
         public IActionResult Error()
         {
             return View();
-        }
+        }        
     }
 }
