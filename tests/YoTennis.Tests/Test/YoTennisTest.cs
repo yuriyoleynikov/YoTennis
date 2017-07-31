@@ -2045,7 +2045,6 @@ namespace YoTennis.Tests.Test
                 });
             }
             myGame.AddEvent(new ChangeSidesOnTiebreakEvent { OccuredAt = _gameDate3 });
-            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 6; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -2197,7 +2196,6 @@ namespace YoTennis.Tests.Test
                 });
             }
             myGame.AddEvent(new ChangeSidesOnTiebreakEvent { OccuredAt = _gameDate3 });
-            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 6; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -2358,7 +2356,6 @@ namespace YoTennis.Tests.Test
                 });
             }
             myGame.AddEvent(new ChangeSidesOnTiebreakEvent { OccuredAt = _gameDate3 });
-            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 6; i++)
             {
                 myGame.AddEvent(new PointEvent
@@ -2521,7 +2518,6 @@ namespace YoTennis.Tests.Test
                 });
             }
             myGame.AddEvent(new ChangeSidesOnTiebreakEvent { OccuredAt = _gameDate3 });
-            myGame.AddEvent(new StartTiebreakEvent { OccuredAt = _gameDate3 });
             for (int i = 0; i < 6; i++)
             {
                 myGame.AddEvent(new PointEvent
