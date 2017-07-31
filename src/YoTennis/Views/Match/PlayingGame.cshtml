@@ -11,6 +11,7 @@
 
 @Html.Partial("PlayingGameForm", Model.Form,
     new ViewDataDictionary(ViewData) { ["FirstPlayerName"] = Model.Match.FirstPlayer, ["SecondPlayerName"] = Model.Match.SecondPlayer })
+@Html.Partial("CompletedAndNotFinishedForm")
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

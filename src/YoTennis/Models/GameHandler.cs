@@ -172,6 +172,9 @@ namespace YoTennis.Models
 
         private void On(DrawEvent gameEvent)
         {
+            if (CurrentState.State != MatchState.Drawing)
+                throw new InvalidOperationException("Not Expected");
+
             CurrentState.PlayerOnLeft = gameEvent.PlayerOnLeft;
             CurrentState.PlayerServes = gameEvent.PlayerServes;
             CurrentState.Sets = new List<SetModel> { new SetModel() };
@@ -184,12 +187,18 @@ namespace YoTennis.Models
 
         private void On(ChangeSidesGameEvent gameEvent)
         {
+            if (CurrentState.State != MatchState.ChangingSides)
+                throw new InvalidOperationException("Not Expected");
+
             CurrentState.PlayerOnLeft = CurrentState.PlayerOnLeft.Other();
             CurrentState.State = MatchState.BeginningGame;
         }
 
         private void On(ChangeSidesOnTiebreakEvent gameEvent)
         {
+            if (CurrentState.State != MatchState.ChangingSidesOnTiebreak)
+                throw new InvalidOperationException("Not Expected");
+
             CurrentState.PlayerOnLeft = CurrentState.PlayerOnLeft.Other();
             CurrentState.State = MatchState.PlayingTiebreak;
         }
@@ -216,6 +225,9 @@ namespace YoTennis.Models
 
         private void On(PointEvent gameEvent)
         {
+            if (!(CurrentState.State == MatchState.PlayingGame || CurrentState.State == MatchState.PlayingTiebreak))
+                throw new InvalidOperationException("Not Expected");
+
             AddPointStats(gameEvent);
 
             AddPoint(gameEvent.PlayerPoint);
@@ -313,11 +325,11 @@ namespace YoTennis.Models
 
         private void On(StartTiebreakEvent gameEvent)
         {
+            if (CurrentState.State != MatchState.BeginningTiebreak)
+                throw new InvalidOperationException("Not Expected");
+            
             CurrentState.GameStratedAt = gameEvent.OccuredAt;
-            if (CurrentState.State == MatchState.BeginningTiebreak)
-            {
-                CurrentState.State = MatchState.PlayingTiebreak;
-            }
+            CurrentState.State = MatchState.PlayingTiebreak;
         }
 
         private void On(StartGameEvent gameEvent)
@@ -330,8 +342,12 @@ namespace YoTennis.Models
 
         }
 
-        private void On(CancelGameEvent gameEvent)
+        private void On(StopEvent gameEvent)
         {
+            if (CurrentState.State == MatchState.Completed || CurrentState.State == MatchState.CompletedAndNotFinished)
+                throw new InvalidOperationException("Not Expected");
+
+            CurrentState.State = MatchState.CompletedAndNotFinished;            
         }
     }
 }

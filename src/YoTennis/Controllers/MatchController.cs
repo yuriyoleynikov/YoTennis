@@ -28,7 +28,7 @@ namespace YoTennis.Controllers
         {
             return Create();
         }
-
+        
         public async Task<IActionResult> Cancel(string id)
         {
             var matchService = await _matchListService.GetMatchService(UserId, id);
@@ -40,7 +40,7 @@ namespace YoTennis.Controllers
         public async Task<IActionResult> Create()
         {
             var id = await _matchListService.CreateMatch(UserId);
-            return RedirectToAction(nameof(Index), new { id } );
+            return RedirectToAction(nameof(Index), new { id });
         }
 
         public async Task<IActionResult> Index(string id)
@@ -75,6 +75,9 @@ namespace YoTennis.Controllers
 
             if (state.State == Models.MatchState.Completed)
                 return View("Completed", new CompletedModel { Match = state, Id = id });
+
+            if (state.State == Models.MatchState.CompletedAndNotFinished)
+                return View("CompletedAndNotFinished", new CompletedAndNotFinishedModel { Match = state, Id = id });
 
             return View();
         }
@@ -124,7 +127,7 @@ namespace YoTennis.Controllers
                 FirstPlayer = command.FirstPlayer,
                 SecondPlayer = command.SecondPlayer
             });
-                        
+
             return RedirectToAction(nameof(Index), new { id });
         }
 
@@ -269,6 +272,18 @@ namespace YoTennis.Controllers
             });
 
             return RedirectToAction(nameof(Index), new { id });
-        }        
+        }
+
+        public async Task<IActionResult> Stop(StopGameCommand stopGameCommand, string id)
+        {
+            var matchService = await _matchListService.GetMatchService(UserId, id);
+
+            await matchService.AddEventAsync(new StopEvent
+            {
+                OccuredAt = DateTime.UtcNow
+            });
+
+            return RedirectToAction(nameof(Index), new { id });
+        }
     }
 }

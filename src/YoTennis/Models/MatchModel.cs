@@ -55,7 +55,8 @@ namespace YoTennis.Models
         BeginningTiebreak,
         PlayingTiebreak,
         ChangingSidesOnTiebreak,
-        Completed
+        Completed,
+        CompletedAndNotFinished
     }
 
     public enum Player
