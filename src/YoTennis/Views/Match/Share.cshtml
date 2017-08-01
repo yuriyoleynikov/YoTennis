@@ -1,4 +1,4 @@
-@model MatchDetailsViewModel
+@model MatchSharedDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -6,14 +6,11 @@
 
 <h2>Details</h2>
 
-@if (Model.MatchModel.State == MatchState.Completed || Model.MatchModel.State == MatchState.CompletedAndNotFinished)
-{
-    var matchId = Model.Id;
-
-    <p>@Html.ActionLink("Share", "Share", "Home", new { id = Model.Id })</p>
-}
-
 <table>
+    <tr>
+        <th>Shared</th>
+        <td>@Model.Shared</td>
+    </tr>
     <tr>
         <th>State</th>
         <td>@Model.MatchModel.State</td>

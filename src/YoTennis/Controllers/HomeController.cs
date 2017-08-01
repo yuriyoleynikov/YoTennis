@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Text;
 using YoTennis.Helpers;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Identity;
 
 namespace YoTennis.Controllers
 {
@@ -113,41 +114,7 @@ namespace YoTennis.Controllers
                 return RedirectToAction(nameof(Index));
             return LocalRedirect(returnUrl);
         }
-
-        public async Task<IActionResult> Details(string id)
-        {
-            try
-            {
-                var match = await _matchListService.GetMatchService(UserId, id);
-                var matchState = await match.GetStateAsync();
-                var matchDetailsViewModel = new MatchDetailsViewModel
-                {
-                    Id = id,
-                    MatchModel = matchState
-                };
-
-                return View(matchDetailsViewModel);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-        }
-
-        public async Task<IActionResult> Share(string id)
-        {
-            try
-            {
-                var matchSHA = SHA.GenerateSHA256String(id + DateTime.UtcNow.ToString() + UserId);
-
-                return View(new MatchShareViewModel { MatchId = id, Date = DateTime.UtcNow.ToString(), SHA = matchSHA });
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-        }
-
+        
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
@@ -165,6 +132,6 @@ namespace YoTennis.Controllers
         public IActionResult Error()
         {
             return View();
-        }        
+        }
     }
 }

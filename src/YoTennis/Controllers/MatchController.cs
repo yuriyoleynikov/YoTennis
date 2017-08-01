@@ -10,6 +10,8 @@ using YoTennis.Models.Events;
 using YoTennis.Models.Match;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using YoTennis.Helpers;
 
 namespace YoTennis.Controllers
 {
@@ -18,17 +20,58 @@ namespace YoTennis.Controllers
     {
         private IMatchListService _matchListService;
         private string UserId => User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public MatchController(IMatchListService matchService)
+        public MatchController(UserManager<ApplicationUser> userManager, IMatchListService matchListService)
         {
-            _matchListService = matchService;
+            _userManager = userManager;
+            _matchListService = matchListService;
+        }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            try
+            {
+                var match = await _matchListService.GetMatchService(UserId, id);
+                var matchState = await match.GetStateAsync();
+                var matchDetailsViewModel = new MatchDetailsViewModel
+                {
+                    Id = id,
+                    MatchModel = matchState
+                };
+
+                return View(matchDetailsViewModel);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        public async Task<IActionResult> Share(string id)
+        {
+            var applicationUser = await _userManager.FindByIdAsync(UserId);
+            var date = DateTime.UtcNow.ToBinary().ToString();
+            var matchSHA = SHA.GenerateSHA256String(id + date + applicationUser.PasswordHash);
+            var link = "/match/shared/matchId=" + id + "?date=" + date + "&hash=" + matchSHA;
+
+            var match = await _matchListService.GetMatchService(UserId, id);
+            var matchState = await match.GetStateAsync();
+
+            return View(new MatchSharedDetailsViewModel { Id = id, MatchModel = matchState, Shared = link });
+        }
+
+        public async Task<IActionResult> Shared(string matchId, string date, string hash)
+        {
+            
+            return View();
         }
 
         public Task<IActionResult> Restart()
         {
             return Create();
         }
-        
+
         public async Task<IActionResult> Cancel(string id)
         {
             var matchService = await _matchListService.GetMatchService(UserId, id);
