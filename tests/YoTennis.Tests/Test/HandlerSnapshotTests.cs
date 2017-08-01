@@ -74,7 +74,7 @@ namespace YoTennis.Tests.Test
             _nextTime = e.OccuredAt.AddMinutes(1);
 
             _result.AppendLine();
-            _result.AppendLine($"Event {JsonConvert.SerializeObject(e, JsonSettings)}");
+            _result.AppendLine($"Event {e.GetType().Name} {JsonConvert.SerializeObject(e, JsonSettings)}");
             var prevState = JToken.FromObject(_handler.CurrentState, Serializer);
 
             try
