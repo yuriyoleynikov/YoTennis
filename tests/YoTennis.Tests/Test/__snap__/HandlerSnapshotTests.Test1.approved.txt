@@ -1,0 +1,76 @@
+Initial state {
+  "MatchScore": {
+    "FirstPlayer": 0,
+    "SecondPlayer": 0
+  },
+  "Sets": null,
+  "GameScore": {
+    "FirstPlayer": 0,
+    "SecondPlayer": 0
+  },
+  "GameStratedAt": "0001-01-01T00:00:00",
+  "PlayerOnLeft": "First",
+  "PlayerServes": "First",
+  "ServePosition": "Right",
+  "SecondServe": false,
+  "MatchStartedAt": "0001-01-01T00:00:00",
+  "MatchSettings": null,
+  "FirstPlayer": null,
+  "SecondPlayer": null,
+  "State": "NotStarted"
+}
+
+Event {
+  "Settings": {
+    "SetsForWin": 3,
+    "TiebreakFinal": false,
+    "GamesInSet": 6,
+    "PointsInGame": 4,
+    "PointsInTiebreak": 7
+  },
+  "FirstPlayer": "Oleynikov",
+  "SecondPlayer": "Nadal",
+  "OccuredAt": "1986-09-26T00:00:00"
+}
+State {
+  "MatchStartedAt": "0001-01-01T00:00:00" -> "1986-09-26T00:00:00",
+  "MatchSettings": null -> {
+  "SetsForWin": 3,
+  "TiebreakFinal": false,
+  "GamesInSet": 6,
+  "PointsInGame": 4,
+  "PointsInTiebreak": 7
+},
+  "FirstPlayer": null -> "Oleynikov",
+  "SecondPlayer": null -> "Nadal",
+  "State": "NotStarted" -> "Drawing",
+}
+
+Event {
+  "PlayerOnLeft": "First",
+  "PlayerServes": "Second",
+  "OccuredAt": "1986-09-26T00:01:00"
+}
+State {
+  "Sets": null -> [
+  {
+    "Score": {
+      "FirstPlayer": 0,
+      "SecondPlayer": 0
+    },
+    "TiebreakScore": {
+      "FirstPlayer": 0,
+      "SecondPlayer": 0
+    }
+  }
+],
+  "GameStratedAt": "0001-01-01T00:00:00" -> "1986-09-26T00:01:00",
+  "PlayerServes": "First" -> "Second",
+  "State": "Drawing" -> "BeginningGame",
+}
+
+Event {
+  "OccuredAt": "1986-09-26T00:02:00"
+}
+Exception Not Expected
+State <no changes>
