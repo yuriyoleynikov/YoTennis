@@ -114,7 +114,14 @@ namespace YoTennis.Controllers
                 return RedirectToAction(nameof(Index));
             return LocalRedirect(returnUrl);
         }
-        
+
+        public async Task<IActionResult> CopyMatch(string id)
+        {
+            await _matchListService.CopyMatch(UserId, id);
+
+            return RedirectToAction(nameof(Index));
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";

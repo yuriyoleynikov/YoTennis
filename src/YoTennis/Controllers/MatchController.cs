@@ -53,16 +53,33 @@ namespace YoTennis.Controllers
             var applicationUser = await _userManager.FindByIdAsync(UserId);
             var date = DateTime.UtcNow.ToBinary().ToString();
             var matchSHA = SHA.GenerateSHA256String(id + date + applicationUser.PasswordHash);
-            var link = "/match/shared/matchId=" + id + "?date=" + date + "&hash=" + matchSHA;
-
+            var link = "/match/shared/" + id + "?date=" + date + "&hash=" + matchSHA;
+            
             var match = await _matchListService.GetMatchService(UserId, id);
             var matchState = await match.GetStateAsync();
-
-            return View(new MatchSharedDetailsViewModel { Id = id, MatchModel = matchState, Shared = link });
+            
+            return View(new MatchShareDetailsViewModel { Id = id, MatchModel = matchState, Shared = link });
         }
 
-        public async Task<IActionResult> Shared(string matchId, string date, string hash)
+        public async Task<IActionResult> Shared(string id, long date, string hash)
         {
+            var userId = await _matchListService.GetMatchOwner(id);
+            var applicationUser = await _userManager.FindByIdAsync(userId);
+            var matchSHA = SHA.GenerateSHA256String(id + date.ToString() + applicationUser.PasswordHash);
+
+            if (hash == matchSHA && DateTime.UtcNow - DateTime.FromBinary(date) <= TimeSpan.FromDays(1))
+            {
+                var match = await _matchListService.GetMatchService(userId, id);
+
+                var matchState = await match.GetStateAsync();
+                var matchSharedDetailsViewModel = new MatchSharedDetailsViewModel
+                {
+                    Id = id,
+                    MatchModel = matchState
+                };
+
+                return View(matchSharedDetailsViewModel);
+            }
             
             return View();
         }

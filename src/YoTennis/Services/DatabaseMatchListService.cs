@@ -48,7 +48,7 @@ namespace YoTennis.Services
             _context.MatchInfos.Remove(matchInfoToRemove);
             await _context.SaveChangesAsync();
         }
-        
+
         public async Task<int> GetMatchCount(string userId, IEnumerable<string> filterPlayer = null, IEnumerable<MatchState> filterState = null) =>
             await _context.MatchInfos
                 .Where(matchInfo => matchInfo.UserId == userId)
@@ -104,14 +104,14 @@ namespace YoTennis.Services
             : throw new KeyNotFoundException("Match not found.");
 
         public async Task<IEnumerable<string>> GetPlayers(string userId)
-        {   
+        {
             var firstPlayersStats = await _context.MatchInfos
                 .Where(matchInfo => matchInfo.UserId == userId)
                 .Where(matchInfo => matchInfo.FirstPlayer != null)
                 .Select(matchInfo => matchInfo.FirstPlayer)
                 .GroupBy(player => player, (player, group) => new { Name = player, Count = group.Count() })
                 .ToAsyncEnumerable()
-                .ToDictionary(x=>x.Name, x=>x.Count);
+                .ToDictionary(x => x.Name, x => x.Count);
 
             var secondPlayersStats = await _context.MatchInfos
                 .Where(matchInfo => matchInfo.UserId == userId)
@@ -120,9 +120,9 @@ namespace YoTennis.Services
                 .GroupBy(player => player, (player, group) => new { Name = player, Count = group.Count() })
                 .ToAsyncEnumerable()
                 .ToDictionary(x => x.Name, x => x.Count);
-            
+
             foreach (var p1 in firstPlayersStats)
-                secondPlayersStats[p1.Key] = p1.Value + (secondPlayersStats.TryGetValue(p1.Key, out var value) ? value: 0);
+                secondPlayersStats[p1.Key] = p1.Value + (secondPlayersStats.TryGetValue(p1.Key, out var value) ? value : 0);
 
             return secondPlayersStats.OrderByDescending(player => player.Value).Select(player => player.Key);
         }
@@ -146,6 +146,38 @@ namespace YoTennis.Services
 
             if (exceptions.Count > 0)
                 throw new AggregateException(exceptions);
-        }                
+        }
+
+        public async Task<string> GetMatchOwner(string matchId) =>
+            Guid.TryParse(matchId, out var guid)
+            ? (await _context.Matches.Where(x => x.Id == guid).SingleOrDefaultAsync())?.UserId
+            ?? throw new KeyNotFoundException("Match not found.")
+            : throw new KeyNotFoundException("Match not found.");
+
+        public async Task CopyMatch(string userId, string matchId)
+        {
+            if (!Guid.TryParse(matchId, out var guid) || !(await _context.Matches.Where(match => match.Id == guid).AnyAsync()))
+                throw new KeyNotFoundException("Match not found.");
+
+            var newGuid = Guid.NewGuid();
+            var newMatchId = newGuid.ToString();
+
+            _context.Matches.Add(new Match { Id = newGuid, UserId = userId });
+
+            foreach (var evn in await _context.MatchEvents.Where(e => e.MatchId == guid).ToArrayAsync())
+            {
+                _context.MatchEvents.Add(new MatchEvent { MatchId = newGuid, Event = evn.Event, Version = evn.Version });
+            }
+            await _context.SaveChangesAsync();
+
+            var matchModel = await (await GetMatchService(userId, newMatchId)).GetStateAsync();
+            var matchInfo = matchModel.ToMatchInfo();
+            matchInfo.MatchId = newGuid;
+            matchInfo.UserId = userId;
+
+            _context.MatchInfos.Add(matchInfo);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

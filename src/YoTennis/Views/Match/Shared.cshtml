@@ -1,4 +1,4 @@
-@model MatchShareDetailsViewModel
+@model MatchSharedDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -6,11 +6,9 @@
 
 <h2>Details</h2>
 
+@Html.ActionLink("Copy", "CopyMatch", "Home", new { id = Model.Id })
+
 <table>
-    <tr>
-        <th>Shared</th>
-        <td>@Model.Shared</td>
-    </tr>
     <tr>
         <th>State</th>
         <td>@Model.MatchModel.State</td>
@@ -36,5 +34,5 @@
                 <td>@i.Score.FirstPlayer - @i.Score.SecondPlayer</td>
             }
         }
-    </tr>
+    </tr>    
 </table>
