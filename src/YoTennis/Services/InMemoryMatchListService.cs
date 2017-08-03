@@ -125,7 +125,7 @@ namespace YoTennis.Services
             throw new NotImplementedException();
         }
 
-        public Task CopyMatch(string userId, string matchId)
+        public Task<string> CopyMatch(string userId, string matchId)
         {
             throw new NotImplementedException();
         }

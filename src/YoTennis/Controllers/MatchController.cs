@@ -75,6 +75,8 @@ namespace YoTennis.Controllers
                 var matchSharedDetailsViewModel = new MatchSharedDetailsViewModel
                 {
                     Id = id,
+                    Date = date,
+                    Hash = hash,
                     MatchModel = matchState
                 };
 
@@ -82,6 +84,22 @@ namespace YoTennis.Controllers
             }
             
             return View();
+        }
+
+        public async Task<IActionResult> CopyMatch(string id, string hash, long date)
+        {
+            var userId = await _matchListService.GetMatchOwner(id);
+            var applicationUser = await _userManager.FindByIdAsync(userId);
+            var matchSHA = SHA.GenerateSHA256String(id + date.ToString() + applicationUser.PasswordHash);
+
+            if (hash == matchSHA && DateTime.UtcNow - DateTime.FromBinary(date) <= TimeSpan.FromDays(1))
+            {
+                var matchId = await _matchListService.CopyMatch(UserId, id);
+
+                return RedirectToAction(nameof(Details), new { id = matchId });
+            }
+
+            throw new KeyNotFoundException("hash == matchSHA && DateTime.UtcNow - DateTime.FromBinary(date) <= TimeSpan.FromDays(1)");
         }
 
         public Task<IActionResult> Restart()

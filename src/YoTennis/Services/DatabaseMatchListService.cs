@@ -154,7 +154,7 @@ namespace YoTennis.Services
             ?? throw new KeyNotFoundException("Match not found.")
             : throw new KeyNotFoundException("Match not found.");
 
-        public async Task CopyMatch(string userId, string matchId)
+        public async Task<string> CopyMatch(string userId, string matchId)
         {
             if (!Guid.TryParse(matchId, out var guid) || !(await _context.Matches.Where(match => match.Id == guid).AnyAsync()))
                 throw new KeyNotFoundException("Match not found.");
@@ -178,6 +178,7 @@ namespace YoTennis.Services
             _context.MatchInfos.Add(matchInfo);
 
             await _context.SaveChangesAsync();
+            return newMatchId;
         }
     }
 }

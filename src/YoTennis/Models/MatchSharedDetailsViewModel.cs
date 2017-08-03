@@ -10,5 +10,7 @@ namespace YoTennis.Models
         public string Id { get; set; }
         public string Shared { get; set; }
         public MatchModel MatchModel { get; set; }
+        public string Hash { get; set; }
+        public long Date { get; set; }
     }
 }

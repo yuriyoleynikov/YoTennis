@@ -6,7 +6,7 @@
 
 <h2>Details</h2>
 
-@Html.ActionLink("Copy", "CopyMatch", "Home", new { id = Model.Id })
+@Html.ActionLink("Copy", "CopyMatch", new { id = Model.Id, hash = Model.Hash, date= Model.Date })
 
 <table>
     <tr>
