@@ -10,6 +10,8 @@ using YoTennis.Models.Events;
 using YoTennis.Models.Match;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using YoTennis.Helpers;
 
 namespace YoTennis.Controllers
 {
@@ -18,17 +20,93 @@ namespace YoTennis.Controllers
     {
         private IMatchListService _matchListService;
         private string UserId => User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public MatchController(IMatchListService matchService)
+        public MatchController(UserManager<ApplicationUser> userManager, IMatchListService matchListService)
         {
-            _matchListService = matchService;
+            _userManager = userManager;
+            _matchListService = matchListService;
+        }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            try
+            {
+                var match = await _matchListService.GetMatchService(UserId, id);
+                var matchState = await match.GetStateAsync();
+                var matchDetailsViewModel = new MatchDetailsViewModel
+                {
+                    Id = id,
+                    MatchModel = matchState
+                };
+
+                return View(matchDetailsViewModel);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        public async Task<IActionResult> Share(string id)
+        {
+            var applicationUser = await _userManager.FindByIdAsync(UserId);
+            var date = DateTime.UtcNow.ToBinary().ToString();
+            var matchSHA = SHA.GenerateSHA256String(id + date + applicationUser.PasswordHash);
+            var link = "/match/shared/" + id + "?date=" + date + "&hash=" + matchSHA;
+            
+            var match = await _matchListService.GetMatchService(UserId, id);
+            var matchState = await match.GetStateAsync();
+            
+            return View(new MatchShareDetailsViewModel { Id = id, MatchModel = matchState, Shared = link });
+        }
+
+        public async Task<IActionResult> Shared(string id, long date, string hash)
+        {
+            var userId = await _matchListService.GetMatchOwner(id);
+            var applicationUser = await _userManager.FindByIdAsync(userId);
+            var matchSHA = SHA.GenerateSHA256String(id + date.ToString() + applicationUser.PasswordHash);
+
+            if (hash == matchSHA && DateTime.UtcNow - DateTime.FromBinary(date) <= TimeSpan.FromDays(1))
+            {
+                var match = await _matchListService.GetMatchService(userId, id);
+
+                var matchState = await match.GetStateAsync();
+                var matchSharedDetailsViewModel = new MatchSharedDetailsViewModel
+                {
+                    Id = id,
+                    Date = date,
+                    Hash = hash,
+                    MatchModel = matchState
+                };
+
+                return View(matchSharedDetailsViewModel);
+            }
+            
+            return View();
+        }
+
+        public async Task<IActionResult> CopyMatch(string id, string hash, long date)
+        {
+            var userId = await _matchListService.GetMatchOwner(id);
+            var applicationUser = await _userManager.FindByIdAsync(userId);
+            var matchSHA = SHA.GenerateSHA256String(id + date.ToString() + applicationUser.PasswordHash);
+
+            if (hash == matchSHA && DateTime.UtcNow - DateTime.FromBinary(date) <= TimeSpan.FromDays(1))
+            {
+                var matchId = await _matchListService.CopyMatch(UserId, id);
+
+                return RedirectToAction(nameof(Details), new { id = matchId });
+            }
+
+            throw new KeyNotFoundException("hash == matchSHA && DateTime.UtcNow - DateTime.FromBinary(date) <= TimeSpan.FromDays(1)");
         }
 
         public Task<IActionResult> Restart()
         {
             return Create();
         }
-        
+
         public async Task<IActionResult> Cancel(string id)
         {
             var matchService = await _matchListService.GetMatchService(UserId, id);

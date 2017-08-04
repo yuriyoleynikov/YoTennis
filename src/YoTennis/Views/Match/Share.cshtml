@@ -1,0 +1,40 @@
+@model MatchShareDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<table>
+    <tr>
+        <th>Shared</th>
+        <td>@Model.Shared</td>
+    </tr>
+    <tr>
+        <th>State</th>
+        <td>@Model.MatchModel.State</td>
+    </tr>
+    <tr>
+        <th>FirstPlayer</th>
+        <td>@Model.MatchModel.FirstPlayer</td>
+    </tr>
+    <tr>
+        <th>SecondPlayer</th>
+        <td>@Model.MatchModel.SecondPlayer</td>
+    </tr>
+    <tr>
+        <th>MatchStartedAt</th>
+        <td>@Model.MatchModel.MatchStartedAt</td>
+    </tr>
+    <tr>
+        <th>Score</th>
+        @if (Model.MatchModel.State != MatchState.NotStarted && Model.MatchModel.State != MatchState.Drawing)
+            {
+            @foreach (var i in Model.MatchModel.Sets)
+                {
+                <td>@i.Score.FirstPlayer - @i.Score.SecondPlayer</td>
+            }
+        }
+    </tr>
+</table>

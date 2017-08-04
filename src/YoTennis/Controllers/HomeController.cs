@@ -10,6 +10,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using System.Text;
 using YoTennis.Helpers;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Identity;
 
 namespace YoTennis.Controllers
 {
@@ -74,7 +76,7 @@ namespace YoTennis.Controllers
                 return RedirectToAction(nameof(Index), new { count = newCount, skip = newSkip });
 
             var matchInfoModels = await _matchListService.GetMatches(UserId, count, skip, player, state, sort);
-            
+
             var containerForMatchModel = new ContainerForMatchModel
             {
                 ListMatchModelView = matchInfoModels.Select(matchInfo => new MatchModelView
@@ -111,20 +113,6 @@ namespace YoTennis.Controllers
             if (string.IsNullOrEmpty(returnUrl))
                 return RedirectToAction(nameof(Index));
             return LocalRedirect(returnUrl);
-        }
-
-        public async Task<IActionResult> Details(string id)
-        {
-            try
-            {
-                var match = await _matchListService.GetMatchService(UserId, id);
-                var matchState = await match.GetStateAsync();
-                return View(matchState);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
         }
 
         public IActionResult About()

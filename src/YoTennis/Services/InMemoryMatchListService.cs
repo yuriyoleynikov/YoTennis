@@ -118,6 +118,16 @@ namespace YoTennis.Services
                 return Task.FromResult(matches.Count());
             }
             return Task.FromResult(0);
-        }        
+        }
+
+        public Task<string> GetMatchOwner(string matchId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> CopyMatch(string userId, string matchId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
