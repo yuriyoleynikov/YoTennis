@@ -11,7 +11,7 @@ namespace YoTennis.Tests.Test
     using YoTennis.Tests.Helpers;
 
     public class HandlerSnapshotTests
-    {
+    {/*
         [Fact]
         public void Test1()
         {
@@ -71,6 +71,6 @@ namespace YoTennis.Tests.Test
             }
 
             scenario.Verify();
-        }
+        */
     }
 }
