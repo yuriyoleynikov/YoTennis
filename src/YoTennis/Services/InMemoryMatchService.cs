@@ -26,6 +26,11 @@ namespace YoTennis.Services
             return Task.FromResult(_gameHandler.CurrentState);
         }
 
+        public Task PlayerToUserAsync(Player player)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task RebuildMatchInfoAsync()
         {
             throw new NotImplementedException();

@@ -10,5 +10,6 @@ namespace YoTennis.Services
     {
         Task<IEnumerable<PlayerStatsModel>> GetPlayersStatsModel(string userId);
         Task<PlayerStatsModel> GetPlayerStatsModel(string userId, string player);
+        Task<PlayerStatsModel> GetUserStatsModel(string userId);
     }
 }

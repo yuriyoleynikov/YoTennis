@@ -16,91 +16,78 @@ namespace YoTennis.Services
             _matchListService = matchListService;
         }
 
-        public async Task<IEnumerable<PlayerStatsModel>> GetPlayersStatsModelInner(string userId, string player = null)
+        public async Task<IEnumerable<PlayerStatsModel>> GetPlayersStatsModelInner(string userId, 
+            string player = null, string playerUserId = null)
         {
             var players = player == null ? null : Enumerable.Repeat(player, 1);
 
             var count = await _matchListService.GetMatchCount(userId, players);
             var mathes = await _matchListService.GetMatches(userId, count, 0, players);
 
-            var result = new Dictionary<string, PlayerStatsModel>();
-
+            var result = new List<PlayerStatsModel>();
+            
             foreach (var matchInfo in mathes)
             {
-                var playersStats = await (await _matchListService.GetMatchService(userId, matchInfo.MatchId)).GetPlayersMatchStats();
-
-                if (player == null || matchInfo.FirstPlayer == player)
+                var matchService = await _matchListService.GetMatchService(userId, matchInfo.MatchId);
+                var matchState = await matchService.GetStateAsync();
+                
+                if (matchState.State != MatchState.NotStarted)
                 {
-                    var firstPlayerCurrentStats = new PlayerStatsModel
+                    var playersStats = await matchService.GetPlayersMatchStats();
+
+                    if (((player == null || matchInfo.FirstPlayer == player) && playerUserId == null) ||
+                        (playerUserId != null && matchState.FirstPlayerUserId == playerUserId))
                     {
-                        Player = matchInfo.FirstPlayer,
-                        Matches = 1,
-                        Completed = matchInfo.State == MatchState.Completed ? 1 : 0,
-                        Won = matchInfo.Winner == Player.First ? 1 : 0,
-                        Lost = matchInfo.Winner == Player.Second ? 1 : 0,
-                        AggregatedMatchStats = playersStats.FirstPlayer
-                    };
+                        var firstPlayerCurrentStats = new PlayerStatsModel
+                        {
+                            Player = matchInfo.FirstPlayer,
+                            Matches = 1,
+                            Completed = matchInfo.State == MatchState.Completed ? 1 : 0,
+                            Won = matchInfo.Winner == Player.First ? 1 : 0,
+                            Lost = matchInfo.Winner == Player.Second ? 1 : 0,
+                            AggregatedMatchStats = playersStats.FirstPlayer
+                        };
+                        result.Add(firstPlayerCurrentStats);
+                    }
 
-                    if (matchInfo.FirstPlayer != null)
-                        result[matchInfo.FirstPlayer] = result.TryGetValue(matchInfo.FirstPlayer, out var firstPlayerOldStats)
-                            ? firstPlayerOldStats + firstPlayerCurrentStats
-                            : firstPlayerCurrentStats;
-                }
-
-                if (player == null || matchInfo.SecondPlayer == player)
-                {
-                    var secondPlayerCurrentStats = new PlayerStatsModel
+                    if (((player == null || matchInfo.SecondPlayer == player) && playerUserId == null) ||
+                        (playerUserId != null && matchState.SecondPlayerUserId == playerUserId))
                     {
-                        Player = matchInfo.SecondPlayer,
-                        Matches = 1,
-                        Completed = matchInfo.State == MatchState.Completed ? 1 : 0,
-                        Won = matchInfo.Winner == Player.Second ? 1 : 0,
-                        Lost = matchInfo.Winner == Player.First ? 1 : 0,
-                        AggregatedMatchStats = playersStats.SecondPlayer
-                    };
-
-                    if (matchInfo.SecondPlayer != null)
-                        result[matchInfo.SecondPlayer] = result.TryGetValue(matchInfo.SecondPlayer, out var secondPlayerOldStats)
-                            ? secondPlayerOldStats + secondPlayerCurrentStats
-                            : secondPlayerCurrentStats;
+                        var secondPlayerCurrentStats = new PlayerStatsModel
+                        {
+                            Player = matchInfo.SecondPlayer,
+                            Matches = 1,
+                            Completed = matchInfo.State == MatchState.Completed ? 1 : 0,
+                            Won = matchInfo.Winner == Player.Second ? 1 : 0,
+                            Lost = matchInfo.Winner == Player.First ? 1 : 0,
+                            AggregatedMatchStats = playersStats.SecondPlayer
+                        };
+                        result.Add(secondPlayerCurrentStats);
+                    }
                 }
             }
 
-            return result.Values.OrderBy(model => model.Player);
+            return result;
         }
 
-        public Task<IEnumerable<PlayerStatsModel>> GetPlayersStatsModel(string userId) =>
-            GetPlayersStatsModelInner(userId);
-        
+        public async Task<IEnumerable<PlayerStatsModel>> GetPlayersStatsModel(string userId) =>
+            (await GetPlayersStatsModelInner(userId))
+            .GroupBy(stat => stat.Player)
+            .Select(group => group.Aggregate((acc, stat) => acc + stat))
+            .OrderBy(stat => stat.Player);
+
         public async Task<PlayerStatsModel> GetPlayerStatsModel(string userId, string player) =>
-            (await GetPlayersStatsModelInner(userId, player)).SingleOrDefault() ??
-                new PlayerStatsModel
-                {
-                    Player = player,
-                    Matches = 0,
-                    Completed = 0,
-                    Won = 0,
-                    Lost = 0,
-                    AggregatedMatchStats = new PlayerStatsMatchModel
-                    {
-                        TotalPoints = 0,
+            (await GetPlayersStatsModelInner(userId, player)).Aggregate(new PlayerStatsModel
+            {
+                Player = player,
+                AggregatedMatchStats = new PlayerStatsMatchModel()
+            }, (acc, stat) => acc + stat);
 
-                        Ace = 0,
-                        Backhand = 0,
-                        DoubleFaults = 0,
-                        Error = 0,
-                        Forehand = 0,
-                        NetPoint = 0,
-                        UnforcedError = 0,
-
-                        FirstServe = 0,
-                        FirstServeSuccessful = 0,
-                        WonOnFirstServe = 0,
-
-                        SecondServe = 0,
-                        SecondServeSuccessful = 0,
-                        WonOnSecondServe = 0
-                    }
-                };
+        public async Task<PlayerStatsModel> GetUserStatsModel(string userId) =>
+            (await GetPlayersStatsModelInner(userId, null, userId)).Aggregate(new PlayerStatsModel
+            {
+                Player = userId,
+                AggregatedMatchStats = new PlayerStatsMatchModel()
+            }, (acc, stat) => acc + stat);        
     }
 }
