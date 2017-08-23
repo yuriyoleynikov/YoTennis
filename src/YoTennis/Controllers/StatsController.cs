@@ -50,5 +50,20 @@ namespace YoTennis.Controllers
                 AggregatedMatchStats = playerStatsModel.AggregatedMatchStats
             });
         }
+
+        public async Task<IActionResult> UserStats()
+        {
+            var playerStatsModel = await _statsService.GetUserStatsModel(UserId);
+
+            return View(new PlayerStatsModelView
+            {
+                Player = playerStatsModel.Player,
+                Matches = playerStatsModel.Matches,
+                Completed = playerStatsModel.Completed,
+                Won = playerStatsModel.Won,
+                Lost = playerStatsModel.Lost,
+                AggregatedMatchStats = playerStatsModel.AggregatedMatchStats
+            });
+        }
     }
 }
