@@ -120,5 +120,12 @@ namespace YoTennis.Services
 
             return _gameHandler.PlayersStats;
         }
+
+        public async Task PlayerToUserAsync(Player player)
+        {
+            var e = await _context.MatchEvents.Where(matchEvent => matchEvent.MatchId == _matchId).OrderBy(matchEvent => matchEvent.Version).ToArrayAsync();
+            var e1 = e[1];
+            //e1.Event 
+        }
     }
 }

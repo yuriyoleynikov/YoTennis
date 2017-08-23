@@ -180,5 +180,19 @@ namespace YoTennis.Services
             await _context.SaveChangesAsync();
             return newMatchId;
         }
+
+        public async Task<IEnumerable<MatchModel>> GetMatchesWithUser(string userId)
+        {
+            var result = new List<MatchModel>();
+
+            foreach (var match in await _context.Matches.Where(match => match.UserId == userId).Select(match => match.Id).ToArrayAsync())
+            {
+                var currentMatch = new DatabaseMatchService(_context, match, userId);
+                var state = await currentMatch.GetStateAsync();
+
+                result.Add(state);
+            }
+            return result;
+        }
     }
 }
