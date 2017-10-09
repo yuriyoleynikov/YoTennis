@@ -16,12 +16,13 @@ namespace YoTennis.Services
             _matchListService = matchListService;
         }
 
-        public async Task<IEnumerable<PlayerStatsModel>> GetPlayersStatsModelInner(string userId, string player = null)
+        public async Task<IEnumerable<PlayerStatsModel>> GetPlayersStatsModelInner(string userId,
+            int count, int skip, SortForPlayerStats sort, string player = null)
         {
             var players = player == null ? null : Enumerable.Repeat(player, 1);
 
-            var count = await _matchListService.GetMatchCount(userId, players);
-            var mathes = await _matchListService.GetMatches(userId, count, 0, players);
+            var total = await _matchListService.GetMatchCount(userId, players);
+            var mathes = await _matchListService.GetMatches(userId, total == 0 ? 1 : total, 0, players);
 
             var result = new Dictionary<string, PlayerStatsModel>();
 
@@ -65,15 +66,15 @@ namespace YoTennis.Services
                             : secondPlayerCurrentStats;
                 }
             }
-
-            return result.Values.OrderBy(model => model.Player);
+            
+            return result.Values.BySortForPlayerStats(sort).Skip(skip).Take(count);
         }
 
-        public Task<IEnumerable<PlayerStatsModel>> GetPlayersStatsModel(string userId) =>
-            GetPlayersStatsModelInner(userId);
-        
+        public Task<IEnumerable<PlayerStatsModel>> GetPlayersStatsModel(string userId, int count, int skip, SortForPlayerStats sort) =>
+            GetPlayersStatsModelInner(userId, count, skip, sort);
+
         public async Task<PlayerStatsModel> GetPlayerStatsModel(string userId, string player) =>
-            (await GetPlayersStatsModelInner(userId, player)).SingleOrDefault() ??
+            (await GetPlayersStatsModelInner(userId, 100, 0, SortForPlayerStats.None, player)).SingleOrDefault() ??
                 new PlayerStatsModel
                 {
                     Player = player,
@@ -102,5 +103,21 @@ namespace YoTennis.Services
                         WonOnSecondServe = 0
                     }
                 };
+
+        public async Task<int> GetTotalPlayers(string userId)
+        {
+            var total = await _matchListService.GetMatchCount(userId);
+            var mathes = await _matchListService.GetMatches(userId, total == 0 ? 1 : total, 0);
+
+            var result = new HashSet<string>();
+
+            foreach (var matchInfo in mathes)
+            {
+                    result.Add(matchInfo.FirstPlayer);
+                    result.Add(matchInfo.SecondPlayer);
+            }
+
+            return result.Count;
+        }
     }
 }
