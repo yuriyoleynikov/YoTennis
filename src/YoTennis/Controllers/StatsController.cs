@@ -21,19 +21,29 @@ namespace YoTennis.Controllers
             _statsService = statsService;
         }
 
-        public async Task<IActionResult> PlayersStats()
+        public async Task<IActionResult> PlayersStats(int count = 10, int skip = 0, SortForPlayerStats sort = SortForPlayerStats.None)
         {
-            var playersStatsModelList = await _statsService.GetPlayersStatsModel(UserId);
+            var playersStatsModelList = await _statsService.GetPlayersStatsModel(UserId, count, skip, sort);
 
-            return View(playersStatsModelList.Select(model => new PlayerStatsModelView
+            var containerForPlayersStats = new ContainerForPlayersStats
             {
-                Player = model.Player,
-                Matches = model.Matches,
-                Completed = model.Completed,
-                Won = model.Won,
-                Lost = model.Lost,
-                AggregatedMatchStats = model.AggregatedMatchStats
-            }));
+                ListPlayerStatsModelView = playersStatsModelList.Select(model => new PlayerStatsModelView
+                {
+                    Player = model.Player,
+                    Matches = model.Matches,
+                    Completed = model.Completed,
+                    Won = model.Won,
+                    Lost = model.Lost,
+                    AggregatedMatchStats = model.AggregatedMatchStats
+                }).ToList(),
+
+                Count = count,
+                Skip = skip,
+                Sort = sort,
+                TotalPlayers = await _statsService.GetTotalPlayers(UserId)
+            };
+            
+            return View(containerForPlayersStats);
         }
 
         public async Task<IActionResult> PlayerStats(string id)

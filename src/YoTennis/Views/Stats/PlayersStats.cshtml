@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PlayerStatsModelView>
+﻿@model ContainerForPlayersStats
 
 @{
     ViewData["Title"] = "Players Stats";
@@ -8,16 +8,159 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Players</th>
-                <th>Matches</th>
-                <th>Completed</th>
-                <th>Won</th>
-                <th>Lost</th>
+                <th>Player
+                @if (Model.Sort !=  SortForPlayerStats.PlayerNameDescending)
+                {
+                    @Html.ActionLink("↓", "PlayersStats", "Stats", new
+                       {
+                           count = Model.Count,
+                           skip = Model.Skip,
+                           sort = SortForPlayerStats.PlayerNameDescending
+                       })
+                }
+                else
+                {
+                    <b>↓</b>
+                }
+
+                @if (Model.Sort != SortForPlayerStats.PlayerNameAscending)
+                {
+                    @Html.ActionLink("↑", "PlayersStats", "Stats", new
+                       {
+                           count = Model.Count,
+                           skip = Model.Skip,
+                           sort = SortForPlayerStats.PlayerNameAscending
+                       })
+                }
+                else
+                {
+                    <b>↑</b>
+                }
+                </th>
+
+                <th>Matches
+                @if (Model.Sort != SortForPlayerStats.MatchesDescending)
+                {
+                    @Html.ActionLink("↓", "PlayersStats", "Stats", new
+               {
+                   count = Model.Count,
+                   skip = Model.Skip,
+                   sort = SortForPlayerStats.MatchesDescending
+               })
+                }
+                else
+                {
+                    <b>↓</b>
+                }
+
+                @if (Model.Sort != SortForPlayerStats.MatchesAscending)
+                {
+                    @Html.ActionLink("↑", "PlayersStats", "Stats", new
+               {
+                   count = Model.Count,
+                   skip = Model.Skip,
+                   sort = SortForPlayerStats.MatchesAscending
+               })
+                }
+                else
+                {
+                    <b>↑</b>
+                }
+                </th>
+
+                <th>Completed
+                @if (Model.Sort != SortForPlayerStats.CompletedDescending)
+                {
+                    @Html.ActionLink("↓", "PlayersStats", "Stats", new
+               {
+                   count = Model.Count,
+                   skip = Model.Skip,
+                   sort = SortForPlayerStats.CompletedDescending
+               })
+                }
+                else
+                {
+                    <b>↓</b>
+                }
+
+                @if (Model.Sort != SortForPlayerStats.CompletedAscending)
+                {
+                    @Html.ActionLink("↑", "PlayersStats", "Stats", new
+               {
+                   count = Model.Count,
+                   skip = Model.Skip,
+                   sort = SortForPlayerStats.CompletedAscending
+               })
+                }
+                else
+                {
+                    <b>↑</b>
+                }
+                </th>
+                <th>Won
+                @if (Model.Sort != SortForPlayerStats.WonDescending)
+                {
+                    @Html.ActionLink("↓", "PlayersStats", "Stats", new
+               {
+                   count = Model.Count,
+                   skip = Model.Skip,
+                   sort = SortForPlayerStats.WonDescending
+               })
+                }
+                else
+                {
+                    <b>↓</b>
+                }
+
+                @if (Model.Sort != SortForPlayerStats.WonAscending)
+                {
+                    @Html.ActionLink("↑", "PlayersStats", "Stats", new
+               {
+                   count = Model.Count,
+                   skip = Model.Skip,
+                   sort = SortForPlayerStats.WonAscending
+               })
+                }
+                else
+                {
+                    <b>↑</b>
+                }
+                </th>
+
+                <th>Lost
+                    @if (Model.Sort != SortForPlayerStats.LostDescending)
+                    {
+                        @Html.ActionLink("↓", "PlayersStats", "Stats", new
+                   {
+                       count = Model.Count,
+                       skip = Model.Skip,
+                       sort = SortForPlayerStats.LostDescending
+                   })
+                    }
+                    else
+                    {
+                        <b>↓</b>
+                    }
+
+                    @if (Model.Sort != SortForPlayerStats.LostAscending)
+                    {
+                        @Html.ActionLink("↑", "PlayersStats", "Stats", new
+                   {
+                       count = Model.Count,
+                       skip = Model.Skip,
+                       sort = SortForPlayerStats.LostAscending
+                   })
+                    }
+                    else
+                    {
+                        <b>↑</b>
+                    }
+                </th>
             </tr>
         </thead>
 
         <tbody>
-            @foreach (var match in Model)
+            @foreach (var match in Model.ListPlayerStatsModelView)
             {
                 <tr>
                     <td>
@@ -42,4 +185,57 @@
             }
         </tbody>
     </table>
+</div>
+<div>
+    <p>
+        Show -
+        @Html.ActionLink("10", "PlayersStats", "Stats", new
+   {
+       count = 10,
+       skip = 0,
+       sort = Model.Sort
+   }) |
+        @Html.ActionLink("20", "PlayersStats", "Stats", new
+   {
+       count = 20,
+       skip = 0,
+       sort = Model.Sort
+   }) |
+        @Html.ActionLink("All", "PlayersStats", "Stats", new
+   {
+       count = Model.TotalPlayers != 0 ? Model.TotalPlayers : 10,
+       skip = 0,
+       sort = Model.Sort
+   })
+    </p>
+
+    @if (Model.Count != Model.TotalPlayers)
+    {
+        <p>
+            Page
+            @if (Model.Skip != 0)
+                {
+                @Html.ActionLink("<", "PlayersStats", "Stats", new
+           {
+               count = Model.Count,
+               skip = Model.Skip - Model.Count,
+               sort = Model.Sort
+           })
+            }
+            @{
+                int currentPage = Model.Skip == 0 ? 1 : Model.Skip / Model.Count + 1;
+            }
+            @currentPage
+            @if (Model.Skip + Model.Count < Model.TotalPlayers)
+            {
+                @Html.ActionLink(">", "PlayersStats", "Stats", new
+           {
+               count = Model.Count,
+               skip = Model.Skip + Model.Count,
+               sort = Model.Sort
+           })
+            }
+        </p>
+                }
+    <p>@Model.TotalPlayers Players in system</p>
 </div>
