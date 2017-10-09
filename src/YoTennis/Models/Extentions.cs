@@ -52,16 +52,68 @@ namespace YoTennis.Models
 
             return matchInfoModels;
         }
+
+        public static IEnumerable<PlayerStatsModel> BySortForPlayerStats(this IEnumerable<PlayerStatsModel> source, SortForPlayerStats sort)
+        {
+            if (sort == SortForPlayerStats.None)
+                return source.OrderBy(playerStats => playerStats.Player);
+
+            if (sort == SortForPlayerStats.PlayerNameAscending)
+                return source.OrderBy(playerStats => playerStats.Player);
+            if (sort == SortForPlayerStats.PlayerNameDescending)
+                return source.OrderByDescending(playerStats => playerStats.Player);
+            if (sort == SortForPlayerStats.MatchesDescending)
+                return source.OrderBy(playerStats => playerStats.Matches);
+            if (sort == SortForPlayerStats.MatchesAscending)
+                return source.OrderByDescending(playerStats => playerStats.Matches);
+            if (sort == SortForPlayerStats.CompletedDescending)
+                return source.OrderBy(playerStats => playerStats.Completed);
+            if (sort == SortForPlayerStats.CompletedAscending)
+                return source.OrderByDescending(playerStats => playerStats.Completed);
+            if (sort == SortForPlayerStats.WonDescending)
+                return source.OrderBy(playerStats => playerStats.Won);
+            if (sort == SortForPlayerStats.WonAscending)
+                return source.OrderByDescending(playerStats => playerStats.Won);
+            if (sort == SortForPlayerStats.LostDescending)
+                return source.OrderBy(playerStats => playerStats.Lost);
+            if (sort == SortForPlayerStats.LostAscending)
+                return source.OrderByDescending(playerStats => playerStats.Lost);
+
+            return source;
+        }
     }
 
     public enum Sort
     {
         None,
+
         PlayerNameAscending,
         PlayerNameDescending,
+
         DateAscending,
         DateDescending,
+
         StateAscending,
         StateDescending
+    }
+
+    public enum SortForPlayerStats
+    {
+        None,
+
+        PlayerNameAscending,
+        PlayerNameDescending,
+
+        MatchesAscending,        
+        MatchesDescending,
+
+        CompletedAscending,
+        CompletedDescending,
+
+        WonAscending,
+        WonDescending,
+
+        LostAscending,
+        LostDescending
     }
 }
