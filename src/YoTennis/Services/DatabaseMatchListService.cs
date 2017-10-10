@@ -84,7 +84,8 @@ namespace YoTennis.Services
                 .ByState(filterState)
                 .BySort(sort)
                 .Skip(skip)
-                .Take(count).ToArrayAsync();
+                .Take(count)
+                .ToArrayAsync();
 
             return result.Select(matchInfo => new MatchInfoModel
             {
