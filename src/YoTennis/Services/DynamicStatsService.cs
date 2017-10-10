@@ -22,6 +22,7 @@ namespace YoTennis.Services
             var players = player == null ? null : Enumerable.Repeat(player, 1);
 
             var total = await _matchListService.GetMatchCount(userId, players);
+
             var mathes = await _matchListService.GetMatches(userId, total == 0 ? 1 : total, 0, players);
 
             var result = new Dictionary<string, PlayerStatsModel>();
