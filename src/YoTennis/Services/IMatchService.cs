@@ -14,6 +14,5 @@ namespace YoTennis.Services
         Task Reset();
         Task UndoAsync();
         Task RebuildMatchInfoAsync();
-        Task PlayerToUserAsync(Player player);
     }
 }

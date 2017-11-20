@@ -11,7 +11,7 @@ namespace YoTennis.Tests.Test
     using YoTennis.Tests.Helpers;
 
     public class HandlerSnapshotTests
-    {/*
+    {
         [Fact]
         public void Test1()
         {
@@ -59,10 +59,10 @@ namespace YoTennis.Tests.Test
                 PlayerServes = Player.Second
             });
             scenario.AddEvent(new StartGameEvent());
-            for(var i = 0; i < 21; i++)
+            for (var i = 0; i < 21; i++)
             {
                 scenario.AddEvent(new PointEvent { PlayerPoint = Player.Second, ServeSpeed = (ServeSpeed)(i % 4), Kind = (PointKind)(i % 7) });
-                if (i%4 == 3)
+                if (i % 4 == 3)
                 {
                     if (i % 8 == 3)
                         scenario.AddEvent(new ChangeSidesGameEvent());
@@ -71,6 +71,6 @@ namespace YoTennis.Tests.Test
             }
 
             scenario.Verify();
-        */
+        }
     }
 }

@@ -17,7 +17,9 @@ Initial state {
   "MatchSettings": null,
   "FirstPlayer": null,
   "SecondPlayer": null,
-  "State": "NotStarted"
+  "State": "NotStarted",
+  "FirstPlayerUserId": null,
+  "SecondPlayerUserId": null
 }
 
 Event StartEvent {
@@ -30,6 +32,8 @@ Event StartEvent {
   },
   "FirstPlayer": "Oleynikov",
   "SecondPlayer": "Nadal",
+  "FirstPlayerUserId": null,
+  "SecondPlayerUserId": null,
   "OccuredAt": "1986-09-26T00:00:00"
 }
 State {
