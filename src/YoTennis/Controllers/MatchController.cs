@@ -72,15 +72,15 @@ namespace YoTennis.Controllers
         {
             var matchService = await _matchListService.GetMatchService(UserId, id);
 
-            var e = new ChangePlayersEvent()
+            var e = new DeletePlayersEvent()
             {
                 OccuredAt = DateTime.UtcNow
             };
 
             if (player == Player.First)
-                e.FirstPlayerUserId = "none";
+                e.FirstPlayerUserId = true;
             else
-                e.SecondPlayerUserId = "none";
+                e.SecondPlayerUserId = true;
 
             await matchService.AddEventAsync(e);
 

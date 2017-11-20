@@ -366,20 +366,22 @@ namespace YoTennis.Models
                 CurrentState.SecondPlayer = gameEvent.SecondPlayer;
 
             if (gameEvent.FirstPlayerUserId != null)
-            {
-                if (gameEvent.FirstPlayerUserId != "none")
                     CurrentState.FirstPlayerUserId = gameEvent.FirstPlayerUserId;
-                else
-                    CurrentState.FirstPlayerUserId = null;
-            }
 
             if (gameEvent.SecondPlayerUserId != null)
-            {
-                if (gameEvent.SecondPlayerUserId != "none")
                     CurrentState.SecondPlayerUserId = gameEvent.SecondPlayerUserId;
-                else
-                    CurrentState.SecondPlayerUserId = null;
-            }
+        }
+
+        private void On(DeletePlayersEvent gameEvent)
+        {
+            if (CurrentState.State == MatchState.NotStarted)
+                throw new InvalidOperationException("Not Expected");
+            
+            if (gameEvent.FirstPlayerUserId)
+                CurrentState.FirstPlayerUserId = null;
+
+            if (gameEvent.SecondPlayerUserId)
+                CurrentState.SecondPlayerUserId = null;
         }
     }
 }
