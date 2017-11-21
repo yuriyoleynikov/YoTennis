@@ -155,7 +155,7 @@ namespace YoTennis.Models
 
             Events.Add(gameEvent);
         }
-
+        
         private void On(StartEvent gameEvent)
         {
 
@@ -167,6 +167,10 @@ namespace YoTennis.Models
             CurrentState.FirstPlayer = gameEvent.FirstPlayer;
             CurrentState.SecondPlayer = gameEvent.SecondPlayer;
             CurrentState.MatchStartedAt = gameEvent.OccuredAt;
+
+            CurrentState.FirstPlayerUserId = gameEvent.FirstPlayerUserId;
+            CurrentState.SecondPlayerUserId = gameEvent.SecondPlayerUserId;
+
             CurrentState.State = MatchState.Drawing;
         }
 
@@ -348,6 +352,36 @@ namespace YoTennis.Models
                 throw new InvalidOperationException("Not Expected");
 
             CurrentState.State = MatchState.CompletedAndNotFinished;            
+        }
+
+        private void On(ChangePlayersEvent gameEvent)
+        {
+            if (CurrentState.State == MatchState.NotStarted)
+                throw new InvalidOperationException("Not Expected");
+            
+            if (gameEvent.FirstPlayer != null)
+                CurrentState.FirstPlayer = gameEvent.FirstPlayer;
+
+            if (gameEvent.SecondPlayer != null)
+                CurrentState.SecondPlayer = gameEvent.SecondPlayer;
+
+            if (gameEvent.FirstPlayerUserId != null)
+                    CurrentState.FirstPlayerUserId = gameEvent.FirstPlayerUserId;
+
+            if (gameEvent.SecondPlayerUserId != null)
+                    CurrentState.SecondPlayerUserId = gameEvent.SecondPlayerUserId;
+        }
+
+        private void On(DeletePlayersEvent gameEvent)
+        {
+            if (CurrentState.State == MatchState.NotStarted)
+                throw new InvalidOperationException("Not Expected");
+            
+            if (gameEvent.FirstPlayerUserId)
+                CurrentState.FirstPlayerUserId = null;
+
+            if (gameEvent.SecondPlayerUserId)
+                CurrentState.SecondPlayerUserId = null;
         }
     }
 }

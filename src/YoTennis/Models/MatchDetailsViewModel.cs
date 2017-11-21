@@ -9,5 +9,6 @@ namespace YoTennis.Models
     {
         public string Id { get; set; }
         public MatchModel MatchModel { get; set; }
+        public string UserId { get; set; }
     }
 }

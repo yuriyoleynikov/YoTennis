@@ -37,7 +37,8 @@ namespace YoTennis.Controllers
                 var matchDetailsViewModel = new MatchDetailsViewModel
                 {
                     Id = id,
-                    MatchModel = matchState
+                    MatchModel = matchState,
+                    UserId = UserId
                 };
 
                 return View(matchDetailsViewModel);
@@ -48,16 +49,54 @@ namespace YoTennis.Controllers
             }
         }
 
+        public async Task<IActionResult> PlayerToUser(string id, Player player)
+        {
+            var matchService = await _matchListService.GetMatchService(UserId, id);
+
+            var e = new ChangePlayersEvent()
+            {
+                OccuredAt = DateTime.UtcNow
+            };
+
+            if (player == Player.First)
+                e.FirstPlayerUserId = UserId;
+            else
+                e.SecondPlayerUserId = UserId;
+
+            await matchService.AddEventAsync(e);
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        public async Task<IActionResult> PlayerToUserDelete(string id, Player player)
+        {
+            var matchService = await _matchListService.GetMatchService(UserId, id);
+
+            var e = new DeletePlayersEvent()
+            {
+                OccuredAt = DateTime.UtcNow
+            };
+
+            if (player == Player.First)
+                e.FirstPlayerUserId = true;
+            else
+                e.SecondPlayerUserId = true;
+
+            await matchService.AddEventAsync(e);
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
         public async Task<IActionResult> Share(string id)
         {
             var applicationUser = await _userManager.FindByIdAsync(UserId);
             var date = DateTime.UtcNow.ToBinary().ToString();
             var matchSHA = SHA.GenerateSHA256String(id + date + applicationUser.PasswordHash);
             var link = "/match/shared/" + id + "?date=" + date + "&hash=" + matchSHA;
-            
+
             var match = await _matchListService.GetMatchService(UserId, id);
             var matchState = await match.GetStateAsync();
-            
+
             return View(new MatchShareDetailsViewModel { Id = id, MatchModel = matchState, Shared = link });
         }
 
@@ -82,7 +121,7 @@ namespace YoTennis.Controllers
 
                 return View(matchSharedDetailsViewModel);
             }
-            
+
             return View();
         }
 

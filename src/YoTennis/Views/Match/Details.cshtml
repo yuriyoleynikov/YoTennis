@@ -21,10 +21,26 @@
     <tr>
         <th>FirstPlayer</th>
         <td>@Model.MatchModel.FirstPlayer</td>
+        @if (Model.MatchModel.FirstPlayerUserId == Model.UserId)
+        {
+            <td>It's you(@Html.ActionLink("delete", "PlayerToUserDelete", new { id = Model.Id, player = Player.First }))</td>
+        }
+        else
+        {
+            <td>@Html.ActionLink("It's me", "PlayerToUser", new { id = Model.Id, player = Player.First })</td>
+        }
     </tr>
     <tr>
         <th>SecondPlayer</th>
         <td>@Model.MatchModel.SecondPlayer</td>
+        @if (Model.MatchModel.SecondPlayerUserId == Model.UserId)
+        {
+            <td>It's you(@Html.ActionLink("delete", "PlayerToUserDelete", new { id = Model.Id, player = Player.Second }))</td>
+        }
+        else
+        {
+            <td>@Html.ActionLink("It's me", "PlayerToUser", new { id = Model.Id, player = Player.Second })</td>
+        }
     </tr>
     <tr>
         <th>MatchStartedAt</th>

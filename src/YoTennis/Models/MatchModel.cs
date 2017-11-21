@@ -23,6 +23,8 @@ namespace YoTennis.Models
         public string SecondPlayer { get; set; }
 
         public MatchState State { get; set; }
+        public string FirstPlayerUserId { get; set; }
+        public string SecondPlayerUserId { get; set; }
     }
 
     public enum ServeSpeed

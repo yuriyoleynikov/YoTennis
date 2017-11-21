@@ -129,5 +129,10 @@ namespace YoTennis.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<IEnumerable<MatchModel>> GetMatchesWithUser(string userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

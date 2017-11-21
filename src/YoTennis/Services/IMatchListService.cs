@@ -18,5 +18,6 @@ namespace YoTennis.Services
         Task<int> GetMatchCount(string userId, IEnumerable<string> filterPlayer = null, IEnumerable<MatchState> filterState = null);
         Task<string> GetMatchOwner(string matchId);
         Task<string> CopyMatch(string userId, string matchId);
+        Task<IEnumerable<MatchModel>> GetMatchesWithUser(string userId);
     }
 }

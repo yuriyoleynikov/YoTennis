@@ -119,6 +119,6 @@ namespace YoTennis.Services
             var _gameHandler = await LoadGameHandler();
 
             return _gameHandler.PlayersStats;
-        }
+        }        
     }
 }
