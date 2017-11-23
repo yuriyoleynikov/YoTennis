@@ -155,7 +155,23 @@ namespace YoTennis.Models
 
             Events.Add(gameEvent);
         }
-        
+
+        private void On(PastMatchEvent gameEvent)
+        {
+
+            if (CurrentState.State != MatchState.NotStarted)
+                throw new InvalidOperationException("Not Expected");
+                        
+            CurrentState.FirstPlayer = gameEvent.FirstPlayer;
+            CurrentState.SecondPlayer = gameEvent.SecondPlayer;
+            CurrentState.MatchStartedAt = gameEvent.Date;
+
+            CurrentState.FirstPlayerUserId = gameEvent.FirstPlayerUserId;
+            CurrentState.SecondPlayerUserId = gameEvent.SecondPlayerUserId;
+
+            CurrentState.Sets = gameEvent.MatchScore;
+
+        }
         private void On(StartEvent gameEvent)
         {
 
@@ -331,7 +347,7 @@ namespace YoTennis.Models
         {
             if (CurrentState.State != MatchState.BeginningTiebreak)
                 throw new InvalidOperationException("Not Expected");
-            
+
             CurrentState.GameStratedAt = gameEvent.OccuredAt;
             CurrentState.State = MatchState.PlayingTiebreak;
         }
@@ -351,14 +367,14 @@ namespace YoTennis.Models
             if (CurrentState.State == MatchState.Completed || CurrentState.State == MatchState.CompletedAndNotFinished)
                 throw new InvalidOperationException("Not Expected");
 
-            CurrentState.State = MatchState.CompletedAndNotFinished;            
+            CurrentState.State = MatchState.CompletedAndNotFinished;
         }
 
         private void On(ChangePlayersEvent gameEvent)
         {
             if (CurrentState.State == MatchState.NotStarted)
                 throw new InvalidOperationException("Not Expected");
-            
+
             if (gameEvent.FirstPlayer != null)
                 CurrentState.FirstPlayer = gameEvent.FirstPlayer;
 
@@ -366,17 +382,17 @@ namespace YoTennis.Models
                 CurrentState.SecondPlayer = gameEvent.SecondPlayer;
 
             if (gameEvent.FirstPlayerUserId != null)
-                    CurrentState.FirstPlayerUserId = gameEvent.FirstPlayerUserId;
+                CurrentState.FirstPlayerUserId = gameEvent.FirstPlayerUserId;
 
             if (gameEvent.SecondPlayerUserId != null)
-                    CurrentState.SecondPlayerUserId = gameEvent.SecondPlayerUserId;
+                CurrentState.SecondPlayerUserId = gameEvent.SecondPlayerUserId;
         }
 
         private void On(DeletePlayersEvent gameEvent)
         {
             if (CurrentState.State == MatchState.NotStarted)
                 throw new InvalidOperationException("Not Expected");
-            
+
             if (gameEvent.FirstPlayerUserId)
                 CurrentState.FirstPlayerUserId = null;
 

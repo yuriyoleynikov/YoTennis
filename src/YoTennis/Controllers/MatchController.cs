@@ -28,6 +28,47 @@ namespace YoTennis.Controllers
             _matchListService = matchListService;
         }
 
+        public async Task<IActionResult> Add()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(AddMatchViewModel addMatchViewModel)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction(nameof(Add), addMatchViewModel);
+
+            var matchId = await _matchListService.CreateMatch(UserId);
+            var matchService = await _matchListService.GetMatchService(UserId, matchId);
+
+            await matchService.AddEventAsync(new PastMatchEvent
+            {
+                OccuredAt = DateTime.UtcNow,
+                Date = addMatchViewModel.Date,
+                FirstPlayer = addMatchViewModel.FirstPlayer,
+                SecondPlayer = addMatchViewModel.SecondPlayer,
+                FirstPlayerUserId = addMatchViewModel.FirstPlayerUserId,
+                SecondPlayerUserId = addMatchViewModel.SecondPlayerUserId,
+                MatchScore = new List<SetModel> {
+                    new SetModel {
+                        Score = new Score {
+                            FirstPlayer = addMatchViewModel.FirstPlayerSet1, SecondPlayer = addMatchViewModel.SecondPlayerSet1 }
+                    },
+                    new SetModel {
+                        Score = new Score {
+                            FirstPlayer = addMatchViewModel.FirstPlayerSet2, SecondPlayer = addMatchViewModel.SecondPlayerSet2 }
+                    },
+                    new SetModel {
+                        Score = new Score {
+                            FirstPlayer = addMatchViewModel.FirstPlayerSet3, SecondPlayer = addMatchViewModel.SecondPlayerSet3 }
+                    }
+                }
+            });
+
+            return RedirectToAction(nameof(Index), nameof(HomeController));
+        }
+
         public async Task<IActionResult> Details(string id)
         {
             try
