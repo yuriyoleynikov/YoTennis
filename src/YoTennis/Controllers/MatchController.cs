@@ -28,16 +28,16 @@ namespace YoTennis.Controllers
             _matchListService = matchListService;
         }
 
-        public async Task<IActionResult> Add()
+        public async Task<IActionResult> AddPastMatch()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddMatchViewModel addMatchViewModel)
+        public async Task<IActionResult> AddPastMatch(AddPostMatchViewModel addMatchViewModel)
         {
             if (!ModelState.IsValid)
-                return RedirectToAction(nameof(Add), addMatchViewModel);
+                return RedirectToAction(nameof(AddPastMatch), addMatchViewModel);
 
             var matchId = await _matchListService.CreateMatch(UserId);
             var matchService = await _matchListService.GetMatchService(UserId, matchId);
@@ -66,7 +66,7 @@ namespace YoTennis.Controllers
                 }
             });
 
-            return RedirectToAction(nameof(Index), nameof(HomeController));
+            return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> Details(string id)

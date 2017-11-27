@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace YoTennis.Models
 {
-    public class AddMatchViewModel
+    public class AddPostMatchViewModel
     {
         [Required, Display(Name = "Date")]
         public DateTime Date { get; set; }
@@ -16,8 +16,11 @@ namespace YoTennis.Models
 
         [Required, Display(Name = "Second Player Name")]
         public string SecondPlayer { get; set; }
-        
+
+        [Display(Name = "First Player UserId")]
         public string FirstPlayerUserId { get; set; }
+
+        [Display(Name = "Second Player UserId")]
         public string SecondPlayerUserId { get; set; }
 
         [Required, Display(Name = "First Player Set 1")]
@@ -37,6 +40,5 @@ namespace YoTennis.Models
 
         [Display(Name = "Second Player Set 3")]
         public int SecondPlayerSet3 { get; set; }
-
     }
 }

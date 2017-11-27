@@ -159,8 +159,8 @@ namespace YoTennis.Models
         private void On(PastMatchEvent gameEvent)
         {
 
-            if (CurrentState.State != MatchState.NotStarted)
-                throw new InvalidOperationException("Not Expected");
+            //if (CurrentState.State != MatchState.NotStarted)
+              //  throw new InvalidOperationException("Not Expected");
                         
             CurrentState.FirstPlayer = gameEvent.FirstPlayer;
             CurrentState.SecondPlayer = gameEvent.SecondPlayer;
@@ -170,6 +170,7 @@ namespace YoTennis.Models
             CurrentState.SecondPlayerUserId = gameEvent.SecondPlayerUserId;
 
             CurrentState.Sets = gameEvent.MatchScore;
+            CurrentState.State = MatchState.PastMatchImported;
 
         }
         private void On(StartEvent gameEvent)
