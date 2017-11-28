@@ -71,6 +71,26 @@ namespace YoTennis.Controllers
                             SecondPlayer = addMatchViewModel.SecondPlayerSet3 ?? 0
                         }
                     });
+
+                if (addMatchViewModel.FirstPlayerSet4 != null)
+                    matchScore.Add(new SetModel
+                    {
+                        Score = new Score
+                        {
+                            FirstPlayer = addMatchViewModel.FirstPlayerSet4 ?? 0,
+                            SecondPlayer = addMatchViewModel.SecondPlayerSet4 ?? 0
+                        }
+                    });
+
+                if (addMatchViewModel.FirstPlayerSet5 != null)
+                    matchScore.Add(new SetModel
+                    {
+                        Score = new Score
+                        {
+                            FirstPlayer = addMatchViewModel.FirstPlayerSet5 ?? 0,
+                            SecondPlayer = addMatchViewModel.SecondPlayerSet5 ?? 0
+                        }
+                    });
             }
 
             if (!ModelState.IsValid)

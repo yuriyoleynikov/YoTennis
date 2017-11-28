@@ -40,5 +40,17 @@ namespace YoTennis.Models
 
         [Display(Name = "Second Player Set 3")]
         public int? SecondPlayerSet3 { get; set; }
+
+        [Display(Name = "First Player Set 4")]
+        public int? FirstPlayerSet4 { get; set; }
+
+        [Display(Name = "Second Player Set 4")]
+        public int? SecondPlayerSet4 { get; set; }
+
+        [Display(Name = "First Player Set 5")]
+        public int? FirstPlayerSet5 { get; set; }
+
+        [Display(Name = "Second Player Set 5")]
+        public int? SecondPlayerSet5 { get; set; }
     }
 }
