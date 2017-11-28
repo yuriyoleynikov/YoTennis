@@ -18,10 +18,10 @@ namespace YoTennis.Models
         public string SecondPlayer { get; set; }
 
         [Display(Name = "First Player UserId")]
-        public string FirstPlayerUserId { get; set; }
+        public bool FirstPlayerUserId { get; set; }
 
         [Display(Name = "Second Player UserId")]
-        public string SecondPlayerUserId { get; set; }
+        public bool SecondPlayerUserId { get; set; }
 
         [Required, Display(Name = "First Player Set 1")]
         public int FirstPlayerSet1 { get; set; }
@@ -30,15 +30,15 @@ namespace YoTennis.Models
         public int SecondPlayerSet1 { get; set; }
 
         [Display(Name = "First Player Set 2")]
-        public int FirstPlayerSet2 { get; set; }
+        public int? FirstPlayerSet2 { get; set; }
 
         [Display(Name = "Second Player Set 2")]
-        public int SecondPlayerSet2 { get; set; }
+        public int? SecondPlayerSet2 { get; set; }
 
         [Display(Name = "First Player Set 3")]
-        public int FirstPlayerSet3 { get; set; }
+        public int? FirstPlayerSet3 { get; set; }
 
         [Display(Name = "Second Player Set 3")]
-        public int SecondPlayerSet3 { get; set; }
+        public int? SecondPlayerSet3 { get; set; }
     }
 }

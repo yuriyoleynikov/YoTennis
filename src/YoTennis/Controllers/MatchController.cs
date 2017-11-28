@@ -36,8 +36,45 @@ namespace YoTennis.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPastMatch(AddPostMatchViewModel addMatchViewModel)
         {
+            var matchScore = new List<SetModel>();
+            if (ModelState.IsValid)
+            {
+                if (addMatchViewModel.FirstPlayerUserId && addMatchViewModel.SecondPlayerUserId)
+                {
+                    ModelState.AddModelError(nameof(addMatchViewModel.FirstPlayerUserId), "First Player UserId is on");
+                    ModelState.AddModelError(nameof(addMatchViewModel.SecondPlayerUserId), "Second Player UserId is on");
+                }
+
+                matchScore.Add(new SetModel
+                    {
+                        Score = new Score {
+                            FirstPlayer = addMatchViewModel.FirstPlayerSet1,
+                            SecondPlayer = addMatchViewModel.SecondPlayerSet1 }
+                    });
+
+                if (addMatchViewModel.FirstPlayerSet2 != null)
+                    matchScore.Add(new SetModel
+                    {
+                        Score = new Score
+                        {
+                            FirstPlayer = addMatchViewModel.FirstPlayerSet2 ?? 0,
+                            SecondPlayer = addMatchViewModel.SecondPlayerSet2 ?? 0
+                        }
+                    });
+
+                if (addMatchViewModel.FirstPlayerSet3 != null)
+                    matchScore.Add(new SetModel
+                    {
+                        Score = new Score
+                        {
+                            FirstPlayer = addMatchViewModel.FirstPlayerSet3 ?? 0,
+                            SecondPlayer = addMatchViewModel.SecondPlayerSet3 ?? 0
+                        }
+                    });
+            }
+
             if (!ModelState.IsValid)
-                return RedirectToAction(nameof(AddPastMatch), addMatchViewModel);
+                return View(addMatchViewModel);
 
             var matchId = await _matchListService.CreateMatch(UserId);
             var matchService = await _matchListService.GetMatchService(UserId, matchId);
@@ -48,22 +85,9 @@ namespace YoTennis.Controllers
                 Date = addMatchViewModel.Date,
                 FirstPlayer = addMatchViewModel.FirstPlayer,
                 SecondPlayer = addMatchViewModel.SecondPlayer,
-                FirstPlayerUserId = addMatchViewModel.FirstPlayerUserId,
-                SecondPlayerUserId = addMatchViewModel.SecondPlayerUserId,
-                MatchScore = new List<SetModel> {
-                    new SetModel {
-                        Score = new Score {
-                            FirstPlayer = addMatchViewModel.FirstPlayerSet1, SecondPlayer = addMatchViewModel.SecondPlayerSet1 }
-                    },
-                    new SetModel {
-                        Score = new Score {
-                            FirstPlayer = addMatchViewModel.FirstPlayerSet2, SecondPlayer = addMatchViewModel.SecondPlayerSet2 }
-                    },
-                    new SetModel {
-                        Score = new Score {
-                            FirstPlayer = addMatchViewModel.FirstPlayerSet3, SecondPlayer = addMatchViewModel.SecondPlayerSet3 }
-                    }
-                }
+                FirstPlayerUserId = addMatchViewModel.FirstPlayerUserId ? UserId : null,
+                SecondPlayerUserId = addMatchViewModel.SecondPlayerUserId ? UserId : null,
+                MatchScore = matchScore
             });
 
             return RedirectToAction("Index", "Home");

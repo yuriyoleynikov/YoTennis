@@ -10,32 +10,34 @@
 
 <form asp-action="AddPastMatch" method="post">
     <div class="form-horizontal">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div asp-validation-summary="All" class="text-danger"></div>
 
         <div class="form-group my-center">
-            <label asp-for="@Model.Date" class="control-label"></label>
-            <input asp-for="@Model.Date" type="datetime-local" class="form-control center-block" />
-            <span asp-validation-for="@Model.Date" class="text-danger" />
+            <label asp-for="Date" class="control-label"></label>
+            <input asp-for="Date" type="datetime-local" class="form-control center-block" />
+            <span asp-validation-for="Date" class="text-danger" />
         </div>
 
         <div class="form-group my-center">
-            <label asp-for="@Model.FirstPlayer" class="control-label"></label>
-            <input asp-for="@Model.FirstPlayer" class="form-control center-block" />
-            <span asp-validation-for="@Model.FirstPlayer" class="text-danger" />
-
-            <label asp-for="@Model.FirstPlayerUserId" class="control-label"></label>
-            <input asp-for="@Model.FirstPlayerUserId" class="form-control center-block" />
-            <span asp-validation-for="@Model.FirstPlayerUserId" class="text-danger" />
+            <label asp-for="FirstPlayer" class="control-label"></label>
+            <input asp-for="FirstPlayer" class="form-control center-block" />
+            <span asp-validation-for="FirstPlayer" class="text-danger" />
+        </div>
+        <div class="form-group my-center">
+            <label asp-for="FirstPlayerUserId" class="control-label"></label>
+            <input asp-for="FirstPlayerUserId" type="checkbox" class="form-control center-block" />
+            <span asp-validation-for="FirstPlayerUserId" class="text-danger" />
         </div>
 
         <div class="form-group my-center">
             <label asp-for="SecondPlayer" class="control-label"></label>
             <input asp-for="SecondPlayer" class="form-control center-block" />
             <span asp-validation-for="SecondPlayer" class="text-danger" />
-
-            <label asp-for="@Model.SecondPlayerUserId" class="control-label"></label>
-            <input asp-for="@Model.SecondPlayerUserId" class="form-control center-block" />
-            <span asp-validation-for="@Model.SecondPlayerUserId" class="text-danger" />
+        </div>
+        <div class="form-group my-center">
+            <label asp-for="SecondPlayerUserId" class="control-label"></label>
+            <input asp-for="SecondPlayerUserId" type="checkbox" class="form-control center-block" />
+            <span asp-validation-for="SecondPlayerUserId" class="text-danger" />
         </div>
 
         <div class="form-group my-center">
