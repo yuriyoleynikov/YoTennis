@@ -102,7 +102,7 @@ namespace YoTennis.Controllers
             await matchService.AddEventAsync(new PastMatchEvent
             {
                 OccuredAt = DateTime.UtcNow,
-                Date = addMatchViewModel.Date,
+                Date = addMatchViewModel.Date.AddTicks(addMatchViewModel.Time != null ? addMatchViewModel.Time.Value.Ticks : 0),
                 FirstPlayer = addMatchViewModel.FirstPlayer,
                 SecondPlayer = addMatchViewModel.SecondPlayer,
                 FirstPlayerUserId = addMatchViewModel.FirstPlayerUserId ? UserId : null,

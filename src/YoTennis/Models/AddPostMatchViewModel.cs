@@ -8,8 +8,11 @@ namespace YoTennis.Models
 {
     public class AddPostMatchViewModel
     {
-        [Required, Display(Name = "Date")]
+        [Required, Display(Name = "Date"), DataType(DataType.Date)]
         public DateTime Date { get; set; }
+
+        [Display(Name = "Time"), DataType(DataType.Time)]
+        public DateTime? Time { get; set; }
 
         [Required, Display(Name = "First Player Name")]
         public string FirstPlayer { get; set; }
@@ -17,10 +20,10 @@ namespace YoTennis.Models
         [Required, Display(Name = "Second Player Name")]
         public string SecondPlayer { get; set; }
 
-        [Display(Name = "First Player UserId")]
+        [Display(Name = "It's me")]
         public bool FirstPlayerUserId { get; set; }
 
-        [Display(Name = "Second Player UserId")]
+        [Display(Name = "It's me")]
         public bool SecondPlayerUserId { get; set; }
 
         [Required, Display(Name = "First Player Set 1")]
