@@ -58,6 +58,41 @@ namespace YoTennis.Tests.Test
         }
 
         [Fact]
+        public void Cheсk_Not_Expected_PastMatchEvent_StartEvant()
+        {
+            var myGame = new GameHandler();
+
+            myGame.AddEvent(new PastMatchEvent
+            {
+                OccuredAt = _gameDate,
+                Date = _matchDate,
+                FirstPlayerUserId = "user",
+                SecondPlayerUserId = null,
+                MatchScore = new List<SetModel>
+                    {
+                        new SetModel
+                        {
+                             Score = new Score{FirstPlayer = 6, SecondPlayer=4}
+                        }
+                    },
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal"
+            });
+
+            new Action(() => myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            })).ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
         public void Check_NoEvent()
         {
             var myGame = new GameHandler();
