@@ -44,7 +44,17 @@ namespace YoTennis.Services
             matchInfo.UserId = _userId;
 
             if (await _context.MatchInfos.AnyAsync(x => x.MatchId == _matchId))
+            {
+                var local = _context.MatchInfos.Local.FirstOrDefault(x => x.MatchId == _matchId);
+
+                if (local != null)
+                {                    
+                    _context.Entry(local).State = EntityState.Detached;
+                }
+
                 _context.Attach(matchInfo).State = EntityState.Modified;
+
+            }
             else
                 _context.MatchInfos.Add(matchInfo);
 

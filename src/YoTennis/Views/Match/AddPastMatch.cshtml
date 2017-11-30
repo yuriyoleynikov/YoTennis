@@ -1,0 +1,138 @@
+@model AddPostMatchViewModel
+
+@{
+    ViewData["Title"] = "Add match";
+}
+
+<h2>Add match</h2>
+
+<section>
+    <form asp-action="AddPastMatch" method="post" class="form-horizontal">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Date" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Time" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Time" class="form-control" />
+                <span asp-validation-for="Time" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="FirstPlayer" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="FirstPlayer" class="form-control" />
+                <span asp-validation-for="FirstPlayer" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <label asp-for="FirstPlayerUserId">
+                        <input asp-for="FirstPlayerUserId" />
+                        @Html.DisplayNameFor(m => m.FirstPlayerUserId)
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SecondPlayer" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="SecondPlayer" class="form-control" />
+                <span asp-validation-for="SecondPlayer" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <label asp-for="SecondPlayerUserId">
+                        <input asp-for="SecondPlayerUserId" />
+                        @Html.DisplayNameFor(m => m.SecondPlayerUserId)
+                    </label>
+                </div>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-md-2">Set</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                    <th>5</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>First Player</th>
+                    <td>
+                        <div>
+                            <input asp-for="FirstPlayerSet1" class="form-control" />
+                            <span asp-validation-for="FirstPlayerSet1" class="text-danger"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <input asp-for="FirstPlayerSet2" class="form-control" />
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <input asp-for="FirstPlayerSet3" class="form-control" />
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <input asp-for="FirstPlayerSet4" class="form-control" />
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <input asp-for="FirstPlayerSet5" class="form-control" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Second Player</th>
+                    <td>
+                        <div>
+                            <input asp-for="SecondPlayerSet1" class="form-control" />
+                            <span asp-validation-for="SecondPlayerSet1" class="text-danger"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <input asp-for="SecondPlayerSet2" class="form-control" />
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <input asp-for="SecondPlayerSet3" class="form-control" />
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <input asp-for="SecondPlayerSet4" class="form-control" />
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <input asp-for="SecondPlayerSet5" class="form-control" />
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-default">Add match</button>
+            </div>
+        </div>
+    </form>
+</section>

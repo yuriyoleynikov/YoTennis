@@ -18,6 +18,81 @@ namespace YoTennis.Tests.Test
         static DateTime _gameDate3 = new DateTime(1986, 9, 29);
 
         [Fact]
+        public void Check_PastMatchEvent()
+        {
+            var myGame = new GameHandler();
+
+            myGame.AddEvent(new PastMatchEvent
+            {
+                OccuredAt = _gameDate,
+                Date = _matchDate,
+                FirstPlayerUserId = "user",
+                SecondPlayerUserId = null,
+                MatchScore = new List<SetModel>
+                    {
+                        new SetModel
+                        {
+                             Score = new Score{FirstPlayer = 6, SecondPlayer=4}
+                        }
+                    },
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal"
+            });
+
+            myGame.CurrentState.MatchStartedAt.Should().Be(_matchDate);
+            myGame.CurrentState.FirstPlayer.Should().Be("Oleynikov");
+            myGame.CurrentState.SecondPlayer.Should().Be("Nadal");
+            myGame.CurrentState.State.Should().Be(MatchState.PastMatchImported);
+            myGame.CurrentState.FirstPlayerUserId.Should().Be("user");
+            myGame.CurrentState.Sets.Last().Score.FirstPlayer.Should().Be(6);
+            myGame.CurrentState.Sets.Last().Score.SecondPlayer.Should().Be(4);
+
+            var matchInfo = myGame.CurrentState.ToMatchInfo();
+
+            matchInfo.State.Should().Be(MatchState.PastMatchImported);
+            matchInfo.MatchStartedAt.Should().Be(_matchDate);
+            matchInfo.FirstPlayer.Should().Be("Oleynikov");
+            matchInfo.SecondPlayer.Should().Be("Nadal");
+            matchInfo.MatchScore.Should().Be("6-4");
+            matchInfo.Winner.Should().Be(null);
+        }
+
+        [Fact]
+        public void Cheсk_Not_Expected_PastMatchEvent_StartEvant()
+        {
+            var myGame = new GameHandler();
+
+            myGame.AddEvent(new PastMatchEvent
+            {
+                OccuredAt = _gameDate,
+                Date = _matchDate,
+                FirstPlayerUserId = "user",
+                SecondPlayerUserId = null,
+                MatchScore = new List<SetModel>
+                    {
+                        new SetModel
+                        {
+                             Score = new Score{FirstPlayer = 6, SecondPlayer=4}
+                        }
+                    },
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal"
+            });
+
+            new Action(() => myGame.AddEvent(new StartEvent
+            {
+                OccuredAt = _matchDate,
+                FirstPlayer = "Oleynikov",
+                SecondPlayer = "Nadal",
+                Settings = new MatchSettings
+                {
+                    SetsForWin = 3,
+                    TiebreakFinal = false
+                }
+            })).ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
         public void Check_NoEvent()
         {
             var myGame = new GameHandler();
@@ -3423,7 +3498,7 @@ namespace YoTennis.Tests.Test
             myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
         }
 
-        
+
 
         [Fact]
         public void Cheсk_Stat_PointEvent_Ace()
@@ -4447,7 +4522,7 @@ namespace YoTennis.Tests.Test
             myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
             myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
         }
-        
+
         [Fact]
         public void Cheсk_Stat_PointEvent_Ace2()
         {
@@ -4874,7 +4949,7 @@ namespace YoTennis.Tests.Test
             myGame.PlayersStats.SecondPlayer.WonOnFirstServe.Should().Be(0);
             myGame.PlayersStats.SecondPlayer.WonOnSecondServe.Should().Be(0);
         }
-        
+
         [Fact]
         public void Cheсk_Stat_PointEvent_Backhand3()
         {

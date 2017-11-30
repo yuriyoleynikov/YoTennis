@@ -28,6 +28,91 @@ namespace YoTennis.Controllers
             _matchListService = matchListService;
         }
 
+        public async Task<IActionResult> AddPastMatch()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPastMatch(AddPostMatchViewModel addMatchViewModel)
+        {
+            var matchScore = new List<SetModel>();
+            if (ModelState.IsValid)
+            {
+                if (addMatchViewModel.FirstPlayerUserId && addMatchViewModel.SecondPlayerUserId)
+                {
+                    ModelState.AddModelError(nameof(addMatchViewModel.FirstPlayerUserId), "First Player UserId is on");
+                    ModelState.AddModelError(nameof(addMatchViewModel.SecondPlayerUserId), "Second Player UserId is on");
+                }
+
+                matchScore.Add(new SetModel
+                    {
+                        Score = new Score {
+                            FirstPlayer = addMatchViewModel.FirstPlayerSet1,
+                            SecondPlayer = addMatchViewModel.SecondPlayerSet1 }
+                    });
+
+                if (addMatchViewModel.FirstPlayerSet2 != null)
+                    matchScore.Add(new SetModel
+                    {
+                        Score = new Score
+                        {
+                            FirstPlayer = addMatchViewModel.FirstPlayerSet2 ?? 0,
+                            SecondPlayer = addMatchViewModel.SecondPlayerSet2 ?? 0
+                        }
+                    });
+
+                if (addMatchViewModel.FirstPlayerSet3 != null)
+                    matchScore.Add(new SetModel
+                    {
+                        Score = new Score
+                        {
+                            FirstPlayer = addMatchViewModel.FirstPlayerSet3 ?? 0,
+                            SecondPlayer = addMatchViewModel.SecondPlayerSet3 ?? 0
+                        }
+                    });
+
+                if (addMatchViewModel.FirstPlayerSet4 != null)
+                    matchScore.Add(new SetModel
+                    {
+                        Score = new Score
+                        {
+                            FirstPlayer = addMatchViewModel.FirstPlayerSet4 ?? 0,
+                            SecondPlayer = addMatchViewModel.SecondPlayerSet4 ?? 0
+                        }
+                    });
+
+                if (addMatchViewModel.FirstPlayerSet5 != null)
+                    matchScore.Add(new SetModel
+                    {
+                        Score = new Score
+                        {
+                            FirstPlayer = addMatchViewModel.FirstPlayerSet5 ?? 0,
+                            SecondPlayer = addMatchViewModel.SecondPlayerSet5 ?? 0
+                        }
+                    });
+            }
+
+            if (!ModelState.IsValid)
+                return View(addMatchViewModel);
+
+            var matchId = await _matchListService.CreateMatch(UserId);
+            var matchService = await _matchListService.GetMatchService(UserId, matchId);
+
+            await matchService.AddEventAsync(new PastMatchEvent
+            {
+                OccuredAt = DateTime.UtcNow,
+                Date = addMatchViewModel.Date + (addMatchViewModel.Time?.TimeOfDay ?? TimeSpan.Zero),
+                FirstPlayer = addMatchViewModel.FirstPlayer,
+                SecondPlayer = addMatchViewModel.SecondPlayer,
+                FirstPlayerUserId = addMatchViewModel.FirstPlayerUserId ? UserId : null,
+                SecondPlayerUserId = addMatchViewModel.SecondPlayerUserId ? UserId : null,
+                MatchScore = matchScore
+            });
+
+            return RedirectToAction("Index", "Home");
+        }
+
         public async Task<IActionResult> Details(string id)
         {
             try
