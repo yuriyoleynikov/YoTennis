@@ -20,6 +20,8 @@
                            skip = Model.Skip,
                            player = Model.SelectedPlayers,
                            state = Model.SelectedState,
+                           beginningWithDate = Model.BeginningWithDate,
+                           finishingBeforeDate = Model.FinishingBeforeDate,
                            sort = Sort.PlayerNameDescending
                        })
                         }
@@ -36,6 +38,8 @@
                            skip = Model.Skip,
                            player = Model.SelectedPlayers,
                            state = Model.SelectedState,
+                           beginningWithDate = Model.BeginningWithDate,
+                           finishingBeforeDate = Model.FinishingBeforeDate,
                            sort = Sort.PlayerNameAscending
                        })
                         }
@@ -53,6 +57,8 @@
                            skip = Model.Skip,
                            player = Model.SelectedPlayers,
                            state = Model.SelectedState,
+                           beginningWithDate = Model.BeginningWithDate,
+                           finishingBeforeDate = Model.FinishingBeforeDate,
                            sort = Sort.DateDescending
                        })
                         }
@@ -69,6 +75,8 @@
                            skip = Model.Skip,
                            player = Model.SelectedPlayers,
                            state = Model.SelectedState,
+                           beginningWithDate = Model.BeginningWithDate,
+                           finishingBeforeDate = Model.FinishingBeforeDate,
                            sort = Sort.DateAscending
                        })
                         }
@@ -86,6 +94,8 @@
                            skip = Model.Skip,
                            player = Model.SelectedPlayers,
                            state = Model.SelectedState,
+                           beginningWithDate = Model.BeginningWithDate,
+                           finishingBeforeDate = Model.FinishingBeforeDate,
                            sort = Sort.StateDescending
                        })
                         }
@@ -102,6 +112,8 @@
                            skip = Model.Skip,
                            player = Model.SelectedPlayers,
                            state = Model.SelectedState,
+                           beginningWithDate = Model.BeginningWithDate,
+                           finishingBeforeDate = Model.FinishingBeforeDate,
                            sort = Sort.StateAscending
                        })
                         }
@@ -146,9 +158,11 @@
                                skip = Model.Skip,
                                player = Model.SelectedPlayers,
                                state = Model.SelectedState,
+                               beginningWithDate = Model.BeginningWithDate,
+                               finishingBeforeDate = Model.FinishingBeforeDate,
                                sort = Model.Sort
                            })
-                       }) 
+                       })
                         </td>
                     </tr>
                 }
@@ -159,7 +173,8 @@
     <div class="my-margin-left">
         <p>Filter</p>
 
-        @if (Model.SelectedPlayers.Any() || Model.SelectedState.Any())
+        @if (Model.SelectedPlayers.Any() || Model.SelectedState.Any() ||
+                                    Model.BeginningWithDate != null || Model.FinishingBeforeDate != null)
         {
             <p>@Html.ActionLink("Clear", "Index", "Home", new { count = Model.Count, skip = 0 })</p>
         }
@@ -170,26 +185,34 @@
             {
                 if (!Model.SelectedPlayers.Any() && !Model.SelectedState.Any())
                 {
-                    <li>@Html.ActionLink(player, "Index", "Home", new
+                    <li>
+                        @Html.ActionLink(player, "Index", "Home", new
                    {
                        count = Model.Count,
                        skip = 0,
                        player = Model.SelectedPlayers.WithElement(player),
+                       beginningWithDate = Model.BeginningWithDate,
+                       finishingBeforeDate = Model.FinishingBeforeDate,
                        sort = Model.Sort
-                   })</li>
+                   })
+                    </li>
                 }
                 else
                 {
                     if (Model.SelectedPlayers.Contains(player))
                     {
-                        <li>@player (@Html.ActionLink("Remove", "Index", "Home", new
+                        <li>
+                            @player (@Html.ActionLink("Remove", "Index", "Home", new
                                 {
                                     count = Model.Count,
                                     skip = 0,
                                     player = Model.SelectedPlayers.WithoutElement(player),
                                     state = Model.SelectedState,
+                                    beginningWithDate = Model.BeginningWithDate,
+                                    finishingBeforeDate = Model.FinishingBeforeDate,
                                     sort = Model.Sort
-                                }))</li>
+                                }))
+                        </li>
                     }
                     else
                     {
@@ -199,6 +222,8 @@
                            count = Model.Count,
                            skip = 0,
                            player = player,
+                           beginningWithDate = Model.BeginningWithDate,
+                           finishingBeforeDate = Model.FinishingBeforeDate,
                            sort = Model.Sort
                        })
                             (@Html.ActionLink("Add", "Index", "Home", new
@@ -207,6 +232,8 @@
                             skip = 0,
                             player = Model.SelectedPlayers.WithElement(player),
                             state = Model.SelectedState,
+                            beginningWithDate = Model.BeginningWithDate,
+                            finishingBeforeDate = Model.FinishingBeforeDate,
                             sort = Model.Sort
                         }))
                         </li>
@@ -228,6 +255,8 @@
                                 skip = 0,
                                 player = Model.SelectedPlayers,
                                 state = Model.SelectedState.WithElement(state),
+                                beginningWithDate = Model.BeginningWithDate,
+                                finishingBeforeDate = Model.FinishingBeforeDate,
                                 sort = Model.Sort
                             })
                     </li>
@@ -244,6 +273,8 @@
                                count = Model.Count,
                                skip = 0,
                                player = Model.SelectedPlayers,
+                               beginningWithDate = Model.BeginningWithDate,
+                               finishingBeforeDate = Model.FinishingBeforeDate,
                                sort = Model.Sort
                            }))
                         </li>
@@ -254,11 +285,24 @@
                         {
                             <li>
                                 @Html.ActionLink(state.ToString(), "Index", "Home",
-                            new { count = Model.Count, skip = 0, state = state,
+                            new
+                            {
+                                count = Model.Count,
+                                skip = 0,
+                                state = state,
+                                beginningWithDate = Model.BeginningWithDate,
+                                finishingBeforeDate = Model.FinishingBeforeDate,
                                 sort = Model.Sort
                             })
                                 (@Html.ActionLink("Add", "Index", "Home",
-                                new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = state,
+                                new
+                                {
+                                    count = Model.Count,
+                                    skip = 0,
+                                    player = Model.SelectedPlayers,
+                                    state = state,
+                                    beginningWithDate = Model.BeginningWithDate,
+                                    finishingBeforeDate = Model.FinishingBeforeDate,
                                     sort = Model.Sort
                                 }))
                             </li>
@@ -267,7 +311,14 @@
                         {
                             <li>
                                 @Html.ActionLink(state.ToString(), "Index", "Home",
-                                new { count = Model.Count, skip = 0, player = Model.SelectedPlayers, state = state,
+                                new
+                                {
+                                    count = Model.Count,
+                                    skip = 0,
+                                    player = Model.SelectedPlayers,
+                                    state = state,
+                                    beginningWithDate = Model.BeginningWithDate,
+                                    finishingBeforeDate = Model.FinishingBeforeDate,
                                     sort = Model.Sort
                                 })
                             </li>
@@ -276,26 +327,154 @@
                 }
             }
         </ul>
-        <p>Beginning with:</p>
-        <p>Finishing before:</p>
+
+        <p>Beginning with date:</p>
+        @if (@Model.BeginningWithDate == null)
+        {
+            <form method="get">
+
+                @if (Model.Count != 10)
+                {
+                    <input name="count" value="@Model.Count" type="hidden" />
+                }
+
+                @if (Model.Skip != 0)
+                {
+                    <input name="skip" value="@Model.Skip" type="hidden" />
+                }
+
+                @if (Model.SelectedPlayers.Any())
+                {
+                    <input name="player" value="@Model.SelectedPlayers" type="hidden" />
+                }
+
+                @if (Model.SelectedState.Any())
+                {
+                    <input name="state" value="@Model.SelectedState" type="hidden" />
+                }
+
+                @if (Model.FinishingBeforeDate != null)
+                {
+                    <input name="finishingBeforeDate" value="@Model.FinishingBeforeDate" type="hidden" />
+                }
+
+                @if (Model.Sort != Sort.None)
+                {
+                    <input name="sort" value="@Model.Sort" type="hidden" />
+                }
+
+                <input asp-for="@Model.BeginningWithDate" class="form-control" />
+                
+                <button type="submit" class="btn btn-default">Only this</button>                
+
+                <button type="submit" class="btn btn-default">Add</button>
+
+            </form>
+        }
+        else
+        {
+            <div>
+                @Model.BeginningWithDate.Value.ToString("D")
+                (
+                @Html.ActionLink("Remove", "Index", "Home",
+                                new
+                                {
+                                    count = Model.Count,
+                                    skip = 0,
+                                    player = Model.SelectedPlayers,
+                                    state = Model.SelectedState,
+                                    finishingBeforeDate = Model.FinishingBeforeDate,
+                                    sort = Model.Sort
+                                })
+                )
+            </div>
+
+        }
+        <p>Finishing before date:</p>
+        @if (@Model.FinishingBeforeDate == null)
+        {
+            <form method="get">
+
+                @if (Model.Count != 10)
+                {
+                    <input name="count" value="@Model.Count" type="hidden" />
+                }
+
+                @if (Model.Skip != 0)
+                {
+                    <input name="skip" value="@Model.Skip" type="hidden" />
+                }
+
+                @if (Model.SelectedPlayers.Any())
+                {
+                    <input name="player" value="@Model.SelectedPlayers" type="hidden" />
+                }
+
+                @if (Model.SelectedState.Any())
+                {
+                    <input name="state" value="@Model.SelectedState" type="hidden" />
+                }
+
+                @if (Model.BeginningWithDate != null)
+                {
+                    <input name="beginningWithDate" value="@Model.BeginningWithDate" type="hidden" />
+                }
+
+                @if (Model.Sort != Sort.None)
+                {
+                    <input name="sort" value="@Model.Sort" type="hidden" />
+                }
+
+                <input asp-for="@Model.FinishingBeforeDate" class="form-control" />
+
+                <button type="submit" class="btn btn-default">Only this</button>
+
+                <button type="submit" class="btn btn-default">Add</button>
+            </form>
+        }
+        else
+        {
+            <div>
+                @Model.FinishingBeforeDate.Value.ToString("D")
+                (
+                @Html.ActionLink("Remove", "Index", "Home",
+                                new
+                                {
+                                    count = Model.Count,
+                                    skip = 0,
+                                    player = Model.SelectedPlayers,
+                                    state = Model.SelectedState,
+                                    beginningWithDate = Model.BeginningWithDate,
+                                    sort = Model.Sort
+                                })
+                )
+            </div>
+
+        }
     </div>
 
 </div>
 <div>
     <p>
         Show -
-        @Html.ActionLink("10", "Index", "Home", new {
+        @Html.ActionLink("10", "Index", "Home", new
+   {
        count = 10,
        skip = 0,
        player = Model.SelectedPlayers,
        state = Model.SelectedState,
+       beginningWithDate = Model.BeginningWithDate,
+       finishingBeforeDate = Model.FinishingBeforeDate,
        sort = Model.Sort
    }) |
-        @Html.ActionLink("20", "Index", "Home", new {
+        @Html.ActionLink("20", "Index", "Home", new
+   {
        count = 20,
        skip = 0,
        player = Model.SelectedPlayers,
        state = Model.SelectedState,
+       beginningWithDate = Model.BeginningWithDate,
+       finishingBeforeDate = Model.FinishingBeforeDate,
        sort = Model.Sort
    }) |
         @Html.ActionLink("All", "Index", "Home", new
@@ -304,6 +483,8 @@
        skip = 0,
        player = Model.SelectedPlayers,
        state = Model.SelectedState,
+       beginningWithDate = Model.BeginningWithDate,
+       finishingBeforeDate = Model.FinishingBeforeDate,
        sort = Model.Sort
    })
     </p>
@@ -320,6 +501,8 @@
                skip = Model.Skip - Model.Count,
                player = Model.SelectedPlayers,
                state = Model.SelectedState,
+               beginningWithDate = Model.BeginningWithDate,
+               finishingBeforeDate = Model.FinishingBeforeDate,
                sort = Model.Sort
            })
             }
@@ -335,6 +518,8 @@
                skip = Model.Skip + Model.Count,
                player = Model.SelectedPlayers,
                state = Model.SelectedState,
+               beginningWithDate = Model.BeginningWithDate,
+               finishingBeforeDate = Model.FinishingBeforeDate,
                sort = Model.Sort
            })
             }

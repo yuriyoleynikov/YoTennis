@@ -60,22 +60,24 @@ namespace YoTennis.Controllers
             return (count, skip);
         }
 
-        public async Task<IActionResult> Index(int count = 10, int skip = 0, IEnumerable<string> player = null,
-            IEnumerable<MatchState> state = null, Sort sort = Sort.None)
+        public async Task<IActionResult> Index(int count = 10, int skip = 0, 
+            IEnumerable<string> player = null, IEnumerable<MatchState> state = null, 
+            DateTime? beginningWithDate = null, DateTime? finishingBeforeDate = null, Sort sort = Sort.None)
         {
             //await _matchListService.RebuildMatchInfosAsync();
 
             player = player ?? Enumerable.Empty<string>();
             state = state ?? Enumerable.Empty<MatchState>();
 
-            var totalCount = await _matchListService.GetMatchCount(UserId, player, state);
+            var totalCount = await _matchListService.GetMatchCount(UserId, player, state, beginningWithDate, finishingBeforeDate);
 
             var (newCount, newSkip) = CorrectPagination(totalCount, count, skip);
 
             if (count != newCount || skip != newSkip)
                 return RedirectToAction(nameof(Index), new { count = newCount, skip = newSkip });
 
-            var matchInfoModels = await _matchListService.GetMatches(UserId, count, skip, player, state, sort);
+            var matchInfoModels = await _matchListService.GetMatches(UserId, count, skip, player, state,
+                beginningWithDate, finishingBeforeDate, sort);
 
             var containerForMatchModel = new ContainerForMatchModel
             {
@@ -91,6 +93,9 @@ namespace YoTennis.Controllers
                 Count = newCount,
                 Skip = newSkip,
                 FilterPayers = (await _matchListService.GetPlayers(UserId)).ToList(),
+                FilterDate = (await _matchListService.GetMatchDates(UserId)).ToList(),
+                BeginningWithDate = beginningWithDate,
+                FinishingBeforeDate = finishingBeforeDate,
                 SelectedPlayers = player,
                 SelectedState = state,
                 Sort = sort
