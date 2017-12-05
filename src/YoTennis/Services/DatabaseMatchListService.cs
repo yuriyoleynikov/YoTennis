@@ -105,17 +105,6 @@ namespace YoTennis.Services
             });
         }
 
-        public async Task<IEnumerable<DateTime>> GetMatchDates(string userId)
-        {
-            var result = new List<DateTime>();
-            result = await _context.MatchInfos
-                .Where(matchInfo=> matchInfo.UserId == userId)
-                .Select(matchInfo => matchInfo.MatchStartedAt.Date)
-                .Distinct()
-                .ToListAsync();
-            return result;
-        }
-
         public async Task<IMatchService> GetMatchService(string userId, string matchId) =>
             (Guid.TryParse(matchId, out var guid) && await _context.Matches.Where(match => match.UserId == userId && match.Id == guid).AnyAsync())
             ? new DatabaseMatchService(_context, guid, userId)

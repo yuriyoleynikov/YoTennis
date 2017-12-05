@@ -93,7 +93,6 @@ namespace YoTennis.Controllers
                 Count = newCount,
                 Skip = newSkip,
                 FilterPayers = (await _matchListService.GetPlayers(UserId)).ToList(),
-                FilterDate = (await _matchListService.GetMatchDates(UserId)).ToList(),
                 BeginningWithDate = beginningWithDate,
                 FinishingBeforeDate = finishingBeforeDate,
                 SelectedPlayers = player,

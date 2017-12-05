@@ -18,7 +18,6 @@ namespace YoTennis.Models
         public List<MatchState> FilterState { get; set; } = 
             new List<MatchState>() { MatchState.NotStarted, MatchState.Drawing,
                 MatchState.Completed, MatchState.CompletedAndNotFinished, MatchState.PastMatchImported };
-        public List<DateTime> FilterDate { get; set; }
         public IEnumerable<MatchState> SelectedState { get; set; }       
         [DataType(DataType.Date)]
         public DateTime? BeginningWithDate { get; set; }
