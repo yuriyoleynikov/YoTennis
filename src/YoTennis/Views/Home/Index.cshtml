@@ -355,7 +355,7 @@
 
                 @if (Model.FinishingBeforeDate != null)
                 {
-                    <input name="finishingBeforeDate" value="@Model.FinishingBeforeDate" type="hidden" />
+                    <input name="finishingBeforeDate" value="@Model.FinishingBeforeDate?.ToString("yyyy-MM-dd")" type="hidden" />
                 }
 
                 @if (Model.Sort != Sort.None)
@@ -363,9 +363,7 @@
                     <input name="sort" value="@Model.Sort" type="hidden" />
                 }
 
-                <input asp-for="@Model.BeginningWithDate" class="form-control" />
-                
-                <button type="submit" class="btn btn-default">Only this</button>                
+                <input name="beginningWithDate" class="form-control" value="@Model.BeginningWithDate?.ToString("yyyy-MM-dd")" type="date" />
 
                 <button type="submit" class="btn btn-default">Add</button>
 
@@ -374,7 +372,13 @@
         else
         {
             <div>
-                @Model.BeginningWithDate.Value.ToString("D")
+                @Html.ActionLink(@Model.BeginningWithDate.Value.ToString("D"), "Index", "Home",
+                                new
+                                {
+                                    count = Model.Count,
+                                    skip = 0,
+                                    beginningWithDate = Model.BeginningWithDate?.ToString("yyyy-MM-dd")
+                                })
                 (
                 @Html.ActionLink("Remove", "Index", "Home",
                                 new
@@ -383,12 +387,11 @@
                                     skip = 0,
                                     player = Model.SelectedPlayers,
                                     state = Model.SelectedState,
-                                    finishingBeforeDate = Model.FinishingBeforeDate,
+                                    finishingBeforeDate = Model.FinishingBeforeDate?.ToString("yyyy-MM-dd"),
                                     sort = Model.Sort
                                 })
                 )
             </div>
-
         }
         <p>Finishing before date:</p>
         @if (@Model.FinishingBeforeDate == null)
@@ -417,7 +420,7 @@
 
                 @if (Model.BeginningWithDate != null)
                 {
-                    <input name="beginningWithDate" value="@Model.BeginningWithDate" type="hidden" />
+                    <input name="beginningWithDate" value="@Model.BeginningWithDate?.ToString("yyyy-MM-dd")" type="hidden" />
                 }
 
                 @if (Model.Sort != Sort.None)
@@ -425,9 +428,7 @@
                     <input name="sort" value="@Model.Sort" type="hidden" />
                 }
 
-                <input asp-for="@Model.FinishingBeforeDate" class="form-control" />
-
-                <button type="submit" class="btn btn-default">Only this</button>
+                <input name="finishingBeforeDate" class="form-control" value="@Model.FinishingBeforeDate?.ToString("yyyy-MM-dd")" type="date" />
 
                 <button type="submit" class="btn btn-default">Add</button>
             </form>
@@ -435,7 +436,13 @@
         else
         {
             <div>
-                @Model.FinishingBeforeDate.Value.ToString("D")
+                @Html.ActionLink(@Model.FinishingBeforeDate.Value.ToString("D"), "Index", "Home",
+                                new
+                                {
+                                    count = Model.Count,
+                                    skip = 0,
+                                    finishingBeforeDate = Model.FinishingBeforeDate?.ToString("yyyy-MM-dd")
+                                }) 
                 (
                 @Html.ActionLink("Remove", "Index", "Home",
                                 new
@@ -444,12 +451,11 @@
                                     skip = 0,
                                     player = Model.SelectedPlayers,
                                     state = Model.SelectedState,
-                                    beginningWithDate = Model.BeginningWithDate,
+                                    beginningWithDate = Model.BeginningWithDate?.ToString("yyyy-MM-dd"),
                                     sort = Model.Sort
                                 })
                 )
             </div>
-
         }
     </div>
 
@@ -463,8 +469,8 @@
        skip = 0,
        player = Model.SelectedPlayers,
        state = Model.SelectedState,
-       beginningWithDate = Model.BeginningWithDate,
-       finishingBeforeDate = Model.FinishingBeforeDate,
+       beginningWithDate = Model.BeginningWithDate?.ToString("yyyy-MM-dd"),
+       finishingBeforeDate = Model.FinishingBeforeDate?.ToString("yyyy-MM-dd"),
        sort = Model.Sort
    }) |
         @Html.ActionLink("20", "Index", "Home", new
@@ -473,8 +479,8 @@
        skip = 0,
        player = Model.SelectedPlayers,
        state = Model.SelectedState,
-       beginningWithDate = Model.BeginningWithDate,
-       finishingBeforeDate = Model.FinishingBeforeDate,
+       beginningWithDate = Model.BeginningWithDate?.ToString("yyyy-MM-dd"),
+       finishingBeforeDate = Model.FinishingBeforeDate?.ToString("yyyy-MM-dd"),
        sort = Model.Sort
    }) |
         @Html.ActionLink("All", "Index", "Home", new
@@ -483,8 +489,8 @@
        skip = 0,
        player = Model.SelectedPlayers,
        state = Model.SelectedState,
-       beginningWithDate = Model.BeginningWithDate,
-       finishingBeforeDate = Model.FinishingBeforeDate,
+       beginningWithDate = Model.BeginningWithDate?.ToString("yyyy-MM-dd"),
+       finishingBeforeDate = Model.FinishingBeforeDate?.ToString("yyyy-MM-dd"),
        sort = Model.Sort
    })
     </p>
@@ -501,8 +507,8 @@
                skip = Model.Skip - Model.Count,
                player = Model.SelectedPlayers,
                state = Model.SelectedState,
-               beginningWithDate = Model.BeginningWithDate,
-               finishingBeforeDate = Model.FinishingBeforeDate,
+               beginningWithDate = Model.BeginningWithDate?.ToString("yyyy-MM-dd"),
+               finishingBeforeDate = Model.FinishingBeforeDate?.ToString("yyyy-MM-dd"),
                sort = Model.Sort
            })
             }
@@ -518,8 +524,8 @@
                skip = Model.Skip + Model.Count,
                player = Model.SelectedPlayers,
                state = Model.SelectedState,
-               beginningWithDate = Model.BeginningWithDate,
-               finishingBeforeDate = Model.FinishingBeforeDate,
+               beginningWithDate = Model.BeginningWithDate?.ToString("yyyy-MM-dd"),
+               finishingBeforeDate = Model.FinishingBeforeDate?.ToString("yyyy-MM-dd"),
                sort = Model.Sort
            })
             }
