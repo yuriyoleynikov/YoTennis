@@ -343,19 +343,19 @@
                     <input name="skip" value="@Model.Skip" type="hidden" />
                 }
 
-                @if (Model.SelectedPlayers.Any())
+                @foreach (var player in Model.SelectedPlayers)
                 {
-                    <input name="player" value="@Model.SelectedPlayers" type="hidden" />
+                    <input name="player" value="@player" type="hidden" />
                 }
 
-                @if (Model.SelectedState.Any())
+                @foreach (var state in Model.SelectedState)
                 {
-                    <input name="state" value="@Model.SelectedState" type="hidden" />
+                    <input name="state" value="@state" type="hidden" />
                 }
 
                 @if (Model.FinishingBeforeDate != null)
                 {
-                    <input name="finishingBeforeDate" value="@Model.FinishingBeforeDate?.ToString("yyyy-MM-dd")" type="hidden" />
+                    <input name="finishingBeforeDate" value="@Model.FinishingBeforeDate.Value.ToString("yyyy-MM-dd")" type="hidden" />
                 }
 
                 @if (Model.Sort != Sort.None)
@@ -408,19 +408,19 @@
                     <input name="skip" value="@Model.Skip" type="hidden" />
                 }
 
-                @if (Model.SelectedPlayers.Any())
+                @foreach (var player in Model.SelectedPlayers)
                 {
-                    <input name="player" value="@Model.SelectedPlayers" type="hidden" />
+                    <input name="player" value="@player" type="hidden" />
                 }
 
-                @if (Model.SelectedState.Any())
+                @foreach (var state in Model.SelectedState)
                 {
-                    <input name="state" value="@Model.SelectedState" type="hidden" />
+                    <input name="state" value="@state" type="hidden" />
                 }
 
                 @if (Model.BeginningWithDate != null)
                 {
-                    <input name="beginningWithDate" value="@Model.BeginningWithDate?.ToString("yyyy-MM-dd")" type="hidden" />
+                    <input name="beginningWithDate" value="@Model.BeginningWithDate.Value.ToString("yyyy-MM-dd")" type="hidden" />
                 }
 
                 @if (Model.Sort != Sort.None)
