@@ -86,7 +86,8 @@ namespace YoTennis.Services
         }
 
         public async Task<IEnumerable<MatchInfoModel>> GetMatches(string userId, int count, int skip,
-            IEnumerable<string> filterPlayer = null, IEnumerable<MatchState> filterState = null, Sort sort = Sort.None)
+            IEnumerable<string> filterPlayer = null, IEnumerable<MatchState> filterState = null,
+            DateTime? beginningWithDate = null, DateTime? finishingBeforeDate = null, Sort sort = Sort.None)
         {
             var result = new List<MatchInfoModel>();
 
@@ -111,7 +112,8 @@ namespace YoTennis.Services
             return result;
         }
 
-        public Task<int> GetMatchCount(string userId, IEnumerable<string> filterPlayer = null, IEnumerable<MatchState> filterState = null)
+        public Task<int> GetMatchCount(string userId, IEnumerable<string> filterPlayer = null, 
+            IEnumerable<MatchState> filterState = null, DateTime ? beginningWithDate = null, DateTime? finishingBeforeDate = null)
         {
             if (_users.TryGetValue(userId, out var matches))
             {

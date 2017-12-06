@@ -49,11 +49,14 @@ namespace YoTennis.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<int> GetMatchCount(string userId, IEnumerable<string> filterPlayer = null, IEnumerable<MatchState> filterState = null) =>
+        public async Task<int> GetMatchCount(string userId, IEnumerable<string> filterPlayer = null,
+            IEnumerable<MatchState> filterState = null, DateTime? beginningWithDate = null, DateTime? finishingBeforeDate = null) =>
             await _context.MatchInfos
                 .Where(matchInfo => matchInfo.UserId == userId)
                 .ByPlayers(filterPlayer)
                 .ByState(filterState)
+                .ByBeginningWithDate(beginningWithDate)
+                .ByFinishingBeforeDate(finishingBeforeDate)
                 .CountAsync();
 
         public async Task<IEnumerable<MatchInfoModel>> GetMatchesInfos(string userId)
@@ -76,12 +79,15 @@ namespace YoTennis.Services
         }
 
         public async Task<IEnumerable<MatchInfoModel>> GetMatches(string userId, int count, int skip,
-            IEnumerable<string> filterPlayer, IEnumerable<MatchState> filterState, Sort sort)
+            IEnumerable<string> filterPlayer, IEnumerable<MatchState> filterState,
+            DateTime? beginningWithDate, DateTime? finishingBeforeDate, Sort sort)
         {
             var result = await _context.MatchInfos
                 .Where(matchInfo => matchInfo.UserId == userId)
                 .ByPlayers(filterPlayer)
                 .ByState(filterState)
+                .ByBeginningWithDate(beginningWithDate)
+                .ByFinishingBeforeDate(finishingBeforeDate)
                 .BySort(sort)
                 .Skip(skip)
                 .Take(count)
@@ -194,6 +200,6 @@ namespace YoTennis.Services
                 result.Add(state);
             }
             return result;
-        }
+        }        
     }
 }

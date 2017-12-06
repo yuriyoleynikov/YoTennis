@@ -21,6 +21,24 @@ namespace YoTennis.Models
                 .Where(matchInfo => filterPlayer.Contains(matchInfo.FirstPlayer) || filterPlayer.Contains(matchInfo.SecondPlayer));
         }
 
+        public static IQueryable<MatchInfo> ByBeginningWithDate(this IQueryable<MatchInfo> matchInfoModels, DateTime? beginningWithDate)
+        {
+            if (beginningWithDate == null)
+                return matchInfoModels;
+
+            return matchInfoModels
+                .Where(matchInfo => beginningWithDate.Value.Ticks <= matchInfo.MatchStartedAt.Date.Ticks);
+        }
+
+        public static IQueryable<MatchInfo> ByFinishingBeforeDate(this IQueryable<MatchInfo> matchInfoModels, DateTime? finishingBeforeDate)
+        {
+            if (finishingBeforeDate == null)
+                return matchInfoModels;
+
+            return matchInfoModels
+                .Where(matchInfo => finishingBeforeDate.Value.Ticks >= matchInfo.MatchStartedAt.Date.Ticks);
+        }
+
         public static IQueryable<MatchInfo> ByState(this IQueryable<MatchInfo> matchInfoModels, IEnumerable<MatchState> filterState)
         {
             if (filterState == null || !filterState.Any())
