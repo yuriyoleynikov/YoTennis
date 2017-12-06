@@ -60,8 +60,8 @@ namespace YoTennis.Controllers
             return (count, skip);
         }
 
-        public async Task<IActionResult> Index(int count = 10, int skip = 0, 
-            IEnumerable<string> player = null, IEnumerable<MatchState> state = null, 
+        public async Task<IActionResult> Index(int count = 10, int skip = 0,
+            IEnumerable<string> player = null, IEnumerable<MatchState> state = null,
             DateTime? beginningWithDate = null, DateTime? finishingBeforeDate = null, Sort sort = Sort.None)
         {
             //await _matchListService.RebuildMatchInfosAsync();
@@ -74,7 +74,16 @@ namespace YoTennis.Controllers
             var (newCount, newSkip) = CorrectPagination(totalCount, count, skip);
 
             if (count != newCount || skip != newSkip)
-                return RedirectToAction(nameof(Index), new { count = newCount, skip = newSkip });
+                return RedirectToAction(nameof(Index), new
+                {
+                    count = newCount,
+                    skip = newSkip,
+                    player = player,
+                    state = state,
+                    beginningWithDate = beginningWithDate,
+                    finishingBeforeDate = finishingBeforeDate,
+                    sort = sort
+                });
 
             var matchInfoModels = await _matchListService.GetMatches(UserId, count, skip, player, state,
                 beginningWithDate, finishingBeforeDate, sort);
